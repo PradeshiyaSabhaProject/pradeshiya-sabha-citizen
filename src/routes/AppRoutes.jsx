@@ -5,6 +5,7 @@ import AuthPortal from '../pages/Auth/AuthPortal';
 import CitizenLayout from '../layouts/CitizenLayout';
 import Home from '../pages/Home/Home';
 import Services from '../pages/Services/Services';
+import Applications from '../pages/Applications/Applications';
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -61,6 +62,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Services />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications" 
+          element={
+            <ProtectedRoute>
+              <Applications />
             </ProtectedRoute>
           } 
         />
