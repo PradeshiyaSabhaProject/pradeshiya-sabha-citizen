@@ -1,12 +1,13 @@
-import CitizenLayout from './layouts/CitizenLayout';
-import Appointment from './features/Appointment/Appointment';
+import { AuthProvider } from './context/AuthContext'
+import AppRoutes from './routes/AppRoutes'
+import './App.css'
 
 function App() {
   return (
-    <CitizenLayout>
-      <Appointment />
-    </CitizenLayout>
-  );
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  )
 }
 
 export default App;

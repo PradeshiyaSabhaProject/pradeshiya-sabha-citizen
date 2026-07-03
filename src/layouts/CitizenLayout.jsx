@@ -4,9 +4,9 @@ import Footer from '../components/Footer/Footer';
 
 const CitizenLayout = ({ children }) => {
   return (
-    <div className="layout-container">
+    <div className="layout-container min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <main className="main-content">
+      <main className="main-content flex-grow">
         {children}
       </main>
       <Footer />
