@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAppointments } from './hooks/useAppointments';
 import AppointmentOverview from './components/AppointmentOverview';
 import MyBookings from './components/MyBookings';
@@ -53,6 +54,20 @@ const Appointment = () => {
     openBookingDetails,
     handleCancelBooking
   } = useAppointments();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (['overview', 'bookings', 'schedule', 'facility'].includes(tab)) {
+      setActiveTab(tab);
+    } else if (location.pathname === '/reservations') {
+      setActiveTab('facility');
+    } else {
+      setActiveTab('overview');
+    }
+  }, [location.pathname, location.search, setActiveTab]);
 
   const handleFacilityReserve = (facility) => {
     // Add facility reservation directly to user bookings

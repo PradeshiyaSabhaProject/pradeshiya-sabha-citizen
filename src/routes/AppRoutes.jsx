@@ -83,6 +83,22 @@ const AppRoutes = () => {
           } 
         />
         <Route 
+          path="/appointments" 
+          element={
+            <ProtectedRoute>
+              <Appointment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/reservations" 
+          element={
+            <ProtectedRoute>
+              <Appointment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
           path="*" 
           element={
             <ProtectedRoute>

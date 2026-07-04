@@ -143,10 +143,11 @@ const Header = () => {
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-6 ml-auto mr-2 lg:mr-4 text-sm font-medium">
-            <Link to="/" className="hover:text-white/80 transition-colors cursor-pointer">Dashboard</Link>
-            <Link to="/services" className="hover:text-white/80 transition-colors cursor-pointer">Services</Link>
-            <Link to="/applications" className="hover:text-white/80 transition-colors cursor-pointer">Applications</Link>
-            <Link to="/payments" className="hover:text-white/80 transition-colors cursor-pointer">Payments</Link>
+            <a href="/" className="hover:text-white/80 transition-colors cursor-pointer">Dashboard</a>
+            <a href="/services" className="hover:text-white/80 transition-colors cursor-pointer">Services</a>
+            <a href="/applications" className="hover:text-white/80 transition-colors cursor-pointer">Applications</a>
+            <a href="/appointments" className="hover:text-white/80 transition-colors cursor-pointer">Appointments</a>
+            <a href="/payments" className="hover:text-white/80 transition-colors cursor-pointer">Payments</a>
           </nav>
 
           {/* Admin & Action Icons */}

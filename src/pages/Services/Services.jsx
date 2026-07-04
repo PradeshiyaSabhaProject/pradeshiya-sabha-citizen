@@ -60,6 +60,16 @@ const Services = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const handleServiceClick = (service) => {
+    if (service.id === 'appointments') {
+      navigate('/appointments?tab=schedule');
+    } else if (service.id === 'reservations') {
+      navigate('/appointments?tab=facility');
+    } else {
+      alert(`Opening portal for: ${service.title}`);
+    }
+  };
+
   const servicesData = [
     {
       id: 'reporting',
