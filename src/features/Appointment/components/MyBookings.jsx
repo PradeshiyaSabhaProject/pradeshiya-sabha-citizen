@@ -106,10 +106,21 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
 
                 {isReserved && (
                   <div className="bg-gray-50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
-                    <span className="text-gray-500 italic">
-                      {b.statusMessage}
-                    </span>
-                    <span className="text-gray-800 font-extrabold">
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-gray-500 italic">
+                        {b.statusMessage}
+                      </span>
+                      <button
+                        onClick={() => onCancelBooking(b.id)}
+                        className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer text-left w-fit"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Cancel Reservation</span>
+                      </button>
+                    </div>
+                    <span className="text-gray-800 font-extrabold shrink-0 self-end">
                       {b.price}
                     </span>
                   </div>

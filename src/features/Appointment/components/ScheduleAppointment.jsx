@@ -227,32 +227,37 @@ const ScheduleAppointment = ({
               </div>
 
               {/* Time Slots */}
-              <div className="md:col-span-5 flex flex-col">
+              <div className="md:col-span-5 flex flex-col justify-start">
                 <h4 className="text-xs font-bold text-gray-700 mb-4">
                   Available Slots for Oct {selectedDate}th
                 </h4>
                 
-                <div className="grid grid-cols-2 gap-3 flex-1">
-                  {timeSlots.map(slot => {
-                    const isSlotSelected = selectedTimeSlot?.id === slot.id;
-                    return (
-                      <button
-                        key={slot.id}
-                        type="button"
+                <div className="relative">
+                  <select
+                    value={selectedTimeSlot?.id || ''}
+                    onChange={(e) => {
+                      const selected = timeSlots.find(s => s.id === e.target.value);
+                      setSelectedTimeSlot(selected || null);
+                    }}
+                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3.5 pr-10 text-xs font-bold text-gray-700 focus:outline-none focus:ring-1 focus:ring-red-800 focus:border-red-800 cursor-pointer shadow-2xs appearance-none"
+                  >
+                    <option value="" disabled>Select a Time Slot</option>
+                    {timeSlots.map(slot => (
+                      <option 
+                        key={slot.id} 
+                        value={slot.id}
                         disabled={!slot.available}
-                        onClick={() => setSelectedTimeSlot(slot)}
-                        className={`rounded-md py-3 text-xs font-bold text-center border transition-all ${
-                          !slot.available
-                            ? 'bg-gray-100 text-gray-300 border-gray-150 cursor-not-allowed'
-                            : isSlotSelected
-                              ? 'bg-red-850 text-white border-red-850 shadow-sm'
-                              : 'bg-white text-gray-800 border-gray-300 hover:border-gray-400'
-                        }`}
                       >
-                        {slot.time}
-                      </button>
-                    );
-                  })}
+                        {slot.time} {!slot.available ? '(Booked)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Chevron Icon */}
+                  <div className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none text-gray-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
