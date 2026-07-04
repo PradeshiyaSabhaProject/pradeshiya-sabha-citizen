@@ -146,6 +146,7 @@ const Header = () => {
             <a href="/" className="hover:text-white/80 transition-colors cursor-pointer">Dashboard</a>
             <a href="/services" className="hover:text-white/80 transition-colors cursor-pointer">Services</a>
             <a href="/applications" className="hover:text-white/80 transition-colors cursor-pointer">Applications</a>
+            <a href="/appointments" className="hover:text-white/80 transition-colors cursor-pointer">Appointments</a>
             <a href="/payments" className="hover:text-white/80 transition-colors cursor-pointer">Payments</a>
           </nav>
 

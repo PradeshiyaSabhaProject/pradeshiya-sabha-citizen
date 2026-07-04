@@ -6,6 +6,7 @@ import CitizenLayout from '../layouts/CitizenLayout';
 import Home from '../pages/Home/Home';
 import Services from '../pages/Services/Services';
 import Applications from '../pages/Applications/Applications';
+import Appointment from '../features/Appointment/Appointment';
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -70,6 +71,22 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Applications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/appointments" 
+          element={
+            <ProtectedRoute>
+              <Appointment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/reservations" 
+          element={
+            <ProtectedRoute>
+              <Appointment />
             </ProtectedRoute>
           } 
         />

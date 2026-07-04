@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // SVG Icons for Services
 const AlertIcon = () => (
@@ -57,6 +58,17 @@ const SearchIcon = () => (
 
 const Services = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const handleServiceClick = (service) => {
+    if (service.id === 'appointments') {
+      navigate('/appointments?tab=schedule');
+    } else if (service.id === 'reservations') {
+      navigate('/appointments?tab=facility');
+    } else {
+      alert(`Opening portal for: ${service.title}`);
+    }
+  };
 
   const servicesData = [
     {
@@ -186,7 +198,7 @@ const Services = () => {
           {filteredServices.map((service) => (
             <div
               key={service.id}
-              onClick={() => alert(`Opening portal for: ${service.title}`)}
+              onClick={() => handleServiceClick(service)}
               className="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-200 cursor-pointer flex flex-col group"
             >
               <div className="w-12 h-12 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import pradeshiyaImg from '../../assets/pradeshiyasabha.png';
 
@@ -53,6 +54,7 @@ const WasteIcon = () => (
 
 const Home = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const userName = user?.name || 'Chaminda Perera';
 
   // Dummy status updates
@@ -144,7 +146,7 @@ const Home = () => {
               <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Active Complaints</div>
             </div>
 
-            <div className="bg-white rounded-xl border border-gray-200/80 p-4 text-center shadow-xs min-w-[130px] sm:min-w-[150px] hover:border-[#8C1538]/30 transition-all">
+            <div onClick={() => navigate('/appointments?tab=bookings')} className="bg-white rounded-xl border border-gray-200/80 p-4 text-center shadow-xs min-w-[130px] sm:min-w-[150px] hover:border-[#8C1538]/30 transition-all cursor-pointer">
               <div className="text-3xl font-extrabold text-[#8C1538] mb-0.5">1</div>
               <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Pending Appointment</div>
             </div>
@@ -175,7 +177,7 @@ const Home = () => {
               <p className="text-xs text-gray-500 leading-relaxed">Street lights, waste, or roads.</p>
             </div>
 
-            <div onClick={() => alert('Opening Appointments...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <div onClick={() => navigate('/appointments')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <CalendarIcon />
               </div>
@@ -199,7 +201,7 @@ const Home = () => {
               <p className="text-xs text-gray-500 leading-relaxed">Water, drainage and connections.</p>
             </div>
 
-            <div onClick={() => alert('Opening Public Assets...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <div onClick={() => navigate('/appointments?tab=facility')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <AssetsIcon />
               </div>
