@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logoImg from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const FacebookIcon = () => (
   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -62,13 +62,13 @@ const Header = () => {
       <div className="bg-white px-4 sm:px-6 lg:px-10 py-3 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-gray-100">
         {/* Logo Section */}
         <div className="flex items-center">
-          <a href="/" className="inline-block transition-transform hover:scale-[1.01] duration-200">
+          <Link to="/" className="inline-block transition-transform hover:scale-[1.01] duration-200">
             <img 
               src={logoImg} 
               alt="Homagama Pradeshiya Sabha Logo" 
               className="h-14 md:h-16 w-auto object-contain"
             />
-          </a>
+          </Link>
         </div>
 
         {/* Right Section: Socials, Language, Contact */}
@@ -98,7 +98,7 @@ const Header = () => {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="w-9 h-9 rounded-full bg-[#6b6f76] text-white hover:bg-gradient-to-tr hover:from-yellow-500 hover:via-red-500 hover:to-purple-500 transition-all duration-200 flex items-center justify-center shadow-xs hover:scale-105"
+              className="w-9 h-9 rounded-full bg-[#6b6f76] text-white hover:bg-linear-to-tr hover:from-yellow-500 hover:via-red-500 hover:to-purple-500 transition-all duration-200 flex items-center justify-center shadow-xs hover:scale-105"
             >
               <InstagramIcon />
             </a>
@@ -153,7 +153,7 @@ const Header = () => {
           {/* Admin & Action Icons */}
           <div className="flex items-center gap-3 md:gap-4">
             {/* Vertical Separator */}
-            <div className="hidden sm:block h-5 w-[1px] bg-white/30"></div>
+            <div className="hidden sm:block h-5 w-px bg-white/30"></div>
 
             {/* Verified Badge */}
             <div className="bg-white text-gray-900 px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1.5 shadow-xs select-none">

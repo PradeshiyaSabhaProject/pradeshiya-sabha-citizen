@@ -198,7 +198,15 @@ const Services = () => {
           {filteredServices.map((service) => (
             <div
               key={service.id}
-              onClick={() => handleServiceClick(service)}
+              onClick={() => {
+                if (service.id === 'appointments') {
+                  navigate('/appointments');
+                } else if (service.id === 'reservations') {
+                  navigate('/appointments', { state: { tab: 'facility' } });
+                } else {
+                  alert(`Opening portal for: ${service.title}`);
+                }
+              }}
               className="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-200 cursor-pointer flex flex-col group"
             >
               <div className="w-12 h-12 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
