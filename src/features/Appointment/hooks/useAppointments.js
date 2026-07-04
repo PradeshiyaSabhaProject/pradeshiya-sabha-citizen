@@ -5,7 +5,7 @@ import { appointmentService } from '../services/appointmentService';
 export const useAppointments = () => {
   const location = useLocation();
   // Navigation: 'overview' | 'bookings' | 'schedule' | 'facility'
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(location.state?.tab || 'overview');
   
   // Data State
   const [bookingsList, setBookingsList] = useState([]);
