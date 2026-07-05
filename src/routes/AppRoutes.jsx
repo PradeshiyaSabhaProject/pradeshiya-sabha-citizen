@@ -7,6 +7,7 @@ import Home from '../pages/Home/Home';
 import Services from '../pages/Services/Services';
 import Applications from '../pages/Applications/Applications';
 import Appointment from '../features/Appointment/Appointment';
+import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -95,6 +96,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Appointment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/complaints" 
+          element={
+            <ProtectedRoute>
+              <CitizenComplaint />
             </ProtectedRoute>
           } 
         />
