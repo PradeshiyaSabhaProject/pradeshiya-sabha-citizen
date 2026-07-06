@@ -15,7 +15,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
           backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1541829019-2188201b83a0?w=1200&h=300&fit=crop')` 
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
           <h2 className="text-3xl font-extrabold text-white tracking-wide">
             {t('appointments.title', 'Citizen Appointment Portal')}
           </h2>
