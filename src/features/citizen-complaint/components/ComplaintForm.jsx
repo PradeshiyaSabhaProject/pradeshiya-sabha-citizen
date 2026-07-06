@@ -50,7 +50,7 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
   return (
     <div className="bg-gray-50 min-h-screen p-6 font-sans flex justify-center items-center">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm max-w-2xl w-full p-8">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm max-w-5xl w-full p-10">
         <h2 className="text-xl font-bold text-gray-800 mb-6">Submit a New Complaint</h2>
         
         <form onSubmit={handleSubmit} className="space-y-5">
