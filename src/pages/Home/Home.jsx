@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import pradeshiyaImg from '../../assets/pradeshiyasabha.png';
 
 const ShieldCheckIcon = () => (
@@ -54,6 +55,7 @@ const WasteIcon = () => (
 
 const Home = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const userName = user?.name || 'Chaminda Perera';
 
@@ -131,11 +133,11 @@ const Home = () => {
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
-              Ayubowan, {userName}
+              {t('common.welcome', 'Ayubowan')}, {userName}
             </h1>
 
             <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-              Manage your administrative requirements, track active applications, and contribute to the Homagama community from your digital dashboard.
+              {t('home.heroSubtitle', 'Manage your administrative requirements, track active applications, and contribute to the Homagama community from your digital dashboard.')}
             </p>
           </div>
 
@@ -160,10 +162,10 @@ const Home = () => {
         <div className="lg:col-span-8 space-y-4">
           <div className="flex items-center justify-between pb-1">
             <h2 className="text-xl font-bold text-gray-900">
-              Digital Services
+              {t('home.quickServices', 'Digital Services')}
             </h2>
             <a href="/services" className="text-xs font-bold text-[#8C1538] hover:underline cursor-pointer">
-              View All Services
+              {t('common.viewDetails', 'View All Services')}
             </a>
           </div>
 
@@ -173,24 +175,24 @@ const Home = () => {
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <ComplaintIcon />
               </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Complaints</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Street lights, waste, or roads.</p>
+              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.complaintTitle', 'Complaints')}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{t('home.complaintDesc', 'Street lights, waste, or roads.')}</p>
             </div>
 
             <div onClick={() => navigate('/appointments')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <CalendarIcon />
               </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Appointments & Reservations</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Schedule a meet with officials.</p>
+              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.facilityTitle', 'Appointments & Reservations')}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{t('home.facilityDesc', 'Schedule a meet with officials.')}</p>
             </div>
 
             <div onClick={() => alert('Opening Letters Tracking...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <LettersIcon />
               </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Letters</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Real-time application tracking.</p>
+              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.letterTitle', 'Letters')}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{t('home.letterDesc', 'Real-time application tracking.')}</p>
             </div>
 
             <div onClick={() => alert('Opening Utility Request...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
@@ -223,7 +225,7 @@ const Home = () => {
         <div className="lg:col-span-4">
           <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden flex flex-col h-full">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-base font-bold text-gray-900">Status Updates</h3>
+              <h3 className="text-base font-bold text-gray-900">{t('home.statusTitle', 'Status Updates')}</h3>
               <span className="text-lg" title="History">⏱️</span>
             </div>
 
@@ -260,7 +262,7 @@ const Home = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
-            Civic News & Announcements
+            {t('home.annTitle', 'Civic News & Announcements')}
           </h2>
           <div className="flex items-center gap-2">
             <button type="button" aria-label="Previous" className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">

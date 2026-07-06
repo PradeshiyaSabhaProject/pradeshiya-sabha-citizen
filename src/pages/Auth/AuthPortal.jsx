@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import LoginView from './LoginView';
 import RegisterView from './RegisterView';
 import pradeshiyaImg from '../../assets/pradeshiyasabha.png';
+import { useLanguage } from '../../context/LanguageContext';
 
 const AuthPortal = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('login'); // 'login' or 'register'
 
   return (
@@ -25,10 +27,10 @@ const AuthPortal = () => {
           {/* Foreground Mission Content */}
           <div className="relative z-20 space-y-4">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
-              Empowering Homagama
+              {t('auth.title', 'Empowering Homagama')}
             </h1>
             <p className="text-white/90 text-sm sm:text-base leading-relaxed font-light">
-              Welcome to our Unified Digital Gateway. Celebrating one year of digital transformation, we are committed to providing a seamless, transparent, and efficient administrative experience for all our citizens.
+              {t('auth.subtitle', 'Welcome to our Unified Digital Gateway. Celebrating one year of digital transformation, we are committed to providing a seamless, transparent, and efficient administrative experience for all our citizens.')}
             </p>
           </div>
         </div>
@@ -46,7 +48,7 @@ const AuthPortal = () => {
                   : 'text-gray-500 hover:text-gray-800'
               }`}
             >
-              Civilian Login
+              {t('auth.civilianLogin', 'Civilian Login')}
             </button>
             <button
               type="button"
@@ -57,7 +59,7 @@ const AuthPortal = () => {
                   : 'text-gray-500 hover:text-gray-800'
               }`}
             >
-              Civilian Register
+              {t('auth.civilianRegister', 'Civilian Register')}
             </button>
           </div>
 

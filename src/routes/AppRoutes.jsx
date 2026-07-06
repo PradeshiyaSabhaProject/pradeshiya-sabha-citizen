@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import AuthPortal from '../pages/Auth/AuthPortal';
 import CitizenLayout from '../layouts/CitizenLayout';
+import LanguageSelectionPortal from '../components/LanguageSelection/LanguageSelectionPortal';
 import Home from '../pages/Home/Home';
 import Services from '../pages/Services/Services';
 import Applications from '../pages/Applications/Applications';
@@ -11,10 +13,18 @@ import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
+  const { hasSelectedLanguage } = useLanguage();
   if (!isLoggedIn) {
     return (
       <CitizenLayout>
         <AuthPortal />
+      </CitizenLayout>
+    );
+  }
+  if (!hasSelectedLanguage) {
+    return (
+      <CitizenLayout>
+        <LanguageSelectionPortal />
       </CitizenLayout>
     );
   }

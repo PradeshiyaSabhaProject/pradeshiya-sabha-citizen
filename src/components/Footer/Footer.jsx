@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
 const CitizenIcon = () => (
   <svg className="w-5 h-5 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
@@ -24,13 +25,14 @@ const GalleryIcon = () => (
 );
 
 const Footer = () => {
+  const { t } = useLanguage();
   return (
     <footer className="bg-[#18181B] text-gray-300 pt-12 pb-8 px-4 sm:px-8 lg:px-12 border-t border-gray-800 font-sans select-none">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
         {/* Column 1: Contact Information */}
         <div className="flex flex-col">
           <h3 className="text-white font-semibold text-base md:text-lg mb-4 tracking-wide">
-            Contact Information
+            {t('footer.contactUs', 'Contact Information')}
           </h3>
           <div className="text-gray-300 text-sm leading-relaxed mb-4 font-normal space-y-1">
             <p>හෝමාගම ප්‍රාදේශීය සභාව,</p>
@@ -80,7 +82,7 @@ const Footer = () => {
         {/* Column 2: Quick Links */}
         <div className="flex flex-col">
           <h3 className="text-white font-semibold text-base md:text-lg mb-4 tracking-wide">
-            Quick Links
+            {t('footer.quickLinks', 'Quick Links')}
           </h3>
           <ul className="flex flex-col space-y-2.5 text-sm">
             <li>
@@ -189,7 +191,7 @@ const Footer = () => {
       {/* Divider and Copyright */}
       <div className="max-w-7xl mx-auto border-t border-gray-800/80 mt-10 pt-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-gray-400">
-          <p>Copyright © 2025 Homagama Pradeshiya Sabha. All Rights Reserved.</p>
+          <p>Copyright © 2025 {t('header.title', 'Homagama Pradeshiya Sabha')}. {t('footer.rights', 'All Rights Reserved.')}</p>
           <p>Concept, Design & Development by SLT</p>
         </div>
       </div>

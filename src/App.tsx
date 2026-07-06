@@ -1,11 +1,14 @@
 import { AuthProvider } from './context/AuthContext'
+import { LanguageProvider } from './context/LanguageContext'
 import AppRoutes from './routes/AppRoutes'
 import './App.css'
 
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <LanguageProvider>
+        <AppRoutes />
+      </LanguageProvider>
     </AuthProvider>
   )
 }

@@ -1,6 +1,8 @@
 import React from 'react';
+import { useLanguage } from '../../../context/LanguageContext';
 
 const AppointmentOverview = ({ onNavigate, bookings }) => {
+  const { t } = useLanguage();
   // Only get upcoming/active bookings (e.g. CONFIRMED, RESERVED, or PENDING)
   const upcomingBookings = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'RESERVED');
 
@@ -15,7 +17,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
           <h2 className="text-3xl font-extrabold text-white tracking-wide">
-            Citizen Appointment Portal
+            {t('appointments.title', 'Citizen Appointment Portal')}
           </h2>
         </div>
       </div>

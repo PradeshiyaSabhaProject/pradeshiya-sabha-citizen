@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 const SendIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -8,6 +9,7 @@ const SendIcon = () => (
 );
 
 const LoginView = () => {
+  const { t } = useLanguage();
   const { login, dummyLogin, isLoading } = useAuth();
   const [loginType, setLoginType] = useState('mobile'); // 'mobile' (Login1.png) or 'detailed' (login2.png)
   const [showOtpStep, setShowOtpStep] = useState(false);
@@ -117,7 +119,7 @@ const LoginView = () => {
   return (
     <div className="py-2 animate-fadeIn font-sans">
       <h2 className="text-2xl font-bold text-gray-900 mb-1">
-        Citizen Portal
+        {t('auth.civilianLogin', 'Civilian Login')}
       </h2>
       <p className="text-sm text-gray-500 mb-6">
         Please provide your details to receive an authentication code.
@@ -126,14 +128,14 @@ const LoginView = () => {
       {/* Quick Dummy Login Banner */}
       <div className="mb-6 bg-maroon-50 border border-[#8C1538]/20 rounded-xl p-3 bg-[#8C1538]/5 flex items-center justify-between gap-3">
         <div className="text-xs text-gray-700">
-          <span className="font-semibold text-[#8C1538]">Testing Mode:</span> Bypass OTP and login immediately as dummy citizen.
+          <span className="font-semibold text-[#8C1538]">{t('common.testingMode', 'Testing Mode')}:</span> {t('common.bypassOtp', 'Bypass OTP and login immediately as dummy citizen.')}
         </div>
         <button
           type="button"
           onClick={dummyLogin}
           className="bg-[#8C1538] hover:bg-[#72112d] text-white text-xs px-3 py-1.5 rounded-md font-medium shadow-xs transition-colors shrink-0 cursor-pointer"
         >
-          ⚡ Dummy Login
+          ⚡ {t('auth.loginBtn', 'Login')}
         </button>
       </div>
 

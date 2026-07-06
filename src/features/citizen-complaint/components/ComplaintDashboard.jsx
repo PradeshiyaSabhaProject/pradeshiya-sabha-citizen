@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../../context/LanguageContext';
 
 export default function ComplaintDashboard({ onNavigateToForm, complaints = [], onUpdateComplaint }) {
+  const { t } = useLanguage();
   
   // Filters State
   const [statusFilter, setStatusFilter] = useState('All Statuses');
@@ -83,8 +85,8 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
       {/* Banner Section */}
       <div className="relative rounded-xl overflow-hidden mb-6 h-48 bg-gradient-to-r from-slate-800 to-slate-900 flex items-center px-8 text-white">
         <div className="z-10">
-          <h1 className="text-3xl font-bold">Citizen Complaint Portal</h1>
-          <p className="text-gray-300 mt-2 text-sm">Manage your submitted reports and track institutional progress in real-time.</p>
+          <h1 className="text-3xl font-bold">{t('complaints.title', 'Citizen Complaint Portal')}</h1>
+          <p className="text-gray-300 mt-2 text-sm">{t('complaints.subtitle', 'Manage your submitted reports and track institutional progress in real-time.')}</p>
         </div>
         <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80')` }}></div>
       </div>
@@ -112,7 +114,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">My Complaints</span>
+            <span className="font-semibold text-gray-800">{t('complaints.myComplaints', 'My Complaints')}</span>
             
             <select 
               value={statusFilter}
@@ -142,7 +144,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
             onClick={onNavigateToForm}
             className="bg-[#991b1b] hover:bg-[#7f1d1d] text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm flex items-center gap-2"
           >
-            <span>+</span> New Complaint
+            <span>+</span> {t('complaints.newComplaint', 'New Complaint')}
           </button>
         </div>
 
