@@ -50,11 +50,27 @@ const UserCircleIcon = () => (
   </svg>
 );
 
+const MenuIcon = () => (
+  <svg className="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg className="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
 const Header = () => {
   const { user, logout, isLoggedIn } = useAuth();
   const { language, changeLanguage, t } = useLanguage();
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAuthPage = !isLoggedIn || location.pathname === '/login' || location.pathname === '/register';
 
@@ -147,31 +163,40 @@ const Header = () => {
 
       {/* Bottom Maroon Bar - Hidden on login and registration pages */}
       {!isAuthPage && (
-        <div className="bg-[#8C1538] text-white px-4 sm:px-6 lg:px-10 py-2.5 shadow-md flex flex-wrap items-center justify-between gap-3 relative">
-          {/* Sabha Title */}
-          <div className="flex items-center">
-            <h1 className="text-lg md:text-xl font-bold tracking-wide text-white drop-shadow-xs">
+        <div className="bg-[#8C1538] text-white px-3 sm:px-6 lg:px-10 py-2.5 shadow-md flex flex-wrap items-center justify-between gap-2 sm:gap-3 relative">
+          {/* Sabha Title & Mobile Menu Button */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+              className="md:hidden text-white hover:bg-white/10 p-1.5 rounded-lg transition-colors cursor-pointer shrink-0"
+            >
+              {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
+            <h1 className="text-base sm:text-lg md:text-xl font-bold tracking-wide text-white drop-shadow-xs truncate">
               {t('header.title', 'Homagama Pradeshiya Sabha')}
             </h1>
           </div>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-6 ml-auto mr-2 lg:mr-4 text-sm font-medium">
-            <Link to="/" className="hover:text-white/80 transition-colors cursor-pointer">{t('nav.dashboard', 'Dashboard')}</Link>
-            <Link to="/services" className="hover:text-white/80 transition-colors cursor-pointer">{t('nav.services', 'Services')}</Link>
-            <Link to="/applications" className="hover:text-white/80 transition-colors cursor-pointer">{t('nav.applications', 'Applications')}</Link>
-            <Link to="/payments" className="hover:text-white/80 transition-colors cursor-pointer">{t('nav.payments', 'Payments')}</Link>
+            <Link to="/" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname === '/' ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.dashboard', 'Dashboard')}</Link>
+            <Link to="/services" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/services') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.services', 'Services')}</Link>
+            <Link to="/applications" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/applications') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.applications', 'Applications')}</Link>
+            <Link to="/payments" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/payments') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.payments', 'Payments')}</Link>
           </nav>
 
           {/* Admin & Action Icons */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 shrink-0">
             {/* Vertical Separator */}
             <div className="hidden sm:block h-5 w-px bg-white/30"></div>
 
             {/* Verified Badge */}
-            <div className="bg-white text-gray-900 px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1.5 shadow-xs select-none">
+            <div className="bg-white text-gray-900 px-2 sm:px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1 sm:gap-1.5 shadow-xs select-none">
               <ShieldCheckIcon />
-              <span>{user?.role === 'admin' ? 'Verified Admin' : t('common.citizen', 'Verified Citizen')}</span>
+              <span className="hidden sm:inline">{user?.role === 'admin' ? 'Verified Admin' : t('common.citizen', 'Verified Citizen')}</span>
+              <span className="sm:hidden">{user?.role === 'admin' ? 'Admin' : 'Citizen'}</span>
             </div>
 
             {/* Help Button */}
@@ -217,6 +242,59 @@ const Header = () => {
               )}
             </div>
           </div>
+
+          {/* Mobile Navigation Drawer / Dropdown */}
+          {mobileMenuOpen && (
+            <div className="md:hidden w-full pt-3 pb-3 mt-2 border-t border-white/20 flex flex-col gap-1.5 animate-fadeIn">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-white/70 px-2 mb-1">
+                {t('common.menu', 'Navigation Menu')}
+              </div>
+              <Link
+                to="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
+                  location.pathname === '/'
+                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {t('nav.dashboard', 'Dashboard')}
+              </Link>
+              <Link
+                to="/services"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
+                  location.pathname.startsWith('/services')
+                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {t('nav.services', 'Services')}
+              </Link>
+              <Link
+                to="/applications"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
+                  location.pathname.startsWith('/applications')
+                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {t('nav.applications', 'Applications')}
+              </Link>
+              <Link
+                to="/payments"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
+                  location.pathname.startsWith('/payments')
+                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {t('nav.payments', 'Payments')}
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>
