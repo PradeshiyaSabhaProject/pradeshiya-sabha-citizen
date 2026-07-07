@@ -174,10 +174,14 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                   <td className="p-4 text-center">
                     <button 
                       onClick={() => handleOpenModal(item)}
-                      className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-gray-800 transition-colors border border-gray-200 inline-block"
-                    >
-                      👁
-                    </button>
+                      className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-red-800 transition-colors border border-gray-200 inline-block"
+                      title="View Details"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+         </svg>
+        </button>
                   </td>
                 </tr>
               ))}
@@ -235,14 +239,15 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
 
       {/* Pop-up View Modal */}
       {selectedComplaint && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-xl border border-gray-100 max-w-lg w-full overflow-hidden">
+          
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-[2px]">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-100 max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
             <div className="p-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
               <h3 className="font-bold text-gray-900 text-lg">Complaint Details ({selectedComplaint.id})</h3>
               <button onClick={() => setSelectedComplaint(null)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
             </div>
             
-            <div className="p-6 space-y-4 text-sm text-gray-700">
+            <div className="p-6 space-y-4 text-sm text-gray-700 overflow-y-auto max-h-[60vh]">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <span className="text-xs text-gray-400 block mb-1">Citizen Name</span>
@@ -328,15 +333,42 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                 )}
               </div>
               {/* Attached Evidence Image View */}
-{selectedComplaint.image && !isEditing && (
+
+{/* Attached Evidence Image View */}
+{selectedComplaint.image && (
   <div className="border-t border-gray-100 pt-3">
     <span className="text-xs text-gray-400 block mb-2">Attached Evidence</span>
+    
+    
     <div className="relative rounded-lg overflow-hidden border border-gray-200 max-h-48 bg-gray-50 flex items-center justify-center">
+      
+      {/* Here the src is only visible as editForm.image or selectedComplaint.image. */}
       <img 
-        src={selectedComplaint.image} 
+        src={editForm.image || selectedComplaint.image} 
         alt="Complaint Evidence" 
         className="max-h-48 object-contain w-full"
       />
+
+      {/* Change Image button (only visible in edit mode) */}
+      {isEditing && (
+        <label className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded cursor-pointer hover:bg-black/80">
+          Change Image
+          <input 
+            type="file" 
+            className="hidden" 
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                  setEditForm({ ...editForm, image: event.target.result });
+                };
+                reader.readAsDataURL(e.target.files[0]);
+              }
+            }}
+          />
+        </label>
+      )}
     </div>
   </div>
 )}
