@@ -7,7 +7,7 @@ let bookings = [
     role: 'Administrative Secretary',
     office: 'Admin Sec Room 102',
     date: 'Oct 28, 2026',
-    time: '10:00 AM',
+    time: '09:30 AM - 10:30 AM',
     status: 'CONFIRMED',
     statusMessage: '',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face'
@@ -31,7 +31,7 @@ let bookings = [
     role: 'Planning Dept, Site Audit',
     office: 'Planning Dept, Site Audit',
     date: 'Oct 25, 2026',
-    time: '11:00 AM',
+    time: '10:30 AM - 11:30 AM',
     status: 'PENDING',
     statusMessage: 'Awaiting official approval',
     avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face'
@@ -101,10 +101,12 @@ const facilities = [
 ];
 
 const timeSlots = [
-  { id: '1', time: '09:30 AM', available: true },
-  { id: '2', time: '11:00 AM', available: true },
-  { id: '3', time: '02:00 PM', available: true },
-  { id: '4', time: '04:30 PM', available: false }
+  { id: '1', time: '08:30 AM - 09:30 AM', available: true },
+  { id: '2', time: '09:30 AM - 10:30 AM', available: true },
+  { id: '3', time: '10:30 AM - 11:30 AM', available: true },
+  { id: '4', time: '11:30 AM - 12:30 PM', available: true },
+  { id: '5', time: '01:30 PM - 02:30 PM', available: true },
+  { id: '6', time: '02:30 PM - 03:30 PM', available: true }
 ];
 
 export const appointmentService = {

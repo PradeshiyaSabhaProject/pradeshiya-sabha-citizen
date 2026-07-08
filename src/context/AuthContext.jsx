@@ -48,6 +48,8 @@ export const AuthProvider = ({ children }) => {
   const login = (userData = DUMMY_CITIZEN) => {
     setIsLoading(true);
     setTimeout(() => {
+      localStorage.removeItem('citizen_lang_selected');
+      window.dispatchEvent(new Event('lang_selection_reset'));
       setUser({
         ...DUMMY_CITIZEN,
         ...userData,
@@ -64,6 +66,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('citizen_auth_user');
+    localStorage.removeItem('citizen_lang_selected');
+    window.dispatchEvent(new Event('lang_selection_reset'));
   };
 
   const value = {

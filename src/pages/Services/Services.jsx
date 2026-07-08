@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 
 // SVG Icons for Services
 const AlertIcon = () => (
@@ -57,54 +59,66 @@ const SearchIcon = () => (
 
 const Services = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const handleServiceClick = (service) => {
+    if (service.id === 'appointments') {
+      navigate('/appointments?tab=schedule');
+    } else if (service.id === 'reservations') {
+      navigate('/appointments?tab=facility');
+    } else {
+      alert(`Opening portal for: ${service.title}`);
+    }
+  };
 
   const servicesData = [
     {
       id: 'reporting',
-      title: 'Issue Reporting',
-      desc: 'Street lights, waste management, road hazards.',
+      title: t('services.item.reporting', 'Issue Reporting'),
+      desc: t('services.item.reportingDesc', 'Street lights, waste management, road hazards.'),
       icon: <AlertIcon />
     },
     {
       id: 'appointments',
-      title: 'Citizen Appointments',
-      desc: 'Schedule meetings with council officers.',
+      title: t('services.item.appointments', 'Citizen Appointments'),
+      desc: t('services.item.appointmentsDesc', 'Schedule meetings with council officers.'),
       icon: <CalendarIcon />
     },
     {
       id: 'tracking',
-      title: 'Tracking & Status',
-      desc: 'Real-time application status updates.',
+      title: t('services.item.tracking', 'Tracking & Status'),
+      desc: t('services.item.trackingDesc', 'Real-time application status updates.'),
       icon: <TrackingIcon />
     },
     {
       id: 'library',
-      title: 'E-Library Access',
-      desc: 'Digital books, archives, and research tools.',
+      title: t('services.item.library', 'E-Library Access'),
+      desc: t('services.item.libraryDesc', 'Digital books, archives, and research tools.'),
       icon: <LibraryIcon />
     },
     {
       id: 'utility',
-      title: 'Utility Services',
-      desc: 'Water connections and maintenance requests.',
+      title: t('services.item.utility', 'Utility Services'),
+      desc: t('services.item.utilityDesc', 'Water connections and maintenance requests.'),
       icon: <WaterIcon />
     },
     {
       id: 'reservations',
-      title: 'Asset Reservations',
-      desc: 'Book council halls, grounds, and parks.',
+      title: t('services.item.reservations', 'Asset Reservations'),
+      desc: t('services.item.reservationsDesc', 'Book council halls, grounds, and parks.'),
       icon: <AssetIcon />
     },
     {
       id: 'waste',
-      title: 'Waste & Environment',
-      desc: 'Collection schedules and recycling guides.',
+      title: t('services.item.waste', 'Waste & Environment'),
+      desc: t('services.item.wasteDesc', 'Collection schedules and recycling guides.'),
       icon: <WasteIcon />
     },
     {
       id: 'tax',
-      title: 'Rate & Property Tax',
-      desc: 'Online payments and billing history.',
+      title: t('services.item.tax', 'Rate & Property Tax'),
+      desc: t('services.item.taxDesc', 'Online payments and billing history.'),
       icon: <TaxIcon />
     }
   ];
@@ -121,10 +135,10 @@ const Services = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
         <div className="space-y-2 max-w-2xl">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-            Digital Citizen Services
+            {t('services.pageTitle', 'Digital Citizen Services')}
           </h1>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Access essential municipal services, track applications, and engage with the Homagama community through our unified portal.
+            {t('services.pageDesc', 'Access essential municipal services, track applications, and engage with the Homagama community through our unified portal.')}
           </p>
         </div>
 
@@ -135,14 +149,14 @@ const Services = () => {
             onClick={() => alert('Starting a new citizen request...')}
             className="bg-[#8C1538] hover:bg-[#73102d] text-white px-5 py-2.5 rounded-md font-semibold text-sm shadow-xs transition-all duration-200 cursor-pointer hover:shadow-sm"
           >
-            Start New Request
+            {t('services.startRequest', 'Start New Request')}
           </button>
           <button
             type="button"
             onClick={() => alert('Viewing municipal documents and guides...')}
             className="bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 cursor-pointer shadow-2xs hover:bg-gray-50"
           >
-            View Documents
+            {t('services.viewDocs', 'View Documents')}
           </button>
         </div>
       </div>
@@ -150,7 +164,7 @@ const Services = () => {
       {/* Filter Assets Search Bar */}
       <div className="mb-8">
         <label htmlFor="service-search" className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 block select-none">
-          FILTER ASSETS
+          {t('services.filterLabel', 'FILTER ASSETS')}
         </label>
         <div className="relative w-full">
           <input
@@ -158,7 +172,7 @@ const Services = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search facilities..."
+            placeholder={t('services.searchPlaceholder', 'Search facilities...')}
             className="w-full bg-[#f3f4f6] border border-transparent focus:border-gray-300 focus:bg-white rounded-xl py-3.5 pl-4 pr-11 text-sm text-gray-800 placeholder-gray-500 focus:outline-none transition-all duration-200 shadow-2xs"
           />
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -171,14 +185,14 @@ const Services = () => {
       {filteredServices.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center my-6">
           <div className="text-4xl mb-3">🔍</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No services found</h3>
-          <p className="text-sm text-gray-500">No municipal services match your search query "{searchTerm}". Try another term.</p>
+          <h3 className="text-lg font-bold text-gray-800 mb-1">{t('services.noFoundTitle', 'No services found')}</h3>
+          <p className="text-sm text-gray-500">{t('services.noFoundDesc', 'No municipal services match your search query. Try another term.')}</p>
           <button
             type="button"
             onClick={() => setSearchTerm('')}
             className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
           >
-            Clear filter
+            {t('services.clearFilter', 'Clear filter')}
           </button>
         </div>
       ) : (
@@ -186,7 +200,15 @@ const Services = () => {
           {filteredServices.map((service) => (
             <div
               key={service.id}
-              onClick={() => alert(`Opening portal for: ${service.title}`)}
+              onClick={() => {
+                if (service.id === 'appointments') {
+                  navigate('/appointments');
+                } else if (service.id === 'reservations') {
+                  navigate('/appointments', { state: { tab: 'facility' } });
+                } else {
+                  alert(`Opening portal for: ${service.title}`);
+                }
+              }}
               className="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-200 cursor-pointer flex flex-col group"
             >
               <div className="w-12 h-12 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">

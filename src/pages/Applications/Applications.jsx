@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ApplicationFormModal from './ApplicationFormModal';
+import { useLanguage } from '../../context/LanguageContext';
 
 // SVG Icons for Applications
 const CertificateIcon = () => (
@@ -18,12 +19,13 @@ const Applications = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppTitle, setSelectedAppTitle] = useState('');
+  const { t } = useLanguage();
 
   const applicationsData = [
     {
       id: 'street-line-certificate',
-      title: 'Street Line & Non-Vesting Certificate',
-      desc: 'Apply for official municipal certification verifying building alignments, street line limits, and non-vesting property ownership.',
+      title: t('applications.item.streetLine', 'Street Line & Non-Vesting Certificate'),
+      desc: t('applications.item.streetLineDesc', 'Apply for official municipal certification verifying building alignments, street line limits, and non-vesting property ownership.'),
       icon: <CertificateIcon />
     }
   ];
@@ -45,10 +47,10 @@ const Applications = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
         <div className="space-y-2 max-w-2xl">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-            Digital Citizen Applications
+            {t('applications.pageTitle', 'Digital Citizen Applications')}
           </h1>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Submit and track formal applications, permits, and requests to the Homagama Pradeshiya Sabha through our unified portal.
+            {t('applications.pageDesc', 'Submit and track formal applications, permits, and requests to the Homagama Pradeshiya Sabha through our unified portal.')}
           </p>
         </div>
 
@@ -58,7 +60,7 @@ const Applications = () => {
       {/* Filter Applications Search Bar */}
       <div className="mb-8">
         <label htmlFor="application-search" className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 block select-none">
-          FILTER APPLICATIONS
+          {t('applications.filterLabel', 'FILTER APPLICATIONS')}
         </label>
         <div className="relative w-full">
           <input
@@ -66,7 +68,7 @@ const Applications = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search applications..."
+            placeholder={t('applications.searchPlaceholder', 'Search applications...')}
             className="w-full bg-[#f3f4f6] border border-transparent focus:border-gray-300 focus:bg-white rounded-xl py-3.5 pl-4 pr-11 text-sm text-gray-800 placeholder-gray-500 focus:outline-none transition-all duration-200 shadow-2xs"
           />
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -79,14 +81,14 @@ const Applications = () => {
       {filteredApplications.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center my-6">
           <div className="text-4xl mb-3">🔍</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No applications found</h3>
-          <p className="text-sm text-gray-500">No municipal applications match your search query "{searchTerm}". Try another term.</p>
+          <h3 className="text-lg font-bold text-gray-800 mb-1">{t('applications.noFoundTitle', 'No applications found')}</h3>
+          <p className="text-sm text-gray-500">{t('applications.noFoundDesc', 'No municipal applications match your search query. Try another term.')}</p>
           <button
             type="button"
             onClick={() => setSearchTerm('')}
             className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
           >
-            Clear filter
+            {t('services.clearFilter', 'Clear filter')}
           </button>
         </div>
       ) : (

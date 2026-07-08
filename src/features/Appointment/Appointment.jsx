@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAppointments } from './hooks/useAppointments';
+import { useLanguage } from '../../context/LanguageContext';
 import AppointmentOverview from './components/AppointmentOverview';
 import MyBookings from './components/MyBookings';
 import ScheduleAppointment from './components/ScheduleAppointment';
@@ -8,6 +10,7 @@ import ConfirmModal from './components/ConfirmModal';
 import BookingDetailsModal from './components/BookingDetailsModal';
 
 const Appointment = () => {
+  const { t } = useLanguage();
   const {
     activeTab,
     setActiveTab,
@@ -54,6 +57,20 @@ const Appointment = () => {
     handleCancelBooking
   } = useAppointments();
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (['overview', 'bookings', 'schedule', 'facility'].includes(tab)) {
+      setActiveTab(tab);
+    } else if (location.pathname === '/reservations') {
+      setActiveTab('facility');
+    } else {
+      setActiveTab('overview');
+    }
+  }, [location.pathname, location.search, setActiveTab]);
+
   const handleFacilityReserve = (facility) => {
     // Add facility reservation directly to user bookings
     const confirmed = window.confirm(`Do you want to reserve ${facility.title}?`);
@@ -87,7 +104,7 @@ const Appointment = () => {
             activeTab === 'overview' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
           }`}
         >
-          Portal Overview
+          {t('appointments.tab.overview', 'Portal Overview')}
         </button>
         <button
           onClick={() => setActiveTab('bookings')}
@@ -95,7 +112,7 @@ const Appointment = () => {
             activeTab === 'bookings' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
           }`}
         >
-          My Bookings
+          {t('appointments.tab.bookings', 'My Bookings')}
         </button>
         <button
           onClick={() => setActiveTab('schedule')}
@@ -103,7 +120,7 @@ const Appointment = () => {
             activeTab === 'schedule' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
           }`}
         >
-          Schedule Appointment
+          {t('appointments.tab.schedule', 'Schedule Appointment')}
         </button>
         <button
           onClick={() => setActiveTab('facility')}
@@ -111,7 +128,7 @@ const Appointment = () => {
             activeTab === 'facility' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
           }`}
         >
-          Reserve Facility
+          {t('appointments.tab.facility', 'Reserve Facility')}
         </button>
       </div>
 
