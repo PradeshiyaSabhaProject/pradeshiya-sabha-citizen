@@ -142,9 +142,9 @@ const LetterRequests = () => {
 
         {/* Sub-Filters Panel */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-3xs">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4 justify-start">
             {/* Date Range Selector */}
-            <div className="flex-1 flex flex-col sm:flex-row items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50/30 hover:border-gray-400 transition-colors">
+            <div className="w-full md:w-1/3 flex flex-col sm:flex-row items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50/30 hover:border-gray-400 transition-colors">
               <span className="text-gray-500 text-sm">📅</span>
               <input 
                 type="date"
@@ -172,23 +172,9 @@ const LetterRequests = () => {
               )}
             </div>
 
-            {/* Status Dropdown */}
-            <div className="flex-1">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 bg-white text-sm text-gray-700 hover:border-gray-400 transition-colors cursor-pointer focus:outline-none"
-              >
-                <option value="All Statuses">All Statuses</option>
-                <option value="In review">In review</option>
-                <option value="Resolved">Resolved</option>
-                <option value="In transit">In transit</option>
-                <option value="Returned">Returned</option>
-              </select>
-            </div>
 
             {/* Category Dropdown */}
-            <div className="flex-1">
+            <div className="w-full md:w-1/3">
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
