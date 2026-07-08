@@ -18,6 +18,7 @@ export const useLetterRequests = () => {
   // Modals State
   const [isNewLetterModalOpen, setIsNewLetterModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isOfficialModalOpen, setIsOfficialModalOpen] = useState(false);
   const [selectedLetter, setSelectedLetter] = useState(null);
 
   // Form State
@@ -106,6 +107,16 @@ export const useLetterRequests = () => {
     setSelectedLetter(null);
   };
 
+  const openOfficialModal = (letter) => {
+    setSelectedLetter(letter);
+    setIsOfficialModalOpen(true);
+  };
+
+  const closeOfficialModal = () => {
+    setIsOfficialModalOpen(false);
+    setSelectedLetter(null);
+  };
+
   const handleCreateLetterSubmit = async (e) => {
     e.preventDefault();
     if (!formSubject.trim() || !formDescription.trim()) {
@@ -152,6 +163,9 @@ export const useLetterRequests = () => {
     isDetailsModalOpen,
     openDetailsModal,
     closeDetailsModal,
+    isOfficialModalOpen,
+    openOfficialModal,
+    closeOfficialModal,
     selectedLetter,
 
     // Form inputs and submit
