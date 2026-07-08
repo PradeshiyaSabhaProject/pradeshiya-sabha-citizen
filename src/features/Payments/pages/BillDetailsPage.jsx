@@ -19,10 +19,16 @@ const MOCK_BILLS = {
 };
 
 export default function BillDetailsPage() {
-  const { state, update, updateMany } = usePaymentFlow();
+  const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [verifying, setVerifying] = useState(false);
+
+  // Allow the user to abandon the flow at any time and return to the main services area.
+  function handleCancel() {
+    reset();
+    navigate("/services");
+  }
 
   function validate() {
     const e = {};
@@ -189,13 +195,22 @@ export default function BillDetailsPage() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={verifying}
-          className="w-full bg-[#81081C] hover:bg-[#5E0614] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors"
-        >
-          {verifying ? "Verifying…" : "Verify & Continue"}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="flex-1 border border-zinc-300 text-[#1B1C1C] font-semibold py-3 rounded-lg text-sm transition-colors hover:bg-zinc-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={verifying}
+            className="flex-1 bg-[#81081C] hover:bg-[#5E0614] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors"
+          >
+            {verifying ? "Verifying…" : "Verify & Continue"}
+          </button>
+        </div>
       </form>
     </div>
   );

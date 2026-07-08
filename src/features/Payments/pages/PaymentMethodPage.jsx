@@ -47,7 +47,7 @@ function billTypeLabel(type) {
 }
 
 export default function PaymentMethodPage() {
-  const { state, update, updateMany } = usePaymentFlow();
+  const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [processing, setProcessing] = useState(false);
@@ -58,6 +58,17 @@ export default function PaymentMethodPage() {
       navigate("/payments/verify-otp", { replace: true });
     }
   }, [state.otpVerified, navigate]);
+
+  // Return to the previous verification step when the user needs to check the OTP again.
+  function handleBack() {
+    navigate("/payments/verify-otp");
+  }
+
+  // Clear the pending payment state and leave the flow when the user cancels the payment.
+  function handleCancel() {
+    reset();
+    navigate("/services");
+  }
 
   function validate() {
     const e = {};
@@ -232,10 +243,26 @@ export default function PaymentMethodPage() {
             </div>
           )}
 
+          <div className="flex flex-col sm:flex-row gap-3 mt-2">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="flex-1 border border-zinc-300 text-[#1B1C1C] font-semibold py-3 rounded-lg text-sm transition-colors hover:bg-zinc-50"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="flex-1 border border-zinc-300 text-[#1B1C1C] font-semibold py-3 rounded-lg text-sm transition-colors hover:bg-zinc-50"
+            >
+              Cancel
+            </button>
+          </div>
           <button
             type="submit"
             disabled={processing}
-            className="w-full bg-[#81081C] hover:bg-[#5E0614] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors"
+            className="w-full mt-3 bg-[#81081C] hover:bg-[#5E0614] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors"
           >
             {processing ? "Processing…" : `Pay Rs. ${Number(state.amount || 0).toLocaleString()}`}
           </button>

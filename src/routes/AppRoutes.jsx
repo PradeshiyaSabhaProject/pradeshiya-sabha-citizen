@@ -133,13 +133,16 @@ const AppRoutes = () => {
         <Route
           path="/payments/*"
           element={
-             <PaymentFlowProvider>
-               <Routes>
-                <Route index element={<BillDetailsPage />} />
-                <Route path="verify-otp" element={<OtpVerificationPage />} />
-                <Route path="method" element={<PaymentMethodPage />} />
-                <Route path="success" element={<PaymentSuccessPage />} />
-              </Routes>
+            // Wrap the payment journey in the shared citizen layout so every step shows the main header and footer.
+            <PaymentFlowProvider>
+              <CitizenLayout>
+                <Routes>
+                  <Route index element={<BillDetailsPage />} />
+                  <Route path="verify-otp" element={<OtpVerificationPage />} />
+                  <Route path="method" element={<PaymentMethodPage />} />
+                  <Route path="success" element={<PaymentSuccessPage />} />
+                </Routes>
+              </CitizenLayout>
             </PaymentFlowProvider>
           }
         />

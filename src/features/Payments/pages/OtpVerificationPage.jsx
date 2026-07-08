@@ -14,7 +14,7 @@ function generateOtp() {
 }
 
 export default function OtpVerificationPage() {
-  const { state, update } = usePaymentFlow();
+  const { state, update, reset } = usePaymentFlow();
   const navigate = useNavigate();
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
   const [error, setError] = useState("");
@@ -37,6 +37,7 @@ export default function OtpVerificationPage() {
     return () => clearInterval(t);
   }, [secondsLeft]);
 
+  // Generate a temporary OTP for the demo flow and keep the code in context for verification.
   function sendOtp() {
     const code = generateOtp();
     setSentOtp(code);
@@ -45,6 +46,17 @@ export default function OtpVerificationPage() {
     setSecondsLeft(RESEND_SECONDS);
     setDigits(Array(OTP_LENGTH).fill(""));
     setError("");
+  }
+
+  // Return to the previous step so the user can revise the bill details if needed.
+  function handleBack() {
+    navigate("/payments");
+  }
+
+  // Clear the draft payment and exit the flow when the user cancels the payment journey.
+  function handleCancel() {
+    reset();
+    navigate("/services");
   }
 
   function handleChange(i, value) {
@@ -108,6 +120,23 @@ export default function OtpVerificationPage() {
         </div>
 
         {error && <p className="text-xs text-red-600 mb-4">{error}</p>}
+
+        <div className="flex flex-col sm:flex-row gap-3 mb-3">
+          <button
+            type="button"
+            onClick={handleBack}
+            className="flex-1 border border-zinc-300 text-[#1B1C1C] font-semibold py-3 rounded-lg text-sm transition-colors hover:bg-zinc-50"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="flex-1 border border-zinc-300 text-[#1B1C1C] font-semibold py-3 rounded-lg text-sm transition-colors hover:bg-zinc-50"
+          >
+            Cancel
+          </button>
+        </div>
 
         <button
           onClick={handleVerify}
