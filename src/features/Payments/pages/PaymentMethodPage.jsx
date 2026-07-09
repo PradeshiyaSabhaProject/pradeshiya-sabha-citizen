@@ -31,6 +31,14 @@ function generateReference() {
   return `HPS-PAY-${ts}`;
 }
 
+function formatAmount(value) {
+  const amount = Number(value || 0);
+  return amount.toLocaleString("en-LK", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 function billTypeLabel(type) {
   switch (type) {
     case "water":
@@ -107,7 +115,7 @@ export default function PaymentMethodPage() {
       <div className="bg-white border border-zinc-200 rounded-xl p-6 sm:p-8">
         <h2 className="text-xl font-extrabold text-[#1B1C1C] mb-1">Choose Payment Method</h2>
         <p className="text-sm text-zinc-500 mb-6">
-          Paying Rs. {Number(state.amount || 0).toLocaleString()} for {billLabel} — Account{" "}
+          Paying Rs. {formatAmount(state.amount)} for {billLabel} — Account{" "}
           {state.accountNumber}.
         </p>
 
@@ -264,7 +272,7 @@ export default function PaymentMethodPage() {
             disabled={processing}
             className="w-full mt-3 bg-[#81081C] hover:bg-[#5E0614] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors"
           >
-            {processing ? "Processing…" : `Pay Rs. ${Number(state.amount || 0).toLocaleString()}`}
+            {processing ? "Processing…" : `Pay Rs. ${formatAmount(state.amount)}`}
           </button>
           <p className="text-center text-xs text-zinc-400 mt-3">🔒 Your payment is processed securely.</p>
         </form>

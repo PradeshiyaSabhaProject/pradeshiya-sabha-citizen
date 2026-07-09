@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { usePaymentFlow } from "../context/PaymentFlowContext";
 import StepIndicator from "../components/StepIndicator";
 
+function formatAmount(value) {
+  const amount = Number(value || 0);
+  return amount.toLocaleString("en-LK", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 function billTypeLabel(type) {
   switch (type) {
     case "water":
@@ -74,7 +82,7 @@ export default function PaymentSuccessPage() {
           <div className="flex justify-between items-center pt-3 mt-3 border-t border-zinc-200">
             <span className="text-sm font-bold text-[#1B1C1C]">Amount Paid</span>
             <span className="text-lg font-extrabold text-[#81081C]">
-              Rs. {Number(state.amount || 0).toLocaleString()}
+              Rs. {formatAmount(state.amount)}
             </span>
           </div>
         </div>
