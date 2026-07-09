@@ -80,12 +80,12 @@ const LetterRequests = () => {
   return (
     <div className="min-h-screen bg-[#f9fafb] py-8 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-6xl mx-auto space-y-6">
-        
+
         {/* Hero Banner */}
-        <div 
+        <div
           className="relative h-64 rounded-xl overflow-hidden bg-cover bg-center shadow-md border border-gray-200"
-          style={{ 
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1541829019-2188201b83a0?w=1200&h=300&fit=crop')` 
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1541829019-2188201b83a0?w=1200&h=300&fit=crop')`
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8">
@@ -103,11 +103,10 @@ const LetterRequests = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all cursor-pointer ${
-                  activeTab === tab
-                    ? 'bg-[#8C1538]/10 text-[#8C1538] border border-[#8C1538]/20'
-                    : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100 border border-transparent'
-                }`}
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all cursor-pointer ${activeTab === tab
+                  ? 'bg-[#8C1538]/10 text-[#8C1538] border border-[#8C1538]/20'
+                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100 border border-transparent'
+                  }`}
               >
                 {tab}
               </button>
@@ -146,7 +145,7 @@ const LetterRequests = () => {
             {/* Date Range Selector */}
             <div className="w-full md:w-1/3 flex flex-col sm:flex-row items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50/30 hover:border-gray-400 transition-colors">
               <span className="text-gray-500 text-sm">📅</span>
-              <input 
+              <input
                 type="date"
                 aria-label="Start date"
                 value={dateRange.start}
@@ -154,7 +153,7 @@ const LetterRequests = () => {
                 className="outline-none text-xs text-gray-700 bg-transparent flex-1 cursor-pointer w-full"
               />
               <span className="text-gray-300 text-xs hidden sm:inline">to</span>
-              <input 
+              <input
                 type="date"
                 aria-label="End date"
                 value={dateRange.end}
@@ -162,8 +161,8 @@ const LetterRequests = () => {
                 className="outline-none text-xs text-gray-700 bg-transparent flex-1 cursor-pointer w-full"
               />
               {(dateRange.start || dateRange.end) && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setDateRange({ start: '', end: '' })}
                   className="text-gray-400 hover:text-red-600 text-sm font-bold px-1"
                 >
@@ -224,15 +223,15 @@ const LetterRequests = () => {
                     </tr>
                   ) : (
                     filteredLetters.map((letter) => (
-                      <tr 
-                        key={letter.id} 
+                      <tr
+                        key={letter.id}
                         className="hover:bg-gray-50/50 transition-colors"
                       >
                         {/* Ref No */}
                         <td className="px-6 py-4 text-sm font-bold text-[#8C1538] whitespace-nowrap">
                           #{letter.refNo}
                         </td>
-                        
+
                         {/* Subject */}
                         <td className="px-6 py-4 text-sm font-semibold text-gray-800 max-w-[220px] truncate">
                           {letter.subject}
@@ -259,9 +258,9 @@ const LetterRequests = () => {
                         {/* View button (Eye Icon) */}
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <button
-                            onClick={() => openOfficialModal(letter)}
+                            onClick={() => openDetailsModal(letter)}
                             className="p-2 border border-gray-300 rounded-lg hover:border-[#8C1538] hover:bg-red-50/30 transition-all cursor-pointer inline-flex items-center justify-center"
-                            title="View Letter"
+                            title="View Details"
                             type="button"
                           >
                             <svg className="w-5 h-5 text-gray-500 hover:text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,9 +273,9 @@ const LetterRequests = () => {
                         {/* Action button (Document Icon) */}
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <button
-                            onClick={() => openDetailsModal(letter)}
+                            onClick={() => openOfficialModal(letter)}
                             className="p-2 border border-gray-300 rounded-lg hover:border-[#8C1538] hover:bg-red-50/30 transition-all cursor-pointer inline-flex items-center justify-center"
-                            title="View Details"
+                            title="View Letter"
                             type="button"
                           >
                             <svg className="w-5 h-5 text-gray-500 hover:text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -99,10 +99,6 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <LetterRequests />
-          path="/appointments" 
-          element={
-            <ProtectedRoute>
-              <Appointment />
             </ProtectedRoute>
           } 
         />
