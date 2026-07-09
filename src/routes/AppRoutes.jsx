@@ -11,6 +11,11 @@ import Applications from '../pages/Applications/Applications';
 import LetterRequests from '../features/LetterRequests/LetterRequests';
 import Appointment from '../features/Appointment/Appointment';
 import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
+import { PaymentFlowProvider } from "../features/Payments/context/PaymentFlowContext";
+import BillDetailsPage from "../features/Payments/pages/BillDetailsPage";
+import OtpVerificationPage from "../features/Payments/pages/OtpVerificationPage";
+import PaymentMethodPage from "../features/Payments/pages/PaymentMethodPage";
+import PaymentSuccessPage from "../features/Payments/pages/PaymentSuccessPage";
 import Payments from '../features/Payments/Payments';
 
 const ProtectedRoute = ({ children }) => {
@@ -134,6 +139,22 @@ const AppRoutes = () => {
               <Home />
             </ProtectedRoute>
           } 
+        />
+        <Route
+          path="/payments/*"
+          element={
+            // Wrap the payment journey in the shared citizen layout so every step shows the main header and footer.
+            <PaymentFlowProvider>
+              <CitizenLayout>
+                <Routes>
+                  <Route index element={<BillDetailsPage />} />
+                  <Route path="verify-otp" element={<OtpVerificationPage />} />
+                  <Route path="method" element={<PaymentMethodPage />} />
+                  <Route path="success" element={<PaymentSuccessPage />} />
+                </Routes>
+              </CitizenLayout>
+            </PaymentFlowProvider>
+          }
         />
       </Routes>
     </Router>
