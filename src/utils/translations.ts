@@ -60,7 +60,7 @@ export const translations = {
     // Services
     'services.title': 'Our Citizen Services',
     'services.subtitle': 'Explore and access all online services provided by Homagama Pradeshiya Sabha.',
-    'services.searchPlaceholder': 'Search for services, permits, or bookings...',
+    'services.heroSearchPlaceholder': 'Search for services, permits, or bookings...',
     'services.applyNow': 'Apply Now',
     'services.bookNow': 'Book Now',
     'services.reportNow': 'Report Now',
@@ -208,7 +208,7 @@ export const translations = {
     // Services
     'services.title': 'අපගේ පුරවැසි සේවාවන්',
     'services.subtitle': 'හෝමාගම ප්‍රාදේශීය සභාව මගින් සපයන සියලුම මාර්ගගත සේවාවන් ගවේෂණය කරන්න.',
-    'services.searchPlaceholder': 'සේවාවන්, බලපත්‍ර හෝ වෙන්කිරීම් සොයන්න...',
+    'services.heroSearchPlaceholder': 'සේවාවන්, බලපත්‍ර හෝ වෙන්කිරීම් සොයන්න...',
     'services.applyNow': 'අයදුම් කරන්න',
     'services.bookNow': 'වෙන්කරවා ගන්න',
     'services.reportNow': 'වාර්තා කරන්න',
@@ -356,7 +356,7 @@ export const translations = {
     // Services
     'services.title': 'எங்கள் குடிமக்கள் சேவைகள்',
     'services.subtitle': 'ஹோமகம பிரதேச சபை வழங்கும் அனைத்து ஆன்லைன் சேவைகளையும் ஆராயுங்கள்.',
-    'services.searchPlaceholder': 'சேவைகள், அனுமதிகள் அல்லது முன்பதிவுகளைத் தேடுங்கள்...',
+    'services.heroSearchPlaceholder': 'சேவைகள், அனுமதிகள் அல்லது முன்பதிவுகளைத் தேடுங்கள்...',
     'services.applyNow': 'விண்ணப்பியுங்கள்',
     'services.bookNow': 'முன்பதிவு செய்யுங்கள்',
     'services.reportNow': 'தெரியப்படுத்துங்கள்',

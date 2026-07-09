@@ -13,10 +13,10 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const itemsPerPage = 5; 
 
   // Modal (Pop-up) States
-  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [selectedComplaint, setSelectedComplaint] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   
-  const [editForm, setEditForm] = useState({
+  const [editForm, setEditForm] = useState<any>({
     category: '',
     status: '',
     priority: '',
@@ -253,7 +253,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
               ))}
               {currentItems.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
+                  <td colSpan={6} className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
                 </tr>
               )}
             </tbody>
@@ -426,7 +426,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                     value={editForm.desc} 
                     onChange={(e) => setEditForm({ ...editForm, desc: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none bg-white"
-                    rows="3"
+                    rows={3}
                   />
                 ) : (
                   <p className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-gray-800 leading-relaxed">{selectedComplaint.desc}</p>

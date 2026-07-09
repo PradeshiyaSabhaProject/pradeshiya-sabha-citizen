@@ -61,7 +61,7 @@ export default function CitizenComplaint() {
     const formattedId = `CMP-2024-${String(nextIdNumber).padStart(3, '0')}`;
     
     // Format the date beautifully (e.g., Jul 05, 2026)
-    const options = { month: 'short', day: '2-digit', year: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-US', options);
 
     const finalNewComplaint = {

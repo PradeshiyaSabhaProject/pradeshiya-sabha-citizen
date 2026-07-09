@@ -116,7 +116,7 @@ export const appointmentService = {
   getDepartments: () => {
     return Promise.resolve([...departments]);
   },
-  getOfficials: (deptId) => {
+  getOfficials: (deptId?: any) => {
     if (deptId) {
       return Promise.resolve(officials.filter(o => o.departmentId === deptId));
     }

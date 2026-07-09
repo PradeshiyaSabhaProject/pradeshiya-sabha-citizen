@@ -17,10 +17,10 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
     location: '', complaintTitle: '', description: ''
   });
 
-  const [image, setImage] = useState(null);
-  const [document, setDocument] = useState(null);
-  const imageInputRef = useRef(null);
-  const docInputRef = useRef(null);
+  const [image, setImage] = useState<any>(null);
+  const [document, setDocument] = useState<any>(null);
+  const imageInputRef = useRef<any>(null);
+  const docInputRef = useRef<any>(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -138,7 +138,7 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
           <div className={`${cardStyle} mb-6`}>
             <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">📄 The Issue</h3>
             <input name="complaintTitle" onChange={handleChange} className="w-full border rounded-lg p-2.5 mb-4" placeholder="Short summary of the issue" required />
-            <textarea name="description" onChange={handleChange} className="w-full border rounded-lg p-2.5" rows="4" placeholder="Provide full details of the problem..." required />
+            <textarea name="description" onChange={handleChange} className="w-full border rounded-lg p-2.5" rows={4} placeholder="Provide full details of the problem..." required />
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
