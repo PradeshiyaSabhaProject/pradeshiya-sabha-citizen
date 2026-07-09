@@ -11,6 +11,15 @@ import Applications from '../pages/Applications/Applications';
 import LetterRequests from '../features/LetterRequests/LetterRequests';
 import Appointment from '../features/Appointment/Appointment';
 import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
+<<<<<<< HEAD
+=======
+import { PaymentFlowProvider } from "../features/Payments/context/PaymentFlowContext";
+import BillDetailsPage from "../features/Payments/pages/BillDetailsPage";
+import OtpVerificationPage from "../features/Payments/pages/OtpVerificationPage";
+import PaymentMethodPage from "../features/Payments/pages/PaymentMethodPage";
+import PaymentSuccessPage from "../features/Payments/pages/PaymentSuccessPage";
+import Payments from '../features/Payments/Payments';
+>>>>>>> 76410ee3e69a744a85a020a0d150485ee55b6909
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
