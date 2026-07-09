@@ -11,6 +11,7 @@ import Applications from '../pages/Applications/Applications';
 import LetterRequests from '../features/LetterRequests/LetterRequests';
 import Appointment from '../features/Appointment/Appointment';
 import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
+import Payments from '../features/Payments/Payments';
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -91,6 +92,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Applications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/payments" 
+          element={
+            <ProtectedRoute>
+              <Payments />
             </ProtectedRoute>
           } 
         />
