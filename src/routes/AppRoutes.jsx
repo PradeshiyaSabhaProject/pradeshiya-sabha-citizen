@@ -11,11 +11,6 @@ import Applications from '../pages/Applications/Applications';
 import LetterRequests from '../features/LetterRequests/LetterRequests';
 import Appointment from '../features/Appointment/Appointment';
 import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
-import { PaymentFlowProvider } from "../features/Payments/context/PaymentFlowContext";
-import BillDetailsPage from "../features/Payments/pages/BillDetailsPage";
-import OtpVerificationPage from "../features/Payments/pages/OtpVerificationPage";
-import PaymentMethodPage from "../features/Payments/pages/PaymentMethodPage";
-import PaymentSuccessPage from "../features/Payments/pages/PaymentSuccessPage";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -96,6 +91,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Applications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/payments" 
+          element={
+            <ProtectedRoute>
+              <Payments />
             </ProtectedRoute>
           } 
         />
