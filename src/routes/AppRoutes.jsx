@@ -8,6 +8,7 @@ import LanguageSelectionPortal from '../components/LanguageSelection/LanguageSel
 import Home from '../pages/Home/Home';
 import Services from '../pages/Services/Services';
 import Applications from '../pages/Applications/Applications';
+import LetterRequests from '../features/LetterRequests/LetterRequests';
 import Appointment from '../features/Appointment/Appointment';
 import CitizenComplaint from '../features/citizen-complaint/CitizenComplaint';   
 import { PaymentFlowProvider } from "../features/Payments/context/PaymentFlowContext";
@@ -99,10 +100,10 @@ const AppRoutes = () => {
           } 
         />
         <Route 
-          path="/appointments" 
+          path="/letters" 
           element={
             <ProtectedRoute>
-              <Appointment />
+              <LetterRequests />
             </ProtectedRoute>
           } 
         />

@@ -187,7 +187,7 @@ const Home = () => {
               <p className="text-xs text-gray-500 leading-relaxed">{t('home.facilityDesc', 'Schedule a meet with officials.')}</p>
             </div>
 
-            <div onClick={() => alert('Opening Letters Tracking...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <div onClick={() => navigate('/letters')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <LettersIcon />
               </div>
