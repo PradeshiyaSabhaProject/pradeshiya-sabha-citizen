@@ -1,0 +1,274 @@
+.service-form-page {
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 68px);
+}
+
+.service-form-page__hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(160deg, #4a0e0e 0%, #6b1a1a 40%, #8b2020 100%);
+  z-index: 0;
+}
+
+.service-form-page__container {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 4rem;
+}
+
+/* ---- Back button ---- */
+.service-form-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  font-family: inherit;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.service-form-page__back:hover {
+  color: #ffffff;
+  transform: translateX(-3px);
+}
+
+/* ---- Main card ---- */
+.service-form-page__card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  border: 1.5px solid #e5e7eb;
+  overflow: hidden;
+}
+
+/* Card header */
+.service-form-page__card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(135deg, #fef3f3 0%, #ffffff 100%);
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.service-form-page__icon-wrap {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6b1a1a 0%, #8b2020 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(107, 26, 26, 0.3);
+}
+
+.service-form-page__icon {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.service-form-page__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.2rem 0;
+}
+
+.service-form-page__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+/* ---- Form ---- */
+.service-form-page__form {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.service-form-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.service-form-page__field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.service-form-page__required {
+  color: #ef4444;
+}
+
+.service-form-page__input {
+  height: 46px;
+  padding: 0 0.9rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #111827;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.service-form-page__input::placeholder {
+  color: #9ca3af;
+}
+
+.service-form-page__input:focus {
+  border-color: #6b1a1a;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(107, 26, 26, 0.1);
+}
+
+.service-form-page__hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+/* ---- Button ---- */
+.service-form-page__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #6b1a1a 0%, #8b2020 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(107, 26, 26, 0.3);
+  margin-top: 0.25rem;
+}
+
+.service-form-page__btn:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(107, 26, 26, 0.35);
+}
+
+.service-form-page__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.service-form-page__btn-icon {
+  font-size: 1.15rem;
+}
+
+/* ---- Success state ---- */
+.service-form-page__success {
+  padding: 2.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.service-form-page__success-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+.service-form-page__success-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.service-form-page__success-desc {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.service-form-page__success .service-form-page__btn {
+  max-width: 220px;
+  margin-top: 0.5rem;
+}
+
+/* ---- Disclaimer ---- */
+.service-form-page__disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+/* ---- Breadcrumb override ---- */
+.service-form-page__container .breadcrumb {
+  padding-bottom: 0.5rem;
+}
+
+.service-form-page__container .breadcrumb__link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.service-form-page__container .breadcrumb__link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+}
+
+.service-form-page__container .breadcrumb__separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.service-form-page__container .breadcrumb__current {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+@media (max-width: 600px) {
+  .service-form-page__card-header {
+    padding: 1.25rem;
+  }
+
+  .service-form-page__form {
+    padding: 1.25rem;
+  }
+}

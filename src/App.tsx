@@ -1,16 +1,13 @@
-import { AuthProvider } from './context/AuthContext'
-import { LanguageProvider } from './context/LanguageContext'
-import AppRoutes from './routes/AppRoutes'
-import './App.css'
+import "./index.css";
+import Layout from "./components/Layout/Layout";
+import AppRoutes from "./router/AppRoutes";
 
-function App() {
+function App(): React.ReactElement {
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <AppRoutes />
-      </LanguageProvider>
-    </AuthProvider>
-  )
+    <Layout>
+      <AppRoutes />
+    </Layout>
+  );
 }
 
 export default App;
