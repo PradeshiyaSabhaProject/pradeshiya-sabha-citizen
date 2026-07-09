@@ -111,6 +111,15 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                         )}
                       </div>
                     )}
+
+                    {b.attachment && (
+                      <div className="mt-2 text-xs text-gray-500 flex items-center gap-1.5">
+                        <span>📎</span>
+                        <span className="truncate max-w-[200px] text-gray-600 font-medium" title={b.attachment.name}>
+                          {b.attachment.name}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Right Status Badge & Actions */}
@@ -163,7 +172,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                       </span>
                       <button 
                         onClick={() => downloadSlip(b)}
-                        className="text-green-755 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                        className="text-green-700 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
                       >
                         Download Slip
                       </button>
@@ -186,15 +195,24 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                     <span className="text-red-700 font-medium italic">
                       Awaiting official approval
                     </span>
-                    <button 
-                      onClick={() => onCancelBooking(b.id)}
-                      className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>Cancel Request</span>
-                    </button>
+                    <div className="flex items-center gap-4 shrink-0">
+                      <button 
+                        onClick={() => downloadSlip(b)}
+                        className="text-red-700 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                      >
+                        Download Slip
+                      </button>
+                      <span className="text-red-200">|</span>
+                      <button 
+                        onClick={() => onCancelBooking(b.id)}
+                        className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Cancel Request</span>
+                      </button>
+                    </div>
                   </div>
                 )}
 

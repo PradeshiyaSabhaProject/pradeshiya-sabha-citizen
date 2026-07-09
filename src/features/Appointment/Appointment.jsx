@@ -31,6 +31,8 @@ const Appointment = () => {
     setSelectedTimeSlot,
     purpose,
     setPurpose,
+    attachedFile,
+    setAttachedFile,
     startNewBooking,
     handleRequestAppointmentSubmit,
 
@@ -169,6 +171,8 @@ const Appointment = () => {
             setSelectedTimeSlot={setSelectedTimeSlot}
             purpose={purpose}
             setPurpose={setPurpose}
+            attachedFile={attachedFile}
+            setAttachedFile={setAttachedFile}
             onSubmit={handleRequestAppointmentSubmit}
           />
         )}
@@ -211,6 +215,7 @@ const Appointment = () => {
         isOpen={isConfirmModalOpen} 
         onClose={() => setIsConfirmModalOpen(false)} 
         onConfirm={confirmNewBooking} 
+        attachedFile={attachedFile}
       />
 
       {/* Booking Details Viewer Popup Modal */}
