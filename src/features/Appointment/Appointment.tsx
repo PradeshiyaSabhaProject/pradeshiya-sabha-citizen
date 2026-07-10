@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppointments } from './hooks/useAppointments';
+import { appointmentService } from './services/appointmentService';
 import { useLanguage } from '../../context/LanguageContext';
 import AppointmentOverview from './components/AppointmentOverview';
 import MyBookings from './components/MyBookings';

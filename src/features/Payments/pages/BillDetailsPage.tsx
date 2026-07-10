@@ -21,7 +21,7 @@ const MOCK_BILLS = {
 export default function BillDetailsPage() {
   const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<any>({});
   const [verifying, setVerifying] = useState(false);
 
   // Allow the user to abandon the flow at any time and return to the main services area.
@@ -42,7 +42,7 @@ export default function BillDetailsPage() {
   }
 
   function validate() {
-    const e = {};
+    const e: any = {};
     if (!state.billType) e.billType = "Please select a bill type.";
     if (state.billType === "other" && !state.otherBillDesc.trim())
       e.otherBillDesc = "Please describe the fee.";

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useAuth } from './AuthContext';
 import { translations } from '../utils/translations';
 
-const LanguageContext = createContext();
+const LanguageContext = createContext<any>(null);
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
