@@ -127,6 +127,69 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
           </div>
         </div>
 
+        {/* Form Details Summary (Optional) */}
+        {booking.formDetails && (
+          <div className="mb-5 border border-gray-150 rounded-xl overflow-hidden text-xs">
+            <div className="bg-gray-50 px-4 py-2 border-b border-gray-150 font-bold text-gray-700 uppercase tracking-wider">
+              {booking.facilityName?.includes('Crematorium') ? 'Cremation Details' : 'Reservation Details'}
+            </div>
+            <div className="p-4 space-y-2 bg-white max-h-48 overflow-y-auto">
+              {booking.facilityName?.includes('Crematorium') ? (
+                <div className="grid grid-cols-2 gap-y-1 gap-x-2">
+                  <span className="text-gray-400 font-bold">Applicant Name:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantName}</span>
+                  
+                  <span className="text-gray-400 font-bold">Applicant NIC:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantNic}</span>
+                  
+                  <span className="text-gray-400 font-bold">Deceased Name:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deceasedName}</span>
+                  
+                  <span className="text-gray-400 font-bold">Deceased NIC:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deceasedNic || 'N/A'}</span>
+                  
+                  <span className="text-gray-400 font-bold">Relationship:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.relationship}</span>
+                  
+                  <span className="text-gray-400 font-bold">Death Certificate No:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deathCertificateNo}</span>
+                  
+                  <span className="text-gray-400 font-bold">Cause of Death:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.causeOfDeath}</span>
+
+                  {booking.formDetails.inquestConducted === 'Yes' && (
+                    <>
+                      <span className="text-gray-400 font-bold">Inquest Verdict:</span>
+                      <span className="text-gray-800 font-semibold text-right">{booking.formDetails.inquestVerdict}</span>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-y-1 gap-x-2">
+                  <span className="text-gray-400 font-bold">Applicant Name:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantName}</span>
+                  
+                  <span className="text-gray-400 font-bold">Applicant NIC:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantNic}</span>
+                  
+                  <span className="text-gray-400 font-bold">Event Purpose:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.bookingPurpose}</span>
+                  
+                  <span className="text-gray-400 font-bold">Expected Attendance:</span>
+                  <span className="text-gray-800 font-semibold text-right">{booking.formDetails.expectedAttendance}</span>
+                  
+                  {booking.formDetails.equipmentRequired && (
+                    <>
+                      <span className="text-gray-400 font-bold">Special Request:</span>
+                      <span className="text-gray-800 font-semibold text-right">{booking.formDetails.equipmentRequired}</span>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Attached Document (Optional) */}
         {booking.attachment && (
           <div className="mb-6 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex justify-between items-center text-xs">

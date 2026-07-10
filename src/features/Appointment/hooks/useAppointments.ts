@@ -26,7 +26,7 @@ export const useAppointments = () => {
 
   // Facility Filter State
   const [facilitySearch, setFacilitySearch] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState(['Event Halls']); // Event Halls selected by default in Image 5
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]); // Empty default to show all facilities
   const [capacityRange, setCapacityRange] = useState(1000);
   const [availabilityDate, setAvailabilityDate] = useState('');
 
@@ -78,9 +78,7 @@ export const useAppointments = () => {
     const matchesSearch = fac.title.toLowerCase().includes(facilitySearch.toLowerCase()) || 
                           fac.subtitle.toLowerCase().includes(facilitySearch.toLowerCase());
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(fac.category);
-    // Capacity logic (slider value represents max capacity or min? Mock has 10 to 1000+. Let's check matching)
-    const matchesCapacity = fac.capacity <= capacityRange;
-    return matchesSearch && matchesCategory && matchesCapacity;
+    return matchesSearch && matchesCategory;
   });
 
   const handleCategoryToggle = (category) => {
