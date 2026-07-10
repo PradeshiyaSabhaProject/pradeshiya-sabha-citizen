@@ -30,7 +30,7 @@ const initialState = {
   paidAt: "",
 };
 
-const PaymentFlowContext = createContext(undefined);
+const PaymentFlowContext = createContext<any>(undefined);
 
 /**
  * Wrap your /payments/* routes with this provider so bill details, OTP
@@ -59,7 +59,7 @@ export function PaymentFlowProvider({ children }) {
   );
 }
 
-export function usePaymentFlow() {
+export function usePaymentFlow(): any {
   const ctx = useContext(PaymentFlowContext);
   if (!ctx) throw new Error("usePaymentFlow must be used within a PaymentFlowProvider");
   return ctx;
