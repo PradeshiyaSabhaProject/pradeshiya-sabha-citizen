@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { downloadSlip } from '../../../utils/pdfGenerator';
 
 const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) => {
   const [activeSubTab, setActiveSubTab] = useState('appointments'); // 'appointments' | 'reservations'
@@ -139,7 +140,10 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                 {/* Bottom Action / Info Bar */}
                 {isConfirmed && (
                   <div className="bg-green-50/50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
-                    <button className="text-green-700 font-bold hover:underline">
+                    <button 
+                      onClick={() => downloadSlip(b)}
+                      className="text-green-700 font-bold hover:underline cursor-pointer"
+                    >
                       Download Slip
                     </button>
                     <button className="text-gray-500 font-medium hover:underline">
@@ -157,6 +161,13 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                       <span className="text-gray-800 font-extrabold">
                         {b.price}
                       </span>
+                      <button 
+                        onClick={() => downloadSlip(b)}
+                        className="text-green-755 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                      >
+                        Download Slip
+                      </button>
+                      <span className="text-gray-300">|</span>
                       <button
                         onClick={() => onCancelBooking(b.id)}
                         className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
