@@ -235,7 +235,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
               ))}
               {currentItems.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
+                  <td colSpan={5} className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
                 </tr>
               )}
             </tbody>
