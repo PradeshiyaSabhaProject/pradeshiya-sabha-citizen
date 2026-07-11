@@ -127,6 +127,28 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
           </div>
         </div>
 
+        {/* Attached Document (Optional) */}
+        {booking.attachment && (
+          <div className="mb-6 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex justify-between items-center text-xs">
+            <div className="flex items-center gap-2 text-gray-700 min-w-0">
+              <span className="text-sm">📎</span>
+              <span className="font-semibold truncate max-w-[245px]" title={booking.attachment.name}>
+                {booking.attachment.name}
+              </span>
+              <span className="text-[10px] text-gray-400">
+                ({booking.attachment.size ? `${(booking.attachment.size / 1024).toFixed(1)} KB` : '100 KB'})
+              </span>
+            </div>
+            <button 
+              type="button"
+              onClick={() => alert(`Opening attached document: ${booking.attachment.name}`)}
+              className="text-red-800 font-bold hover:underline cursor-pointer shrink-0"
+            >
+              View Document
+            </button>
+          </div>
+        )}
+
         {/* Footer Actions */}
         <div className="mt-6 flex justify-end gap-3 pt-3 border-t border-gray-100">
           <button

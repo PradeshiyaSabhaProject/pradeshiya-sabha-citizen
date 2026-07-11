@@ -14,6 +14,8 @@ const ScheduleAppointment = ({
   setSelectedTimeSlot,
   purpose,
   setPurpose,
+  attachedFile,
+  setAttachedFile,
   onSubmit
 }) => {
 
@@ -269,7 +271,7 @@ const ScheduleAppointment = ({
         {/* Right Column (Step 4) */}
         <div className="lg:col-span-5">
           <div className="bg-white border border-gray-150 rounded-xl p-6 shadow-xs h-full flex flex-col justify-between">
-            <div>
+            <div className="flex-1 flex flex-col">
               <h3 className="text-sm font-bold text-red-800 uppercase tracking-wide mb-4">
                 Step 4: Purpose of Meeting
               </h3>
@@ -277,13 +279,57 @@ const ScheduleAppointment = ({
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
                 placeholder="Briefly describe the reason for your appointment..."
-                rows={10}
-                className="w-full border border-gray-300 rounded-lg p-4 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-800 focus:border-red-800 resize-none"
+                rows={6}
+                className="w-full border border-gray-300 rounded-lg p-4 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-800 focus:border-red-800 resize-none mb-4"
               />
+
+              {/* Upload field */}
+              <div className="mt-2">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  Attach Documents / Image (Optional)
+                </label>
+                <div 
+                  onClick={() => document.getElementById('appointment-file').click()}
+                  className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer hover:border-red-800"
+                >
+                  <span className="text-xl mb-1">📤</span>
+                  <div className="text-xs text-gray-600 text-center">
+                    <span className="font-semibold text-[#8C1538] hover:underline">Click to upload</span> or drag and drop
+                  </div>
+                  <p className="text-[10px] text-gray-400 mt-1">PDF, DOC, DOCX, PNG, JPG up to 10MB</p>
+                  
+                  {attachedFile && (
+                    <div className="mt-3 text-xs text-green-700 font-bold flex items-center gap-1.5 bg-green-50 px-2.5 py-1.5 rounded border border-green-200 w-full justify-between">
+                      <span className="truncate max-w-[200px]">✓ {attachedFile.name}</span>
+                      <button 
+                        type="button" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setAttachedFile(null);
+                        }}
+                        className="text-gray-400 hover:text-red-750 font-bold ml-2 text-sm leading-none cursor-pointer"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <input 
+                  id="appointment-file" 
+                  type="file" 
+                  accept=".pdf,.doc,.docx,image/*" 
+                  className="hidden" 
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setAttachedFile(e.target.files[0]);
+                    }
+                  }}
+                />
+              </div>
             </div>
             <button
               onClick={onSubmit}
-              className="w-full bg-red-850 hover:bg-red-900 text-white py-4 rounded-lg font-bold text-sm tracking-wider transition-colors shadow-md mt-6"
+              className="w-full bg-red-850 hover:bg-red-900 text-white py-4 rounded-lg font-bold text-sm tracking-wider transition-colors shadow-md mt-6 shrink-0"
             >
               REQUEST APPOINTMENT
             </button>
