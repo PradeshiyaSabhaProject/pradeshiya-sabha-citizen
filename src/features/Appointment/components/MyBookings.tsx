@@ -35,7 +35,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
               : 'text-gray-400 hover:text-gray-600 font-medium'
           }`}
         >
-          // My Appointments
+          
           My Appointments
           {bookings.filter(b => b.type === 'appointment').length > 0 && (
             <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-red-50 text-red-800 rounded-full font-bold">
@@ -67,7 +67,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
             : 'No facility reservations found. Click "+ New Booking" to reserve one.'}
         </div>
       ) : (
-        <div className="space-y-6">// List of Bookings
+        <div className="space-y-6">
           {filteredBookings.map(b => {
             const isConfirmed = b.status === 'CONFIRMED';
             const isReserved = b.status === 'RESERVED';
