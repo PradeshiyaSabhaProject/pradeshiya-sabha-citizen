@@ -6,7 +6,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
   // Only get upcoming/active bookings (e.g. CONFIRMED, RESERVED, or PENDING)
   const upcomingBookings = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'RESERVED');
 
-  return (
+  return ( // Appointment Overview Component
     <div className="space-y-8">
       {/* Hero Banner */}
       <div 
@@ -23,7 +23,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
       </div>
 
       {/* Quick Services */}
-      <div>
+      <div> // Quick Services Section
         <h3 className="text-xl font-bold text-gray-800 mb-6">Quick Services</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Book Appointment */}
