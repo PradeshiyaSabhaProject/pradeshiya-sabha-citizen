@@ -50,7 +50,6 @@ let bookings = [
 ];
 
 const departments = [
-  { id: 'revenue', name: 'Revenue', description: 'Tax, permits, and assessments' },
   { id: 'planning', name: 'Planning', description: 'Building plans and land use' },
   { id: 'health', name: 'Health', description: 'Clinics, sanitation, and waste' },
   { id: 'general', name: 'General', description: 'Administrative and public relations' }
@@ -90,7 +89,7 @@ const facilities = [
     id: 'fb-2',
     title: 'Mahanama Sports Ground',
     category: 'Sports Grounds',
-    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600&q=80',
     capacity: 1000,
     price: 'LKR 2,500 /hr',
     basePrice: 'LKR 12,000',
@@ -102,7 +101,7 @@ const facilities = [
     id: 'fb-3',
     title: 'Homagama Crematorium',
     category: 'Crematoriums',
-    image: 'https://images.unsplash.com/photo-1604871000636-074fa5117945?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80',
     capacity: 50,
     price: 'LKR 5,000 / slot',
     basePrice: 'LKR 5,000',
@@ -126,7 +125,7 @@ const facilities = [
     id: 'fb-5',
     title: 'Kottawa Public Park',
     category: 'Public Parks',
-    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80',
     capacity: 300,
     price: 'LKR 1,500 /hr',
     basePrice: 'LKR 5,000',

@@ -1,18 +1,19 @@
 import React from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
+import pradeshiyaImg from '../../../assets/pradeshiyasabha.png';
 
 const AppointmentOverview = ({ onNavigate, bookings }) => {
   const { t } = useLanguage();
   // Only get upcoming/active bookings (e.g. CONFIRMED, RESERVED, or PENDING)
   const upcomingBookings = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'RESERVED');
 
-  return ( // Appointment Overview Component
+  return ( 
     <div className="space-y-8">
       {/* Hero Banner */}
       <div 
         className="relative h-64 rounded-xl overflow-hidden bg-cover bg-center shadow-lg"
         style={{ 
-          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1541829019-2188201b83a0?w=1200&h=300&fit=crop')` 
+          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('${pradeshiyaImg}')` 
         }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
@@ -23,7 +24,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
       </div>
 
       {/* Quick Services */}
-      <div> // Quick Services Section
+      <div> 
         <h3 className="text-xl font-bold text-gray-800 mb-6">Quick Services</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Book Appointment */}
