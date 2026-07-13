@@ -97,6 +97,54 @@ const facilities = [
     subtitle: 'Professional turf field suitable for cricket, football, and community outdoor events. Features spectator stands and lighting.',
     details: 'Outdoor • LKR 2,500 /hr',
     amenities: ['Lighting', 'Seating', 'Changing Rooms']
+  },
+  {
+    id: 'fb-3',
+    title: 'Homagama Crematorium',
+    category: 'Crematoriums',
+    image: 'https://images.unsplash.com/photo-1604871000636-074fa5117945?w=500&h=300&fit=crop',
+    capacity: 50,
+    price: 'LKR 5,000 / slot',
+    basePrice: 'LKR 5,000',
+    subtitle: 'Main cremation facility with modern environment-friendly electric furnaces, ceremonial pavilion, and comfortable waiting rooms.',
+    details: 'Electric Furnace • LKR 5,000 / slot',
+    amenities: ['Electric Furnace', 'Ceremonial Pavilion', 'Sound System', 'Waiting Lounge']
+  },
+  {
+    id: 'fb-4',
+    title: 'Water Bowser Rental',
+    category: 'Vehicles & Machinery',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&h=300&fit=crop',
+    capacity: 200,
+    price: 'LKR 4,000 / trip',
+    basePrice: 'LKR 4,000',
+    subtitle: 'Clean drinking water bowser for public/private events, weddings, and emergency water supply needs.',
+    details: '5000 Liters Capacity • LKR 4,000 / trip',
+    amenities: ['Drinking Water', 'Hose Extension', 'Pump Operator']
+  },
+  {
+    id: 'fb-5',
+    title: 'Kottawa Public Park',
+    category: 'Public Parks',
+    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=500&h=300&fit=crop',
+    capacity: 300,
+    price: 'LKR 1,500 /hr',
+    basePrice: 'LKR 5,000',
+    subtitle: 'Beautifully landscaped public park available for community gatherings, exhibitions, photography, and open-air meetings.',
+    details: 'Outdoor Park • LKR 1,500 /hr',
+    amenities: ['Restrooms', 'Jogging Track', 'Benches', 'Open Stage']
+  },
+  {
+    id: 'fb-6',
+    title: 'Community Center Auditorium',
+    category: 'Community Centers',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&h=300&fit=crop',
+    capacity: 150,
+    price: 'LKR 3,000 /hr',
+    basePrice: 'LKR 15,000',
+    subtitle: 'Multi-purpose air-conditioned auditorium perfect for localized workshops, seminars, and small-scale community events.',
+    details: '150 Persons • LKR 3,000 /hr',
+    amenities: ['AC', 'Whiteboard', 'Sound System', 'Chairs']
   }
 ];
 

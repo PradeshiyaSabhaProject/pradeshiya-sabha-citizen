@@ -189,23 +189,35 @@ const Appointment = () => {
             setDate={setAvailabilityDate}
             onClearFilters={handleClearFilters}
             facilities={filteredFacilities}
-            onReserve={(fac) => {
-              // Add to bookings list
+            onReserve={async (fac, bookingDetails) => {
+              // Create the new facility booking object
               const newBookingObj = {
-                id: Date.now(),
                 type: 'facility',
                 facilityName: fac.title,
-                location: fac.title === 'Central Town Hall' ? 'South Wing, Level 1' : 'Main Arena',
-                date: 'Oct 30 - 31, 2026',
-                time: 'Full Day Event',
-                status: 'RESERVED',
-                statusMessage: `Amenities Included: ${fac.amenities.join(', ')}`,
-                price: `${fac.basePrice} Paid`,
-                avatar: fac.title === 'Central Town Hall' ? '🏢' : '⚽'
+                location: fac.title === 'Central Town Hall' ? 'South Wing, Level 1' : 
+                          fac.title === 'Homagama Crematorium' ? 'Homagama Cremation Ground' : 
+                          fac.title === 'Water Bowser Rental' ? 'Water Supply Dept' : 'Main Ground',
+                date: bookingDetails.date,
+                time: bookingDetails.time,
+                status: 'PENDING',
+                statusMessage: fac.category === 'Crematoriums' 
+                  ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails.deathCertificateNo} is underway.`
+                  : `Booking request received. Verification of rental purpose is underway.`,
+                price: `${fac.basePrice} (Awaiting Approval)`,
+                avatar: fac.category === 'Crematoriums' ? '🔥' : 
+                        fac.category === 'Vehicles & Machinery' ? '🚚' : 
+                        fac.title === 'Central Town Hall' ? '🏢' : '⚽',
+                formDetails: bookingDetails.formDetails,
+                attachment: bookingDetails.attachment
               };
-              // Add to list and navigate
-              setActiveTab('bookings');
-              bookingsList.unshift(newBookingObj);
+              
+              try {
+                const created = await appointmentService.createBooking(newBookingObj);
+                bookingsList.unshift(created);
+                setActiveTab('bookings');
+              } catch (err) {
+                console.error('Failed to reserve facility', err);
+              }
             }}
           />
         )}
