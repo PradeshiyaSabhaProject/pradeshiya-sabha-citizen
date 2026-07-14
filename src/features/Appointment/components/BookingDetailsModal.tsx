@@ -46,7 +46,7 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
     }
   ];
 
-  return (
+  return ( // Booking Details Modal
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in">
       <div className="w-full max-w-lg scale-95 overflow-hidden rounded-xl bg-white p-6 shadow-2xl transition-all duration-300 ease-out border border-gray-150">
         {/* Header */}
@@ -195,7 +195,7 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
           <div className="mb-6 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex justify-between items-center text-xs">
             <div className="flex items-center gap-2 text-gray-700 min-w-0">
               <span className="text-sm">📎</span>
-              <span className="font-semibold truncate max-w-[245px]" title={booking.attachment.name}>
+              <span className="font-semibold truncate max-w-61.25" title={booking.attachment.name}>
                 {booking.attachment.name}
               </span>
               <span className="text-[10px] text-gray-400">
