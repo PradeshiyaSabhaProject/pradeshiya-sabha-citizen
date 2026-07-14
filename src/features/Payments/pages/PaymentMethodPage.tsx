@@ -57,7 +57,7 @@ function billTypeLabel(type) {
 export default function PaymentMethodPage() {
   const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<any>({});
   const [processing, setProcessing] = useState(false);
   const [govChannelType, setGovChannelType] = useState("bank");
 
@@ -79,7 +79,7 @@ export default function PaymentMethodPage() {
   }
 
   function validate() {
-    const e = {};
+    const e: any = {};
     if (!state.method) e.method = "Select a payment method.";
     if (state.method === "govpay" && !state.govBank) e.govBank = "Select your bank / fintech app.";
     if (state.method === "card" && (!state.cardNumber || !state.cardExpiry || !state.cardCvv))

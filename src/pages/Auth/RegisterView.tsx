@@ -218,7 +218,7 @@ const RegisterView = ({ onCancel }) => {
             </label>
             <textarea
               name="address"
-              rows="3"
+              rows={3}
               value={formData.address}
               onChange={handleInputChange}
               placeholder="Street name, City, Postal Code"
@@ -291,7 +291,7 @@ const RegisterView = ({ onCancel }) => {
                   id={`reg-otp-${idx}`}
                   type="text"
                   inputMode="numeric"
-                  maxLength="1"
+                  maxLength={1}
                   value={digit}
                   onChange={(e) => handleOtpChange(idx, e.target.value)}
                   className="w-11 h-12 text-center text-lg font-bold border border-gray-300 rounded-lg focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all shadow-2xs"

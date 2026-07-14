@@ -87,7 +87,7 @@ const NewLetterModal = ({
               <textarea
                 id="letter-desc"
                 required
-                rows="6"
+                rows={6}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Compose your letter here..."

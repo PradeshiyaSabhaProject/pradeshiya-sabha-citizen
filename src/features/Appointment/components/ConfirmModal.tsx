@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm, attachedFile }) => {
   if (!isOpen) return null;
 
   return (
@@ -11,6 +11,13 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm }) => {
           <p className="mt-3 text-sm text-gray-600">
             Are you want to build a new booking?
           </p>
+          
+          {attachedFile && (
+            <div className="mt-4 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex items-center gap-2 text-xs text-gray-600">
+              <span className="text-sm">📎</span>
+              <span className="truncate">Attached: <strong>{attachedFile.name}</strong> ({(attachedFile.size / 1024).toFixed(1)} KB)</span>
+            </div>
+          )}
         </div>
         <div className="mt-6 flex justify-end gap-3 border-t border-gray-100 pt-4">
           <button

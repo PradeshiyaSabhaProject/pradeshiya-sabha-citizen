@@ -22,10 +22,11 @@ export const useAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(5); // Oct 5th as default per image
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [purpose, setPurpose] = useState('');
+  const [attachedFile, setAttachedFile] = useState(null);
 
   // Facility Filter State
   const [facilitySearch, setFacilitySearch] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState(['Event Halls']); // Event Halls selected by default in Image 5
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]); // Empty default to show all facilities
   const [capacityRange, setCapacityRange] = useState(1000);
   const [availabilityDate, setAvailabilityDate] = useState('');
 
@@ -77,9 +78,7 @@ export const useAppointments = () => {
     const matchesSearch = fac.title.toLowerCase().includes(facilitySearch.toLowerCase()) || 
                           fac.subtitle.toLowerCase().includes(facilitySearch.toLowerCase());
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(fac.category);
-    // Capacity logic (slider value represents max capacity or min? Mock has 10 to 1000+. Let's check matching)
-    const matchesCapacity = fac.capacity <= capacityRange;
-    return matchesSearch && matchesCategory && matchesCapacity;
+    return matchesSearch && matchesCategory;
   });
 
   const handleCategoryToggle = (category) => {
@@ -104,6 +103,7 @@ export const useAppointments = () => {
     setSelectedOfficial(null);
     setSelectedTimeSlot(null);
     setPurpose('');
+    setAttachedFile(null);
     setActiveTab('schedule');
   };
 
@@ -126,10 +126,12 @@ export const useAppointments = () => {
         office: selectedOfficial.role === 'Administrative Secretary' ? 'Admin Sec Room 102' : 'Planning Dept Room 104',
         date: `Oct ${selectedDate}, 2026`,
         time: selectedTimeSlot.time,
-        avatar: selectedOfficial.avatar
+        avatar: selectedOfficial.avatar,
+        attachment: attachedFile ? { name: attachedFile.name, size: attachedFile.size } : null
       };
       const created = await appointmentService.createBooking(newBookingObj);
       setBookingsList(prev => [created, ...prev]);
+      setAttachedFile(null);
       setActiveTab('bookings');
     } catch (err) {
       console.error('Failed to create booking', err);
@@ -181,6 +183,8 @@ export const useAppointments = () => {
     setSelectedTimeSlot,
     purpose,
     setPurpose,
+    attachedFile,
+    setAttachedFile,
     startNewBooking,
     handleRequestAppointmentSubmit,
 

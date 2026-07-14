@@ -215,7 +215,7 @@ const LetterRequests = () => {
                 <tbody className="divide-y divide-gray-150">
                   {filteredLetters.length === 0 ? (
                     <tr>
-                      <td colSpan="7" className="px-6 py-12 text-center text-sm text-gray-500 bg-white">
+                      <td colSpan={7} className="px-6 py-12 text-center text-sm text-gray-500 bg-white">
                         <div className="text-3xl mb-2">📁</div>
                         <p className="font-semibold text-gray-700">No Letter Requests Found</p>
                         <p className="text-xs text-gray-400 mt-1">Try adjusting your filters or search terms.</p>

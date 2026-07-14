@@ -13,13 +13,12 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const itemsPerPage = 5; 
 
   // Modal (Pop-up) States
-  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [selectedComplaint, setSelectedComplaint] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   
-  const [editForm, setEditForm] = useState({
+  const [editForm, setEditForm] = useState<any>({
     category: '',
     status: '',
-    priority: '',
     name: '',
     phone: '',
     address: '',
@@ -31,17 +30,6 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
       case 'RESOLVED': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'IN PROGRESS': return 'bg-blue-50 text-blue-700 border-blue-200';
       default: return 'bg-rose-50 text-rose-700 border-rose-200';
-    }
-  };
-
-  // Priority badge colors: LOW / MEDIUM / HIGH / URGENT
-  const getPriorityStyle = (priority) => {
-    switch ((priority || '').toUpperCase()) {
-      case 'URGENT': return 'bg-red-100 text-red-800 border-red-300';
-      case 'HIGH': return 'bg-orange-50 text-orange-700 border-orange-200';
-      case 'MEDIUM': return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'LOW':
-      default: return 'bg-gray-50 text-gray-600 border-gray-200';
     }
   };
 
@@ -216,7 +204,6 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                 <th className="p-4">Complaint ID</th>
                 <th className="p-4">Date Submitted</th>
                 <th className="p-4">Category</th>
-                <th className="p-4">Priority</th>
                 <th className="p-4">Status</th>
                 <th className="p-4 text-center">Action</th>
               </tr>
@@ -227,11 +214,6 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                   <td className="p-4 font-bold text-gray-900">{item.id}</td>
                   <td className="p-4 text-gray-500">{item.date}</td>
                   <td className="p-4 font-medium">{item.category}</td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getPriorityStyle(item.priority)}`}>
-                      {(item.priority || 'LOW').toUpperCase()}
-                    </span>
-                  </td>
                   <td className="p-4">
                     <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getStatusStyle(item.status)}`}>
                       {item.status}
@@ -253,7 +235,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
               ))}
               {currentItems.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
+                  <td colSpan={5} className="p-8 text-center text-gray-400">No complaints found for the selected filter.</td>
                 </tr>
               )}
             </tbody>
@@ -375,27 +357,6 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                   )}
                 </div>
 
-                {/* ---- PRIORITY FIELD ---- */}
-                <div>
-                  <span className="text-xs text-gray-400 block mb-1">Priority</span>
-                  {isEditing ? (
-                    <select 
-                      value={editForm.priority} 
-                      onChange={(e) => setEditForm({ ...editForm, priority: e.target.value })}
-                      className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-red-800 bg-white"
-                    >
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                      <option value="urgent">Urgent</option>
-                    </select>
-                  ) : (
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold border inline-block mt-0.5 ${getPriorityStyle(selectedComplaint.priority)}`}>
-                      {(selectedComplaint.priority || 'LOW').toUpperCase()}
-                    </span>
-                  )}
-                </div>
-
                 {/* ---- STATUS FIELD ---- */}
                 <div>
                   <span className="text-xs text-gray-400 block mb-1">Status</span>
@@ -426,7 +387,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                     value={editForm.desc} 
                     onChange={(e) => setEditForm({ ...editForm, desc: e.target.value })}
                     className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none bg-white"
-                    rows="3"
+                    rows={3}
                   />
                 ) : (
                   <p className="bg-gray-50 p-3 rounded-lg border border-gray-100 text-gray-800 leading-relaxed">{selectedComplaint.desc}</p>

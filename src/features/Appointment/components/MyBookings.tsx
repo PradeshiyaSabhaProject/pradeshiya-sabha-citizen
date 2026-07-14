@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { downloadSlip } from '../../../utils/pdfGenerator';
 
 const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) => {
   const [activeSubTab, setActiveSubTab] = useState('appointments'); // 'appointments' | 'reservations'
@@ -34,6 +35,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
               : 'text-gray-400 hover:text-gray-600 font-medium'
           }`}
         >
+          
           My Appointments
           {bookings.filter(b => b.type === 'appointment').length > 0 && (
             <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-red-50 text-red-800 rounded-full font-bold">
@@ -72,7 +74,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
             const isPending = b.status === 'PENDING';
             const isCancelled = b.status === 'CANCELLED';
 
-            return (
+            return ( // Booking Card
               <div 
                 key={b.id} 
                 className="border border-gray-150 rounded-lg overflow-hidden bg-white hover:border-gray-300 transition-colors flex flex-col relative group"
@@ -88,7 +90,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                     {b.type === 'appointment' ? '👤' : (b.avatar || '🏢')}
                   </div>
 
-                  {/* Middle Info */}
+                  {/* Middle Info */} 
                   <div className="flex-1 min-w-0">
                     <h3 className={`text-base font-bold truncate ${isCancelled ? 'text-gray-400' : 'text-gray-800'}`}>
                       {b.type === 'appointment' ? b.officialName : b.facilityName}
@@ -108,6 +110,15 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                             ⏰ {b.time}
                           </span>
                         )}
+                      </div>
+                    )}
+
+                    {b.attachment && (
+                      <div className="mt-2 text-xs text-gray-500 flex items-center gap-1.5">
+                        <span>📎</span>
+                        <span className="truncate max-w-50 text-gray-600 font-medium" title={b.attachment.name}>
+                          {b.attachment.name}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -139,8 +150,11 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                 {/* Bottom Action / Info Bar */}
                 {isConfirmed && (
                   <div className="bg-green-50/50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
-                    <button className="text-green-700 font-bold hover:underline">
-                      Download Slip
+                    <button 
+                      onClick={() => downloadSlip(b)}
+                      className="text-green-700 font-bold hover:underline cursor-pointer"
+                    >
+                      Download Slip 
                     </button>
                     <button className="text-gray-500 font-medium hover:underline">
                       Reschedule
@@ -148,7 +162,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                   </div>
                 )}
 
-                {isReserved && (
+                {isReserved && ( // Reserved Bar
                   <div className="bg-gray-50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
                     <span className="text-gray-500 italic">
                       {b.statusMessage}
@@ -157,6 +171,13 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                       <span className="text-gray-800 font-extrabold">
                         {b.price}
                       </span>
+                      <button 
+                        onClick={() => downloadSlip(b)}
+                        className="text-green-700 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                      >
+                        Download Slip
+                      </button>
+                      <span className="text-gray-300">|</span>
                       <button
                         onClick={() => onCancelBooking(b.id)}
                         className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
@@ -170,24 +191,33 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
                   </div>
                 )}
 
-                {isPending && (
+                {isPending && ( // Pending Approval Bar
                   <div className="bg-red-50/30 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
                     <span className="text-red-700 font-medium italic">
                       Awaiting official approval
                     </span>
-                    <button 
-                      onClick={() => onCancelBooking(b.id)}
-                      className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>Cancel Request</span>
-                    </button>
+                    <div className="flex items-center gap-4 shrink-0">
+                      <button 
+                        onClick={() => downloadSlip(b)}
+                        className="text-red-700 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                      >
+                        Download Slip 
+                      </button>
+                      <span className="text-red-200">|</span>
+                      <button 
+                        onClick={() => onCancelBooking(b.id)}
+                        className="text-red-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Cancel Request</span>
+                      </button>
+                    </div>
                   </div>
                 )}
 
-                {isCancelled && (
+                {isCancelled && ( // Cancelled Bar
                   <div className="bg-gray-50/50 border-t border-gray-150 px-5 py-3 text-xs text-gray-400 italic">
                     {b.statusMessage}
                   </div>

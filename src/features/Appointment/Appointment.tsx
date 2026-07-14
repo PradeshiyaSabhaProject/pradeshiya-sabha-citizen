@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppointments } from './hooks/useAppointments';
+import { appointmentService } from './services/appointmentService';
 import { useLanguage } from '../../context/LanguageContext';
 import AppointmentOverview from './components/AppointmentOverview';
 import MyBookings from './components/MyBookings';
@@ -31,6 +32,8 @@ const Appointment = () => {
     setSelectedTimeSlot,
     purpose,
     setPurpose,
+    attachedFile,
+    setAttachedFile,
     startNewBooking,
     handleRequestAppointmentSubmit,
 
@@ -169,6 +172,8 @@ const Appointment = () => {
             setSelectedTimeSlot={setSelectedTimeSlot}
             purpose={purpose}
             setPurpose={setPurpose}
+            attachedFile={attachedFile}
+            setAttachedFile={setAttachedFile}
             onSubmit={handleRequestAppointmentSubmit}
           />
         )}
@@ -184,23 +189,35 @@ const Appointment = () => {
             setDate={setAvailabilityDate}
             onClearFilters={handleClearFilters}
             facilities={filteredFacilities}
-            onReserve={(fac) => {
-              // Add to bookings list
+            onReserve={async (fac, bookingDetails) => {
+              // Create the new facility booking object
               const newBookingObj = {
-                id: Date.now(),
                 type: 'facility',
                 facilityName: fac.title,
-                location: fac.title === 'Central Town Hall' ? 'South Wing, Level 1' : 'Main Arena',
-                date: 'Oct 30 - 31, 2026',
-                time: 'Full Day Event',
-                status: 'RESERVED',
-                statusMessage: `Amenities Included: ${fac.amenities.join(', ')}`,
-                price: `${fac.basePrice} Paid`,
-                avatar: fac.title === 'Central Town Hall' ? '🏢' : '⚽'
+                location: fac.title === 'Central Town Hall' ? 'South Wing, Level 1' : 
+                          fac.title === 'Homagama Crematorium' ? 'Homagama Cremation Ground' : 
+                          fac.title === 'Water Bowser Rental' ? 'Water Supply Dept' : 'Main Ground',
+                date: bookingDetails.date,
+                time: bookingDetails.time,
+                status: 'PENDING',
+                statusMessage: fac.category === 'Crematoriums' 
+                  ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails.deathCertificateNo} is underway.`
+                  : `Booking request received. Verification of rental purpose is underway.`,
+                price: `${fac.basePrice} (Awaiting Approval)`,
+                avatar: fac.category === 'Crematoriums' ? '🔥' : 
+                        fac.category === 'Vehicles & Machinery' ? '🚚' : 
+                        fac.title === 'Central Town Hall' ? '🏢' : '⚽',
+                formDetails: bookingDetails.formDetails,
+                attachment: bookingDetails.attachment
               };
-              // Add to list and navigate
-              setActiveTab('bookings');
-              bookingsList.unshift(newBookingObj);
+              
+              try {
+                const created = await appointmentService.createBooking(newBookingObj);
+                bookingsList.unshift(created);
+                setActiveTab('bookings');
+              } catch (err) {
+                console.error('Failed to reserve facility', err);
+              }
             }}
           />
         )}
@@ -211,6 +228,7 @@ const Appointment = () => {
         isOpen={isConfirmModalOpen} 
         onClose={() => setIsConfirmModalOpen(false)} 
         onConfirm={confirmNewBooking} 
+        attachedFile={attachedFile}
       />
 
       {/* Booking Details Viewer Popup Modal */}

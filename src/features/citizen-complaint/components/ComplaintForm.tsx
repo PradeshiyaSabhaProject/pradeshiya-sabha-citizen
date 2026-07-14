@@ -13,14 +13,14 @@ const CATEGORY_LABELS = {
 export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
   const [formData, setFormData] = useState({
     fullName: '', contactNumber: '', email: '',
-    serviceCategory: '', complaintType: '', priority: 'Low', incidentDate: '',
+    complaintType: '', incidentDate: '',
     location: '', complaintTitle: '', description: ''
   });
 
-  const [image, setImage] = useState(null);
-  const [document, setDocument] = useState(null);
-  const imageInputRef = useRef(null);
-  const docInputRef = useRef(null);
+  const [image, setImage] = useState<any>(null);
+  const [document, setDocument] = useState<any>(null);
+  const imageInputRef = useRef<any>(null);
+  const docInputRef = useRef<any>(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,7 +34,7 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
     e.preventDefault();
 
     // Build the object in the EXACT shape ComplaintDashboard expects
-    // (category / name / phone / address / desc / priority / status ...)
+    // (category / name / phone / address / desc / status ...)
     onSubmit({
       ...formData,
       category: CATEGORY_LABELS[formData.complaintType] || formData.complaintType,
@@ -85,19 +85,6 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
               <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">ⓘ Complaint Details</h3>
               <div className="grid grid-cols-1 gap-4">
 
-                {/* Department Selection Dropdown */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Service Category (Department)</label>
-                  <select name="serviceCategory" onChange={handleChange} className="w-full border rounded-lg p-2.5" required>
-                    <option value="">Select a Department</option>
-                    <option value="Health">Public Health Department</option>
-                    <option value="Engineering">Engineering Department</option>
-                    <option value="Finance">Finance Department</option>
-                    <option value="Administration">Administration Department</option>
-                    <option value="Planning">Planning Department</option>
-                  </select>
-                </div>
-
                 {/* Complaint Type Selection Dropdown -> feeds the Dashboard's "Category" column */}
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">Complaint Type</label>
@@ -111,17 +98,6 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Priority Level</label>
-                  <div className="flex flex-wrap gap-2">
-                    {['Low', 'Medium', 'High', 'Urgent'].map((level) => (
-                      <button type="button" key={level} onClick={() => setFormData({...formData, priority: level})} 
-                        className={`px-3 py-2 rounded-lg border text-sm ${formData.priority === level ? 'bg-red-900 text-white' : 'bg-gray-100'}`}>
-                        {level}
-                      </button>
-                    ))}
-                  </div>
-                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">Incident Date</label>
                   <input type="date" name="incidentDate" onChange={handleChange} className="w-full border rounded-lg p-2.5" required />
@@ -138,7 +114,7 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
           <div className={`${cardStyle} mb-6`}>
             <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">📄 The Issue</h3>
             <input name="complaintTitle" onChange={handleChange} className="w-full border rounded-lg p-2.5 mb-4" placeholder="Short summary of the issue" required />
-            <textarea name="description" onChange={handleChange} className="w-full border rounded-lg p-2.5" rows="4" placeholder="Provide full details of the problem..." required />
+            <textarea name="description" onChange={handleChange} className="w-full border rounded-lg p-2.5" rows={4} placeholder="Provide full details of the problem..." required />
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

@@ -12,7 +12,6 @@ export default function CitizenComplaint() {
       id: 'CMP-2024-025', 
       date: 'Jun 29, 2026', 
       category: 'Building Approval', 
-      priority: 'Medium',
       status: 'PENDING', 
       name: 'A.B. Perera', 
       phone: '0771234567', 
@@ -23,7 +22,6 @@ export default function CitizenComplaint() {
       id: 'CMP-2024-001', 
       date: 'Jun 15, 2026', 
       category: 'Waste Collection', 
-      priority: 'High',
       status: 'IN PROGRESS', 
       name: 'S. Silva', 
       phone: '0719876543', 
@@ -34,7 +32,6 @@ export default function CitizenComplaint() {
       id: 'CMP-2024-008', 
       date: 'May 10, 2026', 
       category: 'Road Damage', 
-      priority: 'Urgent',
       status: 'RESOLVED', 
       name: 'M. Fernando', 
       phone: '0754443322', 
@@ -45,7 +42,6 @@ export default function CitizenComplaint() {
       id: 'CMP-2024-015', 
       date: 'Mar 02, 2026', 
       category: 'Street Lighting', 
-      priority: 'Low',
       status: 'PENDING', 
       name: 'K. Premadasa', 
       phone: '0721112233', 
@@ -61,7 +57,7 @@ export default function CitizenComplaint() {
     const formattedId = `CMP-2024-${String(nextIdNumber).padStart(3, '0')}`;
     
     // Format the date beautifully (e.g., Jul 05, 2026)
-    const options = { month: 'short', day: '2-digit', year: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit', year: 'numeric' };
     const today = new Date().toLocaleDateString('en-US', options);
 
     const finalNewComplaint = {
@@ -69,13 +65,12 @@ export default function CitizenComplaint() {
       date: today,
       status: 'PENDING',
       // Maps the data coming from the Form to your Dashboard Keys
-      // (ComplaintForm's handleSubmit already sends: name, phone, address, desc, category, priority)
+      // (ComplaintForm's handleSubmit already sends: name, phone, address, desc, category)
       name: newComplaintData.name,
       phone: newComplaintData.phone,
       address: newComplaintData.address,
       desc: newComplaintData.desc,
       category: newComplaintData.category,
-      priority: newComplaintData.priority,
       image: newComplaintData.image
     };
 
