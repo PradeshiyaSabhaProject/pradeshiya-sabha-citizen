@@ -22,9 +22,10 @@ const CheckCircleIcon = () => (
 interface RoadExcavationFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddApplication?: (appData: any) => void;
 }
 
-const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpen, onClose }) => {
+const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpen, onClose, onAddApplication }) => {
   const { language: activeLanguage, changeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) =>
@@ -77,6 +78,24 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
     const randomRef = 'RD-EXC-' + Math.floor(100000 + Math.random() * 900000);
     setReferenceNo(randomRef);
     setIsSubmitted(true);
+    if (onAddApplication) {
+      onAddApplication({
+        id: randomRef,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+        category: 'Road Excavation Permit for Water Pipeline Connection',
+        categoryCode: 'road-excavation-permit',
+        status: 'PENDING',
+        applicantName: (formData as any).applicantNameOrInstitution || (formData as any).fullName || 'Chaminda Perera',
+        nicNumber: (formData as any).nicNo || '199012345678',
+        phone: (formData as any).phone || '071 285 5230',
+        address: (formData as any).address || 'No. 45, Temple Road, Homagama',
+        locationAddress: `${(formData as any).roadName || (formData as any).roadType || 'Road'}, ${(formData as any).subOffice || 'Homagama'}`,
+        details: `Road Excavation (${(formData as any).roadType || 'Tar Road'}, Area: ${(formData as any).excavationAreaSqM || '12'} sq.m, Length: ${(formData as any).excavationLength || '12'}m)`,
+        documentName: 'WATER_BOARD_LETTER.PDF',
+        inspectionDate: null,
+        approvalDate: null
+      });
+    }
   };
 
   const resetAndClose = () => {
@@ -94,33 +113,25 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
   ];
 
   return (
-    <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-1.5 sm:p-6"
       onClick={resetAndClose}
     >
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
+        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
         {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-amber-200">
-                {L('හෝමාගම ප්‍රාදේශීය සභාව', 'Homagama Pradeshiya Sabha', 'ஹோமகம பிரதேச சபை')}
-              </span>
-              <span className="text-[11px] font-semibold bg-amber-400/20 text-amber-200 px-2.5 py-1 rounded-md border border-amber-300/30">
-                Official Road Excavation Permit
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight pt-1">
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 relative shadow-md shrink-0">
+          <div className="space-y-0.5 sm:space-y-1.5 min-w-0">
+            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight pt-0.5 sm:pt-1">
               {L(
                 'ජලනළ සම්බන්ධය සඳහා මාර්ග කැණීම් අවසර පත්‍රය',
                 'Road Excavation Permit for Water Pipeline Connection',
                 'குழாய் நீர் இணைப்புக்கான வீதி அகழ்வு அனுமதி'
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 font-medium">
+            <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'හෝ/ප්‍රාස/3/8/මාර්ග කැණීම් • නිල ඉල්ලුම්පත්‍රය',
                 'Form Ref: HO/PS/3/8/Road-Excavation • Official Permit Application',
@@ -129,33 +140,30 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 shrink-0 self-stretch sm:self-center pt-2 sm:pt-0 border-t border-white/10 sm:border-0 w-full sm:w-auto">
             {/* Language Switcher Pill */}
-            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20">
+            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20 shrink-0">
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'si' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'si' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 සිංහල
               </button>
               <button
                 type="button"
                 onClick={() => changeLanguage('en')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'en' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'en' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 English
               </button>
               <button
                 type="button"
                 onClick={() => changeLanguage('ta')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'ta' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'ta' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 தமிழ்
               </button>
@@ -183,7 +191,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
         </div>
 
         {/* Modal Content */}
-        <div className="p-6 sm:p-8 overflow-y-auto space-y-8 flex-1">
+        <div className="p-3 sm:p-8 overflow-y-auto space-y-5 sm:space-y-8 flex-1">
           {isSubmitted ? (
             <div className="bg-white rounded-3xl p-8 sm:p-12 text-center max-w-lg mx-auto border border-gray-200 shadow-sm space-y-6 my-auto">
               <CheckCircleIcon />
@@ -222,9 +230,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
               {/* Guidance Notice */}
               <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                 <div className="text-xs sm:text-sm text-amber-950 leading-relaxed">
-                  <span className="font-bold text-amber-900">
-                    {L('පුරවැසි අයදුම්පත් අංශය:', 'Applicant Section Only:', 'விண்ணப்பதாரர் பிரிவு மட்டும்:')}
-                  </span>{' '}
+
                   {L(
                     'ජාතික ජල සම්පාදන හා ජලාපවහන මණ්ඩලයේ ලිපිය හා මාර්ග විස්තරය නිවැරදිව ඇතුළත් කරන්න.',
                     'Please fill in your Water Board reference details, premises assessment number, and road excavation specifications.',
@@ -234,7 +240,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
               </div>
 
               {/* Section 1: Reference Letter Details */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     01
@@ -300,7 +306,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
               </div>
 
               {/* Section 2: Road Type & Excavation Specification */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     02
@@ -322,11 +328,10 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
                         key={opt.id}
                         type="button"
                         onClick={() => setFormData((p) => ({ ...p, roadType: opt.id }))}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${
-                          formData.roadType === opt.id
+                        className={`p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${formData.roadType === opt.id
                             ? 'border-[#8C1538] bg-red-50/60 font-bold text-[#8C1538] shadow-xs'
                             : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
-                        }`}
+                          }`}
                       >
                         <div className="text-sm sm:text-base">
                           {L(opt.si, opt.en, opt.ta)}
@@ -391,7 +396,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
               </div>
 
               {/* Section 3: Statutory Conditions (Matching Form 3 Exactly) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     03
@@ -403,7 +408,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
                   </div>
                 </div>
 
-                <div className="bg-red-50/60 border border-red-100 rounded-2xl p-5 space-y-3">
+                <div className="bg-red-50/60 border border-red-100 rounded-2xl p-4 sm:p-5 space-y-3">
                   <div className="font-bold text-[#8C1538] uppercase text-xs tracking-wider">
                     {L('කොන්දේසි / Mandatory Conditions:', 'Mandatory Conditions:', 'கட்டாய நிபந்தனைகள்:')}
                   </div>

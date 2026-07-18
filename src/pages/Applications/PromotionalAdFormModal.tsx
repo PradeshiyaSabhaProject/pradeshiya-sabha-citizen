@@ -25,7 +25,7 @@ const UploadIcon = () => (
   </svg>
 );
 
-const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
+const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle, onAddApplication }: any) => {
   const { language: activeLanguage, changeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) => lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
@@ -130,6 +130,24 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
     const randomRef = 'HMG-AD-' + Math.floor(100000 + Math.random() * 900000);
     setReferenceNo(randomRef);
     setIsSubmitted(true);
+    if (onAddApplication) {
+      onAddApplication({
+        id: randomRef,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+        category: applicationTitle || 'Promotional Advertisement Display Permit',
+        categoryCode: 'promotional-ad-permit',
+        status: 'PENDING',
+        applicantName: (formData as any).applicantFullName || (formData as any).applicantName || 'Roshan K. Gunawardena',
+        nicNumber: (formData as any).nicNumber || '198731402281',
+        phone: (formData as any).telephoneNumber || '077 458 9632',
+        address: (formData as any).permanentAddress || 'No. 112, High Level Road, Homagama',
+        locationAddress: (formData as any).promotionalLocationAddress || 'Homagama Town',
+        details: `${(formData as any).advertisementNature || 'Promotional Banner'} (${(formData as any).lengthFeet}ft x ${(formData as any).widthFeet}ft)`,
+        documentName: (formData as any).artworkFileName || 'EXHIBITION_BANNER.PNG',
+        inspectionDate: null,
+        approvalDate: null
+      });
+    }
   };
 
   const resetAndClose = () => {
@@ -140,31 +158,26 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
   const { sqFeet, estimatedFee } = calculateAreaAndFee();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div 
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-3xl max-w-4xl w-full max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
+        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
-        
+
         {/* Modal Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-amber-200">
-                {L('හෝමාගම ප්‍රාදේශීය සභාව', 'Homagama Pradeshiya Sabha', 'ஹோமகம பிரதேச சபை')}
-              </span>
-              <span className="text-[11px] font-mono font-bold bg-amber-400/20 text-amber-200 px-2.5 py-1 rounded-md border border-amber-300/30">
-                Form හෝ/ප්‍රාස/3/3
-              </span>
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 relative shadow-md shrink-0">
+          <div className="space-y-0.5 sm:space-y-1.5 min-w-0">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight pt-1">
+            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight pt-0.5 sm:pt-1">
               {L(
                 'ප්‍රචාරක දැන්වීම් ප්‍රදර්ශනය කිරීම සම්බන්ධ අයදුම් පත්‍රය',
                 'Application for Displaying Promotional Advertisements & Signboards',
                 'விளம்பரங்கள் மற்றும் பதாகைகள் காட்சிப்படுத்துவதற்கான விண்ணப்பம்'
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 font-medium">
+            <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'වාණිජ බැනර් සහ පුවරු ප්‍රදර්ශන බලපත්‍රය',
                 'Commercial Banner & Signboard Display Permit Application',
@@ -172,9 +185,9 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
               )}
             </p>
           </div>
-          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 shrink-0 self-stretch sm:self-center pt-2 sm:pt-0 border-t border-white/10 sm:border-0 w-full sm:w-auto">
             {/* Language Switcher Pill */}
-            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20">
+            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20 shrink-0">
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
@@ -220,7 +233,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-8 overflow-y-auto space-y-8 flex-grow">
+        <div className="p-3 sm:p-8 overflow-y-auto space-y-5 sm:space-y-8 flex-grow">
           {isSubmitted ? (
             /* Submission Confirmation Screen */
             <div className="bg-white rounded-2xl border border-gray-200/80 p-8 text-center space-y-6 shadow-sm">
@@ -301,7 +314,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
             <form id="promotional-ad-form" onSubmit={handleSubmit} className="space-y-6">
 
               {/* Section 1: Applicant Information (Fields 01 - 04) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     01
@@ -385,7 +398,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
               </div>
 
               {/* Section 2: Display Location Details (Fields 05 - 06) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     02
@@ -445,8 +458,8 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                 </div>
               </div>
 
-              {/* Section 3: Nature of Advertisement & Artwork Sketch (Field 07) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              {/* Section 3: Nature of Advertisement & Artwork (Field 07) */}
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     03
@@ -492,14 +505,13 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                       'வடிவமைப்பு ஆவணம் / வரைபடம்'
                     )}
                   </label>
-                  
+
                   <div
                     onClick={() => setFormData((p) => ({ ...p, artworkFileName: p.artworkFileName ? null : 'HOMAGAMA_FESTIVAL_BANNER_DESIGN_2026.PNG' }))}
-                    className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
-                      formData.artworkFileName
-                        ? 'border-[#8C1538] bg-red-50/50'
-                        : 'border-gray-300 hover:border-[#8C1538] bg-gray-50/50'
-                    }`}
+                    className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${formData.artworkFileName
+                      ? 'border-[#8C1538] bg-red-50/50'
+                      : 'border-gray-300 hover:border-[#8C1538] bg-gray-50/50'
+                      }`}
                   >
                     {formData.artworkFileName ? (
                       <div className="space-y-1">
@@ -526,11 +538,11 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                 </div>
               </div>
 
-              {/* Section 4: Advertisement Type & Dimensions (Field 08) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              {/* Section 4: Type & Dimensions (Fields 08 - 09) */}
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
-                    04
+                    05
                   </span>
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-gray-900">
@@ -554,46 +566,41 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                     </span>
                   </label>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     <button
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, advertisementType: 'banner' }))}
-                      className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center gap-4 text-left transition-all ${
-                        formData.advertisementType === 'banner'
-                          ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                      className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-4 flex items-center gap-3 text-left transition-all ${formData.advertisementType === 'banner'
+                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
                     >
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.advertisementType === 'banner' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.advertisementType === 'banner' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
                         {formData.advertisementType === 'banner' && <div className="w-2.5 h-2.5 rounded-full bg-[#8C1538]" />}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('I. බැනර් (Banner)', 'I. Banner', 'I. பதாகை (Banner)')}</div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-600 mt-0.5">{L('රෙදි / වීනයිල් ප්‍රචාරක බැනර්', 'Flexible fabric / vinyl promotional banner', 'நெகிழ்வான துணி / வினைல் பதாகை')}</div>
+                        <div className="font-bold text-sm text-gray-900">{L('I. බැනර් (Banner)', 'I. Banner', 'I. பதாகை (Banner)')}</div>
                       </div>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, advertisementType: 'board' }))}
-                      className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center gap-4 text-left transition-all ${
-                        formData.advertisementType === 'board'
-                          ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                      className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-4 flex items-center gap-3 text-left transition-all ${formData.advertisementType === 'board'
+                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                        }`}
                     >
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.advertisementType === 'board' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.advertisementType === 'board' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
                         {formData.advertisementType === 'board' && <div className="w-2.5 h-2.5 rounded-full bg-[#8C1538]" />}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('II. පුවරු (Board / Hoarding)', 'II. Board / Hoarding', 'II. பலகை (Board)')}</div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-600 mt-0.5">{L('ස්ථාවර පුවරු හෝ රාමු ව්‍යුහයන්', 'Rigid signboard, frame structure or hoarding', 'நிலையான பெயர்ப்பலகை அல்லது கட்டமைப்பு')}</div>
+                        <div className="font-bold text-sm text-gray-900">{L('II. පුවරු (Board / Hoarding)', 'II. Board / Hoarding', 'II. பலகை (Board)')}</div>
                       </div>
                     </button>
                   </div>
                 </div>
 
-                {/* Length and Width Inputs */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                   <div>
                     <label className="block mb-2">
@@ -632,78 +639,17 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                   </div>
                 </div>
 
-                {/* Estimated Area & Municipal Fee Box */}
                 <div className="bg-red-50/60 border border-red-100 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <div className="text-xs sm:text-sm font-bold text-[#8C1538] uppercase">
                       {L('මුළු වර්ග අඩි ප්‍රමාණය සහ ගණනය කළ ගාස්තුව', 'Total Area & Estimated Municipal Fee', 'மொத்த பரப்பளவு மற்றும் மதிப்பிடப்பட்ட கட்டணம்')}
-                    </div>
-                    <div className="text-xs font-medium text-gray-600 mt-0.5">
-                      {L('ගණනය කළ වර්ග අඩි:', 'Calculated Area:', 'கணக்கிடப்பட்ட பரப்பளவு:')} <span className="font-bold text-gray-900">{sqFeet} Sq.Ft</span> ({formData.lengthFeet || 0} ft × {formData.widthFeet || 0} ft)
                     </div>
                   </div>
                   <div className="text-lg sm:text-xl font-extrabold text-[#8C1538] bg-white px-5 py-2 rounded-xl border border-gray-200 shadow-2xs">
                     LKR {estimatedFee.toLocaleString()}
                   </div>
                 </div>
-              </div>
 
-              {/* Section 5: Display Duration (Field 09) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
-                <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-                  <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
-                    05
-                  </span>
-                  <div>
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900">
-                      {L(
-                        'ප්‍රදර්ශනය කිරීමට බලාපොරොත්තු වන කාලය (09)',
-                        'Display Duration (Field 09)',
-                        'காட்சிப்படுத்தும் கால அளவு (09)'
-                      )}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setFormData((p) => ({ ...p, durationCategory: '3months' }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 text-center transition-all ${
-                      formData.durationCategory === '3months'
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="font-bold text-base text-gray-900">{L('මාස 03ක් හෝ ඊට අඩු', '3 Months or less', '3 மாதங்கள் அல்லது குறைவாக')}</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setFormData((p) => ({ ...p, durationCategory: '6months' }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 text-center transition-all ${
-                      formData.durationCategory === '6months'
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="font-bold text-base text-gray-900">{L('මාස 06ක් හෝ ඊට අඩු', '6 Months or less', '6 மாதங்கள் அல்லது குறைவாக')}</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setFormData((p) => ({ ...p, durationCategory: '1year' }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 text-center transition-all ${
-                      formData.durationCategory === '1year'
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="font-bold text-base text-gray-900">{L('වසර 01ක්', '1 Year Permit', '1 வருட அனுமதி')}</div>
-                  </button>
-                </div>
-
-                {/* Statutory Footnote matching paper application */}
                 <div className="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
                   {L(
                     '* සෑම ප්‍රචාරක දැන්වීම් බලපත්‍රයකම වලංගු කාලය එම වර්ෂයේ දෙසැම්බර් මස 31 දිනෙන් අවසන් වේ.',
@@ -713,8 +659,8 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                 </div>
               </div>
 
-              {/* Section 6: Maintenance & Repair Agreement (Field 10) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              {/* Section 5: Agreement on Rectifying/Repairing Damage (Field 10) */}
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     06
@@ -748,8 +694,8 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle }) => {
                 </label>
               </div>
 
-              {/* Section 7: Statutory Declaration & Signatures */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              {/* Section 6: Statutory Declaration */}
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     07

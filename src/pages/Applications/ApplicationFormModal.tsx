@@ -19,7 +19,7 @@ const CheckCircleIcon = () => (
   </svg>
 );
 
-const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
+const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplication }: any) => {
   const { language: activeLanguage, changeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) => lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
@@ -118,6 +118,24 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
     const randomRef = 'HMG-SL-' + Math.floor(100000 + Math.random() * 900000);
     setReferenceNo(randomRef);
     setIsSubmitted(true);
+    if (onAddApplication) {
+      onAddApplication({
+        id: randomRef,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+        category: applicationTitle || 'Street Line & Building Limit Certificate',
+        categoryCode: 'street-line-certificate',
+        status: 'PENDING',
+        applicantName: (formData as any).applicantName || 'Roshan Gunawardena',
+        nicNumber: (formData as any).nicNumber || '198731402281',
+        phone: (formData as any).phone || '077 458 9632',
+        address: (formData as any).address || 'Homagama Town',
+        locationAddress: `${(formData as any).wardNo || ''} ${(formData as any).streetName || ''}`,
+        details: `Street Line & Non-Vesting Certificate (${(formData as any).assessmentNo || 'Lot 01'})`,
+        documentName: 'SURVEY_PLAN_COPY.PDF',
+        inspectionDate: null,
+        approvalDate: null
+      });
+    }
   };
 
   const resetAndClose = () => {
@@ -126,31 +144,23 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div 
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-3xl max-w-4xl w-full max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
+        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
-        
+
         {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-amber-200">
-                {L('හෝමාගම ප්‍රාදේශීය සභාව', 'Homagama Pradeshiya Sabha', 'ஹோமகம பிரதேச சபை')}
-              </span>
-              <span className="text-[11px] font-semibold bg-amber-400/20 text-amber-200 px-2.5 py-1 rounded-md border border-amber-300/30">
-                Official Certificate Application
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight pt-1">
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 relative shadow-md shrink-0">
+          <div className="space-y-0.5 sm:space-y-1.5 min-w-0">
+            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight pt-0.5 sm:pt-1">
               {L(
                 'වීථි රේඛා හා නොපවරා ගැනීමේ සහතික ඉල්ලුම් කිරීම',
                 'Application for Street Line, Non-Vesting & Municipal Road Certificates',
                 'வீதி எல்லை மற்றும் சுவீகரிப்பு அல்லாத சான்றிதழ்களுக்கான விண்ணப்பம்'
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 font-medium">
+            <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'නිල සහතික සඳහා මාර්ගගත අයදුම්පත',
                 'Online Application for Official Municipal Certificates',
@@ -158,9 +168,9 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
               )}
             </p>
           </div>
-          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 shrink-0 self-stretch sm:self-center pt-2 sm:pt-0 border-t border-white/10 sm:border-0 w-full sm:w-auto">
             {/* Language Switcher Pill */}
-            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20">
+            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20 shrink-0">
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
@@ -206,7 +216,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-8 overflow-y-auto space-y-8 flex-grow">
+        <div className="p-3 sm:p-8 overflow-y-auto space-y-5 sm:space-y-8 flex-grow">
           {isSubmitted ? (
             /* Success Confirmation Screen */
             <div className="bg-white rounded-2xl border border-gray-200/80 p-8 text-center space-y-6 shadow-sm">
@@ -283,13 +293,11 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
           ) : (
             /* Digitalized Form matching form1.jpeg exactly (No Office Use Only section) */
             <form id="street-line-certificate-form" onSubmit={handleSubmit} className="space-y-6">
-              
+
               {/* Top Form Guidance Notice */}
               <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                 <div className="text-xs sm:text-sm text-amber-950 leading-relaxed">
-                  <span className="font-bold text-amber-900">
-                    {L('පුරවැසි අයදුම්පත් අංශය:', 'Applicant Section Only:', 'விண்ணப்பதாரர் பிரிவு மட்டும்:')}
-                  </span>{' '}
+
                   {L(
                     'කරුණාකර සහතිකය අවශ්‍ය ඉඩම සහ අයදුම්කරු පිළිබඳ සියලු තොරතුරු පැහැදිලිව සම්පූර්ණ කරන්න.',
                     'Please fill out all applicant and land information required for the municipal certificate.',
@@ -302,7 +310,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
               </div>
 
               {/* Section 1: Applicant Information (Fields 01 - 02) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     01
@@ -352,7 +360,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
               </div>
 
               {/* Section 2: Land Details (Fields 03 - 04) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     02
@@ -487,7 +495,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
               </div>
 
               {/* Section 3: Reason for Certificate (Field 05) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     03
@@ -518,7 +526,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
               </div>
 
               {/* Section 4: Required Certificates (Field 06) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                   <div className="flex items-center gap-3">
                     <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
@@ -532,17 +540,16 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-3.5 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certVaripanamPayment: !p.certVaripanamPayment }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center justify-between text-left transition-all ${
-                      formData.certVaripanamPayment
+                    className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certVaripanamPayment
                         ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
                         : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${formData.certVaripanamPayment ? 'border-[#8C1538] bg-[#8C1538] text-white' : 'border-gray-300'}`}>
                         {formData.certVaripanamPayment && (
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
@@ -551,22 +558,21 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('වරිපනම් ගෙවන / නොගෙවන බවට', 'Assessment Tax payment / non-payment verification certificate', 'வரிப்பண செலுத்துதல் / செலுத்தாதது சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වරිපනම් ගෙවන / නොගෙවන බවට', 'Assessment Tax payment / non-payment verification certificate', 'வரிப்பண செலுத்துதல் / செலுத்தாதது சான்றிதழ்')}</div>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0">LKR 800/=</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certStreetLineBuilding: !p.certStreetLineBuilding }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center justify-between text-left transition-all ${
-                      formData.certStreetLineBuilding
+                    className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certStreetLineBuilding
                         ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
                         : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${formData.certStreetLineBuilding ? 'border-[#8C1538] bg-[#8C1538] text-white' : 'border-gray-300'}`}>
                         {formData.certStreetLineBuilding && (
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
@@ -575,22 +581,21 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('වීථි රේඛා නොපැවරීම / ගොඩනැගිලි සීමාව', 'Street Line, Non-Vesting & Building Limit official certificate', 'வீதி எல்லை மற்றும் சுவீகரிப்பு அல்லாத சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වීථි රේඛා නොපැවරීම / ගොඩනැගිලි සීමාව', 'Street Line, Non-Vesting & Building Limit official certificate', 'வீதி எல்லை மற்றும் சுவீகரிப்பு அல்லாத சான்றிதழ்')}</div>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0">LKR 800/=</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certPublicRoadMaint: !p.certPublicRoadMaint }))}
-                    className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center justify-between text-left transition-all ${
-                      formData.certPublicRoadMaint
+                    className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certPublicRoadMaint
                         ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
                         : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${formData.certPublicRoadMaint ? 'border-[#8C1538] bg-[#8C1538] text-white' : 'border-gray-300'}`}>
                         {formData.certPublicRoadMaint && (
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
@@ -599,16 +604,16 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle }) => {
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('ප්‍රාදේශීය සභාව නඩත්තු කරන / නොකරන පොදු පාරක් බව', 'Pradeshiya Sabha Public Road Maintenance status certificate', 'பிரதேச சபை பராமரிக்கும் பொது வீதி சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('ප්‍රාදේශීය සභාව නඩත්තු කරන / නොකරන පොදු පාරක් බව', 'Pradeshiya Sabha Public Road Maintenance status certificate', 'பிரதேச சபை பராமரிக்கும் பொது வீதி சான்றிதழ்')}</div>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0">LKR 800/=</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
                   </button>
                 </div>
               </div>
 
               {/* Section 5: Conditions & Statutory Checklist */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     05
