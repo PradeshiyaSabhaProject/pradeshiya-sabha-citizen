@@ -5,11 +5,28 @@
   --color-red-900: #731331;
 }
 
-/* Base style resets */
+/* Base style resets and root font scaling for user-friendly, refined sizing */
+html {
+  font-size: 14px; /* 1rem = 14px on mobile screens (instead of 16px default) */
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 14.5px; /* 1rem = 14.5px on tablets / small desktops */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px; /* 1rem = 15px on large desktops */
+  }
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: #f9fafb;
   color: #1f2937;
+  font-size: 0.9375rem; /* ~14px baseline text size across standard body text */
 }
 
 /* Simple animations */

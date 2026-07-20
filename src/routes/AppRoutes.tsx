@@ -101,6 +101,22 @@ const AppRoutes = () => {
           } 
         />
         <Route 
+          path="/applications/my-applications" 
+          element={
+            <ProtectedRoute>
+              <Applications initialTab="my-applications" />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/my-applications" 
+          element={
+            <ProtectedRoute>
+              <Applications initialTab="my-applications" />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
           path="/payments" 
           element={
             <ProtectedRoute>

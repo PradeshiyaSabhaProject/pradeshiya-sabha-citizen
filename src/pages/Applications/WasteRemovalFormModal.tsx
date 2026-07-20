@@ -19,7 +19,7 @@ const CheckCircleIcon = () => (
   </svg>
 );
 
-const WasteRemovalFormModal = ({ isOpen, onClose }) => {
+const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
   const { language: activeLanguage, changeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) => lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
@@ -107,6 +107,24 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
     const randomRef = 'HMG-WM-' + Math.floor(100000 + Math.random() * 900000);
     setReferenceNo(randomRef);
     setIsSubmitted(true);
+    if (onAddApplication) {
+      onAddApplication({
+        id: randomRef,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+        category: 'Commercial & Emergency Waste Removal Permit',
+        categoryCode: 'waste-removal-permit',
+        status: 'PENDING',
+        applicantName: (formData as any).applicantName || 'Nimal Jayatilleke',
+        nicNumber: '198123456789',
+        phone: (formData as any).telephoneNumber || '071 854 1200',
+        address: (formData as any).institutionAddress || 'No. 205, High Level Road, Homagama Town',
+        locationAddress: (formData as any).wasteLocationAddress || (formData as any).institutionAddress || 'Homagama Town',
+        details: `Commercial Solid Waste Collection (${(formData as any).institutionType || (formData as any).institutionName || 'Enterprise'}, Biodegradable: ${(formData as any).biodegradableKg || (formData as any).bioWasteWeightKg || '450'}kg, Non-bio: ${(formData as any).nonBiodegradableKg || (formData as any).nonBioWasteWeightKg || '180'}kg)`,
+        documentName: 'TRADE_LICENSE_COPY.PDF',
+        inspectionDate: null,
+        approvalDate: null
+      });
+    }
   };
 
   const resetAndClose = () => {
@@ -115,31 +133,23 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div 
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-3xl max-w-4xl w-full max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
+        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
-        
+
         {/* Modal Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-amber-200">
-                {L('හෝමාගම ප්‍රාදේශීය සභාව', 'Homagama Pradeshiya Sabha', 'ஹோமகம பிரதேச சபை')}
-              </span>
-              <span className="text-[11px] font-semibold bg-amber-400/20 text-amber-200 px-2.5 py-1 rounded-md border border-amber-300/30">
-                Waste Management Portal
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight pt-1">
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 relative shadow-md shrink-0">
+          <div className="space-y-0.5 sm:space-y-1.5 min-w-0">
+            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight pt-0.5 sm:pt-1">
               {L(
                 'කසල ඉවත්කිරීම සඳහා ස්ථාන පිළිබඳ අයදුම්පත / වාර්තාව',
                 'Application & Service Report for Commercial & Emergency Waste Removal',
                 'கழிவுகளை அகற்றுவதற்கான விண்ணப்பம் / அறிக்கை'
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 font-medium">
+            <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'වාණිජ හා හදිසි කසල ඉවත්කිරීමේ සේවා අයදුම්පත',
                 'Commercial & Emergency Waste Collection Service Application',
@@ -147,9 +157,9 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
               )}
             </p>
           </div>
-          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 shrink-0 self-stretch sm:self-center pt-2 sm:pt-0 border-t border-white/10 sm:border-0 w-full sm:w-auto">
             {/* Language Switcher Pill */}
-            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20">
+            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20 shrink-0">
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
@@ -195,7 +205,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-8 overflow-y-auto space-y-8 flex-grow">
+        <div className="p-3 sm:p-8 overflow-y-auto space-y-5 sm:space-y-8 flex-grow">
           {isSubmitted ? (
             /* Success Confirmation Screen */
             <div className="bg-white rounded-2xl border border-gray-200/80 p-8 text-center space-y-6 shadow-sm">
@@ -276,13 +286,11 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
           ) : (
             /* Digitalized Form matching form2.jpeg (Excluding internal office sections) */
             <form id="waste-removal-form" onSubmit={handleSubmit} className="space-y-6">
-              
+
               {/* Note Guidance Bar */}
               <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                 <div className="text-xs sm:text-sm text-amber-950 leading-relaxed">
-                  <span className="font-bold text-amber-900">
-                    {L('පුරවැසි / ආයතනික අංශය:', 'Applicant Section Only:', 'விண்ணப்பதாரர் பிரிவு மட்டும்:')}
-                  </span>{' '}
+
                   {L(
                     'ආයතනය හෝ ව්‍යාපාරය විසින් ඉදිරිපත් කළ යුතු විස්තර පහතින් සම්පූර්ණ කරන්න.',
                     'Please fill out the details below required for institution or commercial waste collection.',
@@ -292,7 +300,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Section 1: Applicant & Institution Details (Fields 1 - 4) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     01
@@ -380,7 +388,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Section 2: Waste Removal Basis & Quantities (Field 5) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     02
@@ -407,21 +415,20 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
                       )} <span className="text-red-500">*</span>
                     </span>
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     <button
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, serviceBasis: 'monthly' }))}
-                      className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center gap-4 text-left transition-all ${
-                        formData.serviceBasis === 'monthly'
+                      className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4 text-left transition-all ${formData.serviceBasis === 'monthly'
                           ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
                           : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                        }`}
                     >
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.serviceBasis === 'monthly' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.serviceBasis === 'monthly' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
                         {formData.serviceBasis === 'monthly' && <div className="w-2.5 h-2.5 rounded-full bg-[#8C1538]" />}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('I. මාසික පදනම', 'I. Monthly Basis', 'I. மாதாந்திர முறை')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('I. මාසික පදනම', 'I. Monthly Basis', 'I. மாதாந்திர முறை')}</div>
                         <div className="text-xs sm:text-sm font-medium text-gray-600 mt-0.5">{L('නිතිපතා කාලසටහන්ගත කසල ඉවත් කිරීම', 'Regular scheduled collection', 'வழக்கமான திட்டமிடப்பட்ட சேகரிப்பு')}</div>
                       </div>
                     </button>
@@ -429,17 +436,16 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
                     <button
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, serviceBasis: 'emergency' }))}
-                      className={`cursor-pointer border-2 rounded-2xl p-5 flex items-center gap-4 text-left transition-all ${
-                        formData.serviceBasis === 'emergency'
+                      className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4 text-left transition-all ${formData.serviceBasis === 'emergency'
                           ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
                           : 'border-gray-200 bg-white hover:border-gray-300'
-                      }`}
+                        }`}
                     >
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.serviceBasis === 'emergency' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.serviceBasis === 'emergency' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
                         {formData.serviceBasis === 'emergency' && <div className="w-2.5 h-2.5 rounded-full bg-[#8C1538]" />}
                       </div>
                       <div>
-                        <div className="font-bold text-base text-gray-900">{L('II. හදිසි ඉවත්කිරීම', 'II. Emergency Removal', 'II. அவசர அகற்றம்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('II. හදිසි ඉවත්කිරීම', 'II. Emergency Removal', 'II. அவசர அகற்றம்')}</div>
                         <div className="text-xs sm:text-sm font-medium text-gray-600 mt-0.5">{L('එක්වරක් තොග වශයෙන් ඉවත් කිරීම', 'One-time bulk clearance', 'ஒரு முறை மொத்தமாக அகற்றுதல்')}</div>
                       </div>
                     </button>
@@ -448,7 +454,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
 
                 {/* Conditional Fields based on serviceBasis */}
                 {formData.serviceBasis === 'monthly' ? (
-                  <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-6 space-y-6">
+                  <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-6">
                     <h4 className="text-sm font-bold text-[#8C1538] uppercase tracking-wide">
                       {L('I. මාසික පදනම වන විට (Kg)', 'I. Monthly Quantities (in Kg)', 'I. மாதாந்திர அளவுகள் (Kg)')}
                     </h4>
@@ -487,7 +493,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-6 space-y-4">
+                  <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-4 sm:p-6 space-y-3.5 sm:space-y-4">
                     <h4 className="text-sm font-bold text-[#8C1538] uppercase tracking-wide">
                       {L('II. හදිසි ඉවත්කිරීම (ලෝඩ් ගණන)', 'II. Emergency Bulk Clearance', 'II. அவசர மொத்த அகற்றம்')}
                     </h4>
@@ -511,7 +517,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
                 )}
 
                 {/* Tariff Estimator Banner */}
-                <div className="bg-red-50/60 border border-red-100 rounded-2xl p-5 flex items-center justify-between">
+                <div className="bg-red-50/60 border border-red-100 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                   <div>
                     <div className="text-xs sm:text-sm font-bold text-[#8C1538] uppercase">
                       {L('ඇස්තමේන්තුගත සේවා ගාස්තුව', 'Estimated Municipal Service Tariff', 'மதிப்பிடப்பட்ட சேவை கட்டணம்')}
@@ -527,7 +533,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Section 3: Declaration & Applicant Signature */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     03

@@ -22,9 +22,10 @@ const CheckCircleIcon = () => (
 interface BusinessTaxFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddApplication?: (appData: any) => void;
 }
 
-const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onClose }) => {
+const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onClose, onAddApplication }) => {
   const { language: activeLanguage, changeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) =>
@@ -87,6 +88,24 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
     const randomRef = 'BIZ-TAX-' + Math.floor(100000 + Math.random() * 900000);
     setReferenceNo(randomRef);
     setIsSubmitted(true);
+    if (onAddApplication) {
+      onAddApplication({
+        id: randomRef,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+        category: 'Industrial / Trade & Business Tax Application (Part A)',
+        categoryCode: 'business-tax-permit',
+        status: 'PENDING',
+        applicantName: (formData as any).ownerName || 'S. Jayawardena',
+        nicNumber: (formData as any).ownerNic || '198233445566',
+        phone: (formData as any).phone || '077 889 9000',
+        address: (formData as any).ownerAddress || 'No. 15, High Level Road, Homagama',
+        locationAddress: `${(formData as any).businessAddress || 'Homagama'} (Assessment No: ${(formData as any).assessmentNo || '12/A'})`,
+        details: `Business Tax Return (${(formData as any).businessName || 'Trade Enterprise'}, Type: ${(formData as any).businessNature || 'Retail'}, Annual Turnover: Rs. ${(formData as any).annualTurnover || '0'})`,
+        documentName: 'BALANCE_SHEET_2025.PDF',
+        inspectionDate: null,
+        approvalDate: null
+      });
+    }
   };
 
   const resetAndClose = () => {
@@ -97,32 +116,24 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
 
   return (
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-1.5 sm:p-6"
       onClick={resetAndClose}
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
+        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
         {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-amber-200">
-                {L('හෝමාගම ප්‍රාදේශීය සභාව - ප්‍රධාන කාර්යාලය', 'Homagama Pradeshiya Sabha - Head Office', 'ஹோமகம பிரதேச சபை - தலைமை அலுவலகம்')}
-              </span>
-              <span className="text-[11px] font-semibold bg-amber-400/20 text-amber-200 px-2.5 py-1 rounded-md border border-amber-300/30">
-                Part A • Official Annual Tax Form
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight pt-1">
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#6a102a] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 relative shadow-md shrink-0">
+          <div className="space-y-0.5 sm:space-y-1.5 min-w-0">
+            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight pt-0.5 sm:pt-1">
               {L(
                 `${formData.taxYear} වර්ෂයට කර්මාන්ත / ව්‍යාපාර බදු ගෙවීමේ අයදුම්පත්‍රය - "ඒ" කොටස`,
                 `Industrial / Business Tax & License Application (${formData.taxYear}) - Part A`,
                 `${formData.taxYear} ஆம் ஆண்டிற்கான தொழில் / வியாபார வரி விண்ணப்பம் - பகுதி A`
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 font-medium">
+            <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'වාර්ෂික කර්මාන්ත හා ව්‍යාපාර බදු තක්සේරු ඉල්ලුම්පත්‍රය',
                 'Annual Industrial & Trade License Assessment Application',
@@ -131,9 +142,9 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 shrink-0 self-stretch sm:self-center pt-2 sm:pt-0 border-t border-white/10 sm:border-0 w-full sm:w-auto">
             {/* Language Switcher Pill */}
-            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20">
+            <div className="flex items-center bg-black/25 p-1 rounded-xl border border-white/20 shrink-0">
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
@@ -185,7 +196,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
         </div>
 
         {/* Modal Content */}
-        <div className="p-6 sm:p-8 overflow-y-auto space-y-8 flex-1">
+        <div className="p-3 sm:p-8 overflow-y-auto space-y-5 sm:space-y-8 flex-1">
           {isSubmitted ? (
             <div className="bg-white rounded-3xl p-8 sm:p-12 text-center max-w-lg mx-auto border border-gray-200 shadow-sm space-y-6 my-auto">
               <CheckCircleIcon />
@@ -249,7 +260,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               </div>
 
               {/* Section 1: Business Identification (Fields 1 - 3) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     01
@@ -316,7 +327,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               </div>
 
               {/* Section 2: Contact & Premises Location (Fields 4 - 7) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     02
@@ -420,7 +431,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               </div>
 
               {/* Section 3: Assessment & Revenue Data (Fields 8 - 10) */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     03
@@ -493,7 +504,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               </div>
 
               {/* Declaration & Signature */}
-              <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs space-y-5 sm:space-y-6">
                 <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
                   <span className="bg-[#8C1538] text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0">
                     04
