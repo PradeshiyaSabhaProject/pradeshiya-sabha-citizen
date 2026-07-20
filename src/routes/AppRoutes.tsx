@@ -17,6 +17,7 @@ import OtpVerificationPage from "../features/Payments/pages/OtpVerificationPage"
 import PaymentMethodPage from "../features/Payments/pages/PaymentMethodPage";
 import PaymentSuccessPage from "../features/Payments/pages/PaymentSuccessPage";
 import Payments from '../features/Payments/Payments';
+import Profile from '../pages/Profile/Profile';
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth();
@@ -73,6 +74,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           } 
         />

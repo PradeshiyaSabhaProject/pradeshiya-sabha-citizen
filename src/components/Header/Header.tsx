@@ -69,14 +69,12 @@ const Header = () => {
   const { user, logout, isLoggedIn } = useAuth();
   const { language, changeLanguage, t } = useLanguage();
   const location = useLocation();
-  const [showMenu, setShowMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAuthPage = !isLoggedIn || location.pathname === '/login' || location.pathname === '/register';
 
-  // Automatically close menus on route change
+  // Automatically close mobile menu on route change
   useEffect(() => {
-    setShowMenu(false);
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
@@ -188,7 +186,6 @@ const Header = () => {
               type="button"
               onClick={() => {
                 setMobileMenuOpen(!mobileMenuOpen);
-                if (!mobileMenuOpen) setShowMenu(false);
               }}
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
@@ -228,63 +225,14 @@ const Header = () => {
               <HelpCircleIcon />
             </button>
 
-            {/* User Account Button & Menu */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowMenu(!showMenu);
-                  if (!showMenu) setMobileMenuOpen(false);
-                }}
-                aria-label="User profile"
-                aria-expanded={showMenu}
-                className="text-white hover:text-white/80 hover:bg-white/10 p-1.5 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-white/40"
-              >
-                <UserCircleIcon />
-              </button>
-
-              {showMenu && (
-                <div className="absolute right-0 mt-2 w-60 sm:w-64 max-w-[calc(100vw-24px)] bg-white rounded-xl shadow-2xl border border-gray-100 py-3 px-4 text-gray-800 z-50 animate-fade-in ring-1 ring-black/5">
-                  <div className="pb-2.5 border-b border-gray-100">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-8 h-8 rounded-full bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center font-bold text-sm shrink-0">
-                        {(user?.name || 'C').charAt(0).toUpperCase()}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-sm text-gray-900 truncate">{user?.name || 'Verified Citizen'}</div>
-                        <div className="text-[11px] font-medium text-emerald-600 flex items-center gap-1">
-                          <ShieldCheckIcon />
-                          <span>{user?.role === 'admin' ? 'Administrator' : 'Verified Citizen'}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1.5 bg-gray-50 p-1.5 rounded-md border border-gray-100">
-                      <div><span className="font-semibold text-gray-700">NIC:</span> {user?.nic || '199012345678'}</div>
-                      <div className="text-[#8C1538] font-medium mt-0.5">{user?.phone || '+94 71 234 5678'}</div>
-                    </div>
-                  </div>
-                  <div className="pt-2 flex flex-col gap-1">
-                    <Link
-                      to="/"
-                      onClick={() => setShowMenu(false)}
-                      className="w-full text-left text-xs font-semibold text-gray-700 hover:bg-gray-50 py-2 px-2.5 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
-                    >
-                      <span>{t('nav.dashboard', 'Dashboard & Profile')}</span>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowMenu(false);
-                        logout();
-                      }}
-                      className="w-full text-left text-xs font-semibold text-red-600 hover:bg-red-50 py-2 px-2.5 rounded-lg transition-colors cursor-pointer flex items-center gap-2 mt-0.5"
-                    >
-                      <span>{t('common.logout', 'Sign Out / Switch Account')}</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* User Account Link */}
+            <Link
+              to="/profile"
+              aria-label="User profile"
+              className={`text-white hover:text-white/80 hover:bg-white/10 p-1.5 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-white/40 ${location.pathname === '/profile' ? 'bg-white/20 ring-2 ring-white/60' : ''}`}
+            >
+              <UserCircleIcon />
+            </Link>
           </div>
 
           {/* Mobile Navigation Drawer / Dropdown */}
@@ -342,6 +290,17 @@ const Header = () => {
               >
                 <span>{t('nav.payments', 'Payments')}</span>
                 {location.pathname.startsWith('/payments') && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
+              </Link>
+              <Link
+                to="/profile"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname === '/profile'
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
+              >
+                <span>{t('nav.profile', 'Profile & Account Settings')}</span>
+                {location.pathname === '/profile' && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
 
               {/* Mobile Social Links & Contact Strip */}

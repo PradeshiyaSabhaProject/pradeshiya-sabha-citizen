@@ -28,6 +28,7 @@ export const translations = {
     'nav.payments': 'Payments',
     'nav.reservations': 'Reservations',
     'nav.complaints': 'Complaints',
+    'nav.profile': 'Profile & Account Settings',
 
     // Header
     'header.title': 'Homagama Pradeshiya Sabha',
@@ -155,7 +156,39 @@ export const translations = {
     'auth.phoneLabel': 'Phone Number',
     'auth.nicLabel': 'National Identity Card (NIC)',
     'auth.loginBtn': 'Login to Portal',
-    'auth.registerBtn': 'Register Account'
+    'auth.registerBtn': 'Register Account',
+
+    // Profile Page
+    'profile.title': 'Citizen Profile & Digital Identity',
+    'profile.subtitle': 'Manage your personal information, view your Pradeshiya Sabha verification status, and review linked municipal assets.',
+    'profile.tab.overview': 'Personal Overview',
+    'profile.tab.verification': 'Digital ID Card & Status',
+    'profile.tab.properties': 'Linked Properties & Wards',
+    'profile.tab.history': 'Recent Activities',
+    'profile.tab.settings': 'Account Settings',
+    'profile.editBtn': 'Edit Profile Information',
+    'profile.saveBtn': 'Save Changes',
+    'profile.cancelBtn': 'Cancel',
+    'profile.fullName': 'Full Name',
+    'profile.nic': 'National Identity Card (NIC)',
+    'profile.phone': 'Mobile Phone Number',
+    'profile.email': 'Email Address',
+    'profile.address': 'Residential Address',
+    'profile.ward': 'Pradeshiya Sabha Ward',
+    'profile.gnDivision': 'Grama Niladhari Division',
+    'profile.role': 'Account Role',
+    'profile.verifiedStatus': 'Verified Citizen',
+    'profile.digitalCardTitle': 'Official Digital Citizen ID Card',
+    'profile.idNumber': 'Citizen Registration ID',
+    'profile.qrNote': 'Scan QR at any municipal desk for instant identity & tax assessment lookup.',
+    'profile.propertiesTitle': 'Linked Municipal Properties & Trade Accounts',
+    'profile.propertiesSub': 'Properties and businesses linked to your NIC for fast tax and assessment payments.',
+    'profile.noProperties': 'No properties linked yet.',
+    'profile.historyTitle': 'Municipal Activity Timeline',
+    'profile.historySub': 'Recent applications, bill payments, and complaint reports associated with your profile.',
+    'profile.logoutConfirm': 'Sign Out from Portal',
+    'profile.logoutDesc': 'You will be logged out of your citizen account on this device.',
+    'profile.updateSuccess': 'Profile information updated successfully!'
   },
   si: {
     // Common
@@ -186,6 +219,7 @@ export const translations = {
     'nav.payments': 'ගෙවීම්',
     'nav.reservations': 'වෙන්කිරීම්',
     'nav.complaints': 'පැමිණිලි',
+    'nav.profile': 'පුරවැසි පැතිකඩ සහ ගිණුම් සැකසුම්',
 
     // Header
     'header.title': 'හෝමාගම ප්‍රාදේශීය සභාව',
@@ -313,7 +347,39 @@ export const translations = {
     'auth.phoneLabel': 'දුරකථන අංකය',
     'auth.nicLabel': 'ජාතික හැඳුනුම්පත් අංකය (NIC)',
     'auth.loginBtn': 'ද්වාරයට පිවිසෙන්න',
-    'auth.registerBtn': 'ගිණුමක් ලියාපදිංචි කරන්න'
+    'auth.registerBtn': 'ගිණුමක් ලියාපදිංචි කරන්න',
+
+    // Profile Page
+    'profile.title': 'පුරවැසි පැතිකඩ සහ ඩිජිටල් හැඳුනුම',
+    'profile.subtitle': 'ඔබගේ පෞද්ගලික තොරතුරු කළමනාකරණය කරන්න, ප්‍රාදේශීය සභා තහවුරු කිරීම් සහ සම්බන්ධිත දේපළ තොරතුරු පරීක්ෂා කරන්න.',
+    'profile.tab.overview': 'පෞද්ගලික තොරතුරු',
+    'profile.tab.verification': 'ඩිජිටල් හැඳුනුම්පත් පත සහ තත්ත්වය',
+    'profile.tab.properties': 'සම්බන්ධිත දේපළ හා කොට්ඨාස',
+    'profile.tab.history': 'මෑතකාලීන ක්‍රියාකාරකම්',
+    'profile.tab.settings': 'ගිණුම් සැකසුම්',
+    'profile.editBtn': 'තොරතුරු සංස්කරණය කරන්න',
+    'profile.saveBtn': 'වෙනස්කම් සුරකින්න',
+    'profile.cancelBtn': 'අවලංගු කරන්න',
+    'profile.fullName': 'සම්පූර්ණ නම',
+    'profile.nic': 'ජාතික හැඳුනුම්පත් අංකය (NIC)',
+    'profile.phone': 'ජංගම දුරකථන අංකය',
+    'profile.email': 'විද්‍යුත් තැපැල් ලිපිනය',
+    'profile.address': 'පදිංචි ලිපිනය',
+    'profile.ward': 'ප්‍රාදේශීය සභා කොට්ඨාසය',
+    'profile.gnDivision': 'ග්‍රාම නිලධාරී වසම',
+    'profile.role': 'ගිණුම් කාර්යභාරය',
+    'profile.verifiedStatus': 'තහවුරු කළ පුරවැසියා',
+    'profile.digitalCardTitle': 'නිල ඩිජිටල් පුරවැසි හැඳුනුම්පත',
+    'profile.idNumber': 'පුරවැසි ලියාපදිංචි අංකය',
+    'profile.qrNote': 'ඕනෑම ප්‍රාදේශීය සභා කවුන්ටරයකදී ක්ෂණිකව තොරතුරු පරීක්ෂා කිරීමට QR කේතය පෙන්වන්න.',
+    'profile.propertiesTitle': 'සම්බන්ධිත දේපළ සහ ව්‍යාපාරික ගිණුම්',
+    'profile.propertiesSub': 'බදු සහ ගාස්තු ගෙවීම් සඳහා ඔබගේ ජාතික හැඳුනුම්පතට සම්බන්ධ කර ඇති දේපළ.',
+    'profile.noProperties': 'තවම දේපළ කිසිවක් සම්බන්ධ කර නොමැත.',
+    'profile.historyTitle': 'ක්‍රියාකාරකම් කාලරේඛාව',
+    'profile.historySub': 'ඔබගේ ගිණුමට අදාළ මෑතකාලීන අයදුම්පත්, බිල්පත් ගෙවීම් සහ පැමිණිලි වාර්තා.',
+    'profile.logoutConfirm': 'ද්වාරයෙන් ඉවත් වන්න',
+    'profile.logoutDesc': 'මෙම උපාංගයෙන් ඔබගේ පුරවැසි ගිණුමෙන් ඉවත් වනු ඇත.',
+    'profile.updateSuccess': 'පැතිකඩ තොරතුරු සාර්ථකව යාවත්කාලීන කරන ලදී!'
   },
   ta: {
     // Common
@@ -344,6 +410,7 @@ export const translations = {
     'nav.payments': 'கொடுப்பனவுகள்',
     'nav.reservations': 'முன்பதிவுகள்',
     'nav.complaints': 'முறைப்பாடுகள்',
+    'nav.profile': 'சுயவிவரம் மற்றும் கணக்கு அமைப்புகள்',
 
     // Header
     'header.title': 'ஹோமகம பிரதேச சபை',
@@ -471,6 +538,38 @@ export const translations = {
     'auth.phoneLabel': 'தொலைபேசி எண்',
     'auth.nicLabel': 'தேசிய அடையாள அட்டை (NIC)',
     'auth.loginBtn': 'நுழைவாயிலில் நுழையவும்',
-    'auth.registerBtn': 'கணக்கைப் பதிவு செய்யவும்'
+    'auth.registerBtn': 'கணக்கைப் பதிவு செய்யவும்',
+
+    // Profile Page
+    'profile.title': 'குடிமக்கள் சுயவிவரம் மற்றும் டிஜிட்டல் அடையாளம்',
+    'profile.subtitle': 'உங்கள் தனிப்பட்ட தகவல்களை நிர்வகிக்கவும், பிரதேச சபை சரிபார்ப்பு நிலையை பார்வையிடவும் மற்றும் இணைக்கப்பட்ட சொத்துக்களை சரிபார்க்கவும்.',
+    'profile.tab.overview': 'தனிப்பட்ட தகவல்கள்',
+    'profile.tab.verification': 'டிஜிட்டல் அடையாள அட்டை மற்றும் நிலை',
+    'profile.tab.properties': 'இணைக்கப்பட்ட சொத்துக்கள் மற்றும் வட்டாரங்கள்',
+    'profile.tab.history': 'சமீபத்திய செயல்பாடுகள்',
+    'profile.tab.settings': 'கணக்கு அமைப்புகள்',
+    'profile.editBtn': 'சுயவிவர தகவலை திருத்து',
+    'profile.saveBtn': 'மாற்றங்களை சேமி',
+    'profile.cancelBtn': 'ரத்து செய்',
+    'profile.fullName': 'முழு பெயர்',
+    'profile.nic': 'தேசிய அடையாள அட்டை (NIC)',
+    'profile.phone': 'மொபைல் தொலைபேசி எண்',
+    'profile.email': 'மின்னஞ்சல் முகவரி',
+    'profile.address': 'வசிக்கும் முகவரி',
+    'profile.ward': 'பிரதேச சபை வட்டாரம்',
+    'profile.gnDivision': 'கிராம உத்தியோகத்தர் பிரிவு',
+    'profile.role': 'கணக்கு பங்கு',
+    'profile.verifiedStatus': 'சரிபார்க்கப்பட்ட குடிமகன்',
+    'profile.digitalCardTitle': 'அதிகாரபூர்வ டிஜிட்டல் குடிமக்கள் அடையாள அட்டை',
+    'profile.idNumber': 'குடிமக்கள் பதிவு எண்',
+    'profile.qrNote': 'உடனடி அடையாளம் மற்றும் வரி மதிப்பீட்டுக்கு எந்தவொரு சபை கவுண்டரிலும் QR குறியீட்டை ஸ்கேன் செய்யவும்.',
+    'profile.propertiesTitle': 'இணைக்கப்பட்ட நகராட்சி சொத்துக்கள் மற்றும் வர்த்தக கணக்குகள்',
+    'profile.propertiesSub': 'வரி மற்றும் மதிப்பீட்டு செலுத்துதல்களுக்காக உங்கள் NIC உடன் இணைக்கப்பட்ட சொத்துக்கள்.',
+    'profile.noProperties': 'இதுவரை எந்த சொத்துக்களும் இணைக்கப்படவில்லை.',
+    'profile.historyTitle': 'செயல்பாட்டு காலவரிசை',
+    'profile.historySub': 'உங்கள் சுயவிவரத்துடன் தொடர்புடைய சமீபத்திய விண்ணப்பங்கள், பில் செலுத்துதல்கள் மற்றும் முறைப்பாடுகள்.',
+    'profile.logoutConfirm': 'நுழைவாயிலில் இருந்து வெளியேறு',
+    'profile.logoutDesc': 'சாதனத்தில் உள்ள உங்கள் குடிமக்கள் கணக்கிலிருந்து நீங்கள் வெளியேற்றப்படுவீர்கள்.',
+    'profile.updateSuccess': 'சுயவிவரத் தகவல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது!'
   }
 };
