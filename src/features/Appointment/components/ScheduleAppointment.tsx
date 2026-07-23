@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ScheduleAppointment = ({
   departments,
   officials,
@@ -300,7 +298,7 @@ const ScheduleAppointment = ({
                   
                   {attachedFile && (
                     <div className="mt-3 text-xs text-green-700 font-bold flex items-center gap-1.5 bg-green-50 px-2.5 py-1.5 rounded border border-green-200 w-full justify-between">
-                      <span className="truncate max-w-[200px]">✓ {attachedFile.name}</span>
+                      <span className="truncate max-w-50">✓ {attachedFile.name}</span>
                       <button 
                         type="button" 
                         onClick={(e) => {
