@@ -70,13 +70,26 @@ export const AuthProvider = ({ children }) => {
     window.dispatchEvent(new Event('lang_selection_reset'));
   };
 
+  const updateUser = (newFields: Record<string, any>) => {
+    setUser((prev: any) => {
+      const updated = { ...prev, ...newFields };
+      try {
+        localStorage.setItem('citizen_auth_user', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save updated user to localStorage', e);
+      }
+      return updated;
+    });
+  };
+
   const value = {
     user,
     isLoggedIn: !!user,
     isLoading,
     login,
     dummyLogin,
-    logout
+    logout,
+    updateUser
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logoImg from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -69,30 +69,47 @@ const Header = () => {
   const { user, logout, isLoggedIn } = useAuth();
   const { language, changeLanguage, t } = useLanguage();
   const location = useLocation();
-  const [showMenu, setShowMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAuthPage = !isLoggedIn || location.pathname === '/login' || location.pathname === '/register';
 
+  // Automatically close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   return (
-    <header className="w-full flex flex-col shadow-sm select-none font-sans">
+    <header className="w-full flex flex-col shadow-sm select-none font-sans sticky top-0 z-40 bg-white">
       {/* Top White Bar */}
-      <div className="bg-white px-4 sm:px-6 lg:px-10 py-3 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-gray-100">
-        {/* Logo Section */}
-        <div className="flex items-center">
-          <Link to="/" className="inline-block transition-transform hover:scale-[1.01] duration-200">
-            <img
-              src={logoImg}
-              alt="Homagama Pradeshiya Sabha Logo"
-              className="h-14 md:h-16 w-auto object-contain"
-            />
-          </Link>
+      <div className="bg-white px-2.5 sm:px-6 lg:px-10 py-1.5 sm:py-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-4 border-b border-gray-100">
+        {/* Top Row on mobile: Logo + Contact Button */}
+        <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+          {/* Logo Section */}
+          <div className="flex items-center min-w-0">
+            <Link to="/" className="inline-block transition-transform hover:scale-[1.01] duration-200 focus:outline-none">
+              <img
+                src={logoImg}
+                alt="Homagama Pradeshiya Sabha Logo"
+                className="h-9 sm:h-14 md:h-16 w-auto object-contain max-w-[160px] sm:max-w-none shrink-0"
+              />
+            </Link>
+          </div>
+
+          {/* Telephone/Contact Button - Visible on mobile top row right next to logo, or right aligned on desktop */}
+          <a
+            href="tel:+94112855230"
+            aria-label="Call +94 11 285 5230"
+            className="inline-flex items-center gap-1 sm:gap-2 bg-[#6b6f76] hover:bg-[#55585e] text-white px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-md sm:rounded-lg text-[11px] sm:text-sm font-medium transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer shrink-0"
+          >
+            <WhatsappIcon />
+            <span className="font-semibold">+94 11 285 5230</span>
+          </a>
         </div>
 
-        {/* Right Section: Socials, Language, Contact */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
-          {/* Social Icons */}
-          <div className="flex items-center gap-2.5">
+        {/* Right Section: Socials & Language Switcher */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between sm:justify-end gap-1.5 sm:gap-4 md:gap-6 pt-1 sm:pt-0 border-t border-gray-100/80 sm:border-0 w-full sm:w-auto">
+          {/* Social Icons - Hidden on small screens, displayed on md+ (available inside mobile drawer for < md) */}
+          <div className="hidden md:flex items-center gap-2.5 shrink-0">
             <a
               href="https://facebook.com"
               target="_blank"
@@ -122,177 +139,205 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Language Switcher & Contact Button */}
-          <div className="flex flex-col items-center sm:items-end gap-1.5">
-            <div className="flex items-center text-sm font-medium">
-              <button
-                type="button"
-                onClick={() => changeLanguage('en')}
-                className={`transition-colors px-1.5 cursor-pointer font-semibold ${language === 'en' ? 'text-[#8C1538] underline decoration-2 underline-offset-4' : 'text-gray-500 hover:text-black'}`}
-              >
-                English
-              </button>
-              <span className="text-gray-300 select-none">|</span>
-              <button
-                type="button"
-                onClick={() => changeLanguage('si')}
-                className={`transition-colors px-1.5 cursor-pointer font-semibold ${language === 'si' ? 'text-[#8C1538] underline decoration-2 underline-offset-4' : 'text-gray-500 hover:text-black'}`}
-              >
-                සිංහල
-              </button>
-              <span className="text-gray-300 select-none">|</span>
-              <button
-                type="button"
-                onClick={() => changeLanguage('ta')}
-                className={`transition-colors px-1.5 cursor-pointer font-semibold ${language === 'ta' ? 'text-[#8C1538] underline decoration-2 underline-offset-4' : 'text-gray-500 hover:text-black'}`}
-              >
-                தமிழ்
-              </button>
-            </div>
-
-            <a
-              href="tel:+94112855230"
-              className="inline-flex items-center gap-2 bg-[#6b6f76] hover:bg-[#55585e] text-white px-3.5 py-1.5 rounded-md text-sm font-medium transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer"
+          {/* Language Switcher */}
+          <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto text-[11px] sm:text-sm font-medium bg-gray-50 sm:bg-transparent p-0.5 sm:p-0 rounded-md sm:rounded-lg border border-gray-200/70 sm:border-0 shadow-2xs sm:shadow-none">
+            <button
+              type="button"
+              onClick={() => changeLanguage('en')}
+              className={`flex-1 sm:flex-initial text-center py-1 sm:py-0 px-1.5 sm:px-1.5 rounded sm:rounded-none transition-all duration-150 font-semibold cursor-pointer ${language === 'en'
+                  ? 'bg-[#8C1538] text-white sm:bg-transparent sm:text-[#8C1538] sm:underline sm:decoration-2 sm:underline-offset-4 shadow-2xs sm:shadow-none'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100 sm:hover:bg-transparent'
+                }`}
             >
-              <WhatsappIcon />
-              <span>+94 11 285 5230</span>
-            </a>
+              English
+            </button>
+            <span className="hidden sm:inline text-gray-300 select-none px-0.5">|</span>
+            <button
+              type="button"
+              onClick={() => changeLanguage('si')}
+              className={`flex-1 sm:flex-initial text-center py-1 sm:py-0 px-1.5 sm:px-1.5 rounded sm:rounded-none transition-all duration-150 font-semibold cursor-pointer ${language === 'si'
+                  ? 'bg-[#8C1538] text-white sm:bg-transparent sm:text-[#8C1538] sm:underline sm:decoration-2 sm:underline-offset-4 shadow-2xs sm:shadow-none'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100 sm:hover:bg-transparent'
+                }`}
+            >
+              සිංහල
+            </button>
+            <span className="hidden sm:inline text-gray-300 select-none px-0.5">|</span>
+            <button
+              type="button"
+              onClick={() => changeLanguage('ta')}
+              className={`flex-1 sm:flex-initial text-center py-1 sm:py-0 px-1.5 sm:px-1.5 rounded sm:rounded-none transition-all duration-150 font-semibold cursor-pointer ${language === 'ta'
+                  ? 'bg-[#8C1538] text-white sm:bg-transparent sm:text-[#8C1538] sm:underline sm:decoration-2 sm:underline-offset-4 shadow-2xs sm:shadow-none'
+                  : 'text-gray-600 hover:text-black hover:bg-gray-100 sm:hover:bg-transparent'
+                }`}
+            >
+              தமிழ்
+            </button>
           </div>
         </div>
       </div>
 
       {/* Bottom Maroon Bar - Hidden on login and registration pages */}
       {!isAuthPage && (
-        <div className="bg-[#8C1538] text-white px-3 sm:px-6 lg:px-10 py-2.5 shadow-md flex flex-wrap items-center justify-between gap-2 sm:gap-3 relative">
+        <div className="bg-[#8C1538] text-white px-2.5 sm:px-6 lg:px-10 py-1.5 sm:py-2.5 shadow-md flex flex-wrap items-center justify-between gap-2 sm:gap-3 relative">
           {/* Sabha Title & Mobile Menu Button */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 md:flex-initial">
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
               aria-label="Toggle navigation menu"
-              className="md:hidden text-white hover:bg-white/10 p-1.5 rounded-lg transition-colors cursor-pointer shrink-0"
+              aria-expanded={mobileMenuOpen}
+              className="md:hidden text-white hover:bg-white/10 p-1 sm:p-1.5 rounded-lg transition-colors cursor-pointer shrink-0 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/40"
             >
               {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
-            <h1 className="text-base sm:text-lg md:text-xl font-bold tracking-wide text-white drop-shadow-xs truncate">
-              {t('header.title', 'Homagama Pradeshiya Sabha')}
-            </h1>
+
           </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-4 lg:gap-6 ml-auto mr-2 lg:mr-4 text-sm font-medium">
             <Link to="/" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname === '/' ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.dashboard', 'Dashboard')}</Link>
             <Link to="/services" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/services') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.services', 'Services')}</Link>
-            <Link to="/applications" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/applications') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.applications', 'Applications')}</Link>
+            <Link to="/applications" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/applications') || location.pathname === '/my-applications' ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.applications', 'Applications')}</Link>
             <Link to="/payments" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/payments') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.payments', 'Payments')}</Link>
           </nav>
 
           {/* Admin & Action Icons */}
-          <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-3 md:gap-4 shrink-0">
             {/* Vertical Separator */}
             <div className="hidden sm:block h-5 w-px bg-white/30"></div>
 
             {/* Verified Badge */}
-            <div className="bg-white text-gray-900 px-2 sm:px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1 sm:gap-1.5 shadow-xs select-none">
+            <div className="bg-white text-gray-900 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs md:text-sm font-semibold flex items-center gap-1 sm:gap-1.5 shadow-xs select-none shrink-0">
               <ShieldCheckIcon />
               <span className="hidden sm:inline">{user?.role === 'admin' ? 'Verified Admin' : t('common.citizen', 'Verified Citizen')}</span>
-              <span className="sm:hidden">{user?.role === 'admin' ? 'Admin' : 'Citizen'}</span>
+              <span className="sm:hidden font-bold">{user?.role === 'admin' ? 'Admin' : 'Citizen'}</span>
             </div>
 
             {/* Help Button */}
             <button
               type="button"
               aria-label="Help & FAQ"
-              className="text-white hover:text-white/80 hover:bg-white/10 p-1 rounded-full transition-all duration-150 cursor-pointer"
+              className="text-white hover:text-white/80 hover:bg-white/10 p-1.5 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/40"
             >
               <HelpCircleIcon />
             </button>
 
-            {/* User Account Button & Menu */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowMenu(!showMenu)}
-                aria-label="User profile"
-                className="text-white hover:text-white/80 hover:bg-white/10 p-1 rounded-full transition-all duration-150 cursor-pointer flex items-center gap-1"
-              >
-                <UserCircleIcon />
-              </button>
-
-              {showMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-3 px-4 text-gray-800 z-50 animate-fadeIn">
-                  <div className="pb-2 border-b border-gray-100">
-                    <div className="font-bold text-sm text-gray-900">{user?.name || 'Verified Citizen'}</div>
-                    <div className="text-xs text-gray-500">NIC: {user?.nic || '199012345678'}</div>
-                    <div className="text-xs text-[#8C1538] font-medium mt-0.5">{user?.phone}</div>
-                  </div>
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowMenu(false);
-                        logout();
-                      }}
-                      className="w-full text-left text-xs font-semibold text-red-600 hover:bg-red-50 py-1.5 px-2 rounded-md transition-colors cursor-pointer"
-                    >
-                      {t('common.logout', 'Sign Out / Switch Account')}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* User Account Link */}
+            <Link
+              to="/profile"
+              aria-label="User profile"
+              className={`text-white hover:text-white/80 hover:bg-white/10 p-1.5 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-white/40 ${location.pathname === '/profile' ? 'bg-white/20 ring-2 ring-white/60' : ''}`}
+            >
+              <UserCircleIcon />
+            </Link>
           </div>
 
           {/* Mobile Navigation Drawer / Dropdown */}
           {mobileMenuOpen && (
-            <div className="md:hidden w-full pt-3 pb-3 mt-2 border-t border-white/20 flex flex-col gap-1.5 animate-fadeIn">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-white/70 px-2 mb-1">
-                {t('common.menu', 'Navigation Menu')}
+            <div className="md:hidden w-full pt-3 pb-4 mt-2 border-t border-white/20 flex flex-col gap-1.5 animate-fade-in z-40">
+              <div className="flex items-center justify-between px-2 mb-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">
+                  {t('common.menu', 'Navigation Menu')}
+                </span>
+                <span className="text-[11px] font-semibold text-white/80 bg-white/10 px-2.5 py-0.5 rounded-full">
+                  {user?.role === 'admin' ? 'Admin Portal' : 'Citizen Portal'}
+                </span>
               </div>
+
               <Link
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
-                  location.pathname === '/'
-                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname === '/'
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
               >
-                {t('nav.dashboard', 'Dashboard')}
+                <span>{t('nav.dashboard', 'Dashboard')}</span>
+                {location.pathname === '/' && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
               <Link
                 to="/services"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
-                  location.pathname.startsWith('/services')
-                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/services')
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
               >
-                {t('nav.services', 'Services')}
+                <span>{t('nav.services', 'Services')}</span>
+                {location.pathname.startsWith('/services') && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
               <Link
                 to="/applications"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
-                  location.pathname.startsWith('/applications')
-                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/applications') || location.pathname === '/my-applications'
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
               >
-                {t('nav.applications', 'Applications')}
+                <span>{t('nav.applications', 'Applications')}</span>
+                {(location.pathname.startsWith('/applications') || location.pathname === '/my-applications') && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
               <Link
                 to="/payments"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all block ${
-                  location.pathname.startsWith('/payments')
-                    ? 'bg-white text-[#8C1538] font-bold shadow-xs'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/payments')
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
               >
-                {t('nav.payments', 'Payments')}
+                <span>{t('nav.payments', 'Payments')}</span>
+                {location.pathname.startsWith('/payments') && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
+              <Link
+                to="/profile"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname === '/profile'
+                    ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
+                    : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
+                  }`}
+              >
+                <span>{t('nav.profile', 'Profile & Account Settings')}</span>
+                {location.pathname === '/profile' && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
+              </Link>
+
+              {/* Mobile Social Links & Contact Strip */}
+              <div className="mt-2.5 pt-3 border-t border-white/20 flex flex-col xs:flex-row items-center justify-between gap-2.5 px-2">
+                <span className="text-xs font-medium text-white/80">
+                  {t('common.connectWithUs', 'Connect With Us')}
+                </span>
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="w-8 h-8 rounded-full bg-white/15 hover:bg-[#1877F2] text-white flex items-center justify-center transition-all duration-200 shadow-xs"
+                  >
+                    <FacebookIcon />
+                  </a>
+                  <a
+                    href="https://youtube.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="YouTube"
+                    className="w-8 h-8 rounded-full bg-white/15 hover:bg-[#FF0000] text-white flex items-center justify-center transition-all duration-200 shadow-xs"
+                  >
+                    <YoutubeIcon />
+                  </a>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="w-8 h-8 rounded-full bg-white/15 hover:bg-linear-to-tr hover:from-yellow-500 hover:via-red-500 hover:to-purple-500 text-white flex items-center justify-center transition-all duration-200 shadow-xs"
+                  >
+                    <InstagramIcon />
+                  </a>
+                </div>
+              </div>
             </div>
           )}
         </div>

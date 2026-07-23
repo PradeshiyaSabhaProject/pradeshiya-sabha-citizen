@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ApplicationFormModal from './ApplicationFormModal';
 import PromotionalAdFormModal from './PromotionalAdFormModal';
 import WasteRemovalFormModal from './WasteRemovalFormModal';
 import RoadExcavationFormModal from './RoadExcavationFormModal';
 import GullyBowserFormModal from './GullyBowserFormModal';
 import BusinessTaxFormModal from './BusinessTaxFormModal';
+import MyApplicationsDashboard, { type ApplicationItem } from './MyApplicationsDashboard';
 import { useLanguage } from '../../context/LanguageContext';
 
 // SVG Icons for Applications
@@ -50,7 +51,14 @@ const SearchIcon = () => (
   </svg>
 );
 
-const Applications = () => {
+interface ApplicationsProps {
+  initialTab?: string;
+}
+
+const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
+  const [currentTab, setCurrentTab] = useState<'forms' | 'my-applications'>(
+    (initialTab as 'forms' | 'my-applications') || 'forms'
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppId, setSelectedAppId] = useState('');
@@ -59,6 +67,119 @@ const Applications = () => {
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) =>
     lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
+
+  useEffect(() => {
+    if (initialTab === 'my-applications' || initialTab === 'forms') {
+      setCurrentTab(initialTab);
+    }
+  }, [initialTab]);
+
+  const [myApplications, setMyApplications] = useState<ApplicationItem[]>([
+    {
+      id: 'APP-2026-042',
+      date: 'Jul 14, 2026',
+      category: L(
+        'ප්‍රචාරක දැන්වීම් සහ ප්‍රදර්ශන පුවරු අවසර පත්‍රය',
+        'Promotional Advertisement Display Permit',
+        'விளம்பர பலகை காட்சி அனுமதிப்பத்திரம்'
+      ),
+      categoryCode: 'promotional-ad-permit',
+      status: 'IN PROGRESS',
+      applicantName: 'Roshan K. Gunawardena',
+      nicNumber: '198731402281',
+      phone: '077 458 9632',
+      address: 'No. 112, High Level Road, Homagama',
+      locationAddress: 'High Level Junction, Homagama Town (Near Clock Tower)',
+      details: 'Annual Trade Fair & Agricultural Exhibition Promotional Banner (Length: 15 ft, Width: 4 ft, Duration: 3 Months)',
+      documentName: 'EXHIBITION_BANNER_FINAL_2026.PNG',
+      inspectionDate: 'Jul 15, 2026',
+      approvalDate: null
+    },
+    {
+      id: 'WM-2026-019',
+      date: 'Jul 08, 2026',
+      category: L(
+        'වාණිජ හා හදිසි කසළ ඉවත් කිරීමේ අවසර පත්‍රය',
+        'Commercial & Emergency Waste Removal Permit',
+        'வர்த்தக மற்றும் அவசர கழிவு அகற்றுதல் அனுமதிப்பத்திரம்'
+      ),
+      categoryCode: 'waste-removal-permit',
+      status: 'APPROVED',
+      applicantName: 'Nimal Jayatilleke',
+      nicNumber: '198123456789',
+      phone: '071 854 1200',
+      address: 'No. 205, High Level Road, Homagama Town',
+      locationAddress: 'Homagama Green Supermarket & Food Emporium, High Level Rd',
+      details: 'Monthly Commercial Solid Waste Collection (Biodegradable: 450 kg/month, Non-Biodegradable: 180 kg/month)',
+      documentName: 'TRADE_LICENSE_COPY_2026.PDF',
+      inspectionDate: 'Jul 09, 2026',
+      approvalDate: 'Jul 11, 2026'
+    },
+    {
+      id: 'RE-2026-008',
+      date: 'Jun 28, 2026',
+      category: L(
+        'ජල සම්බන්ධතා සඳහා මාර්ග කැණීම් අවසර පත්‍රය',
+        'Road Excavation Permit for Water Pipeline Connection',
+        'நீர் இணைப்புக்கான வீதி அகழ்வு அனுமதிப்பத்திரம்'
+      ),
+      categoryCode: 'road-excavation-permit',
+      status: 'PENDING',
+      applicantName: 'Chaminda Perera',
+      nicNumber: '199012345678',
+      phone: '071 285 5230',
+      address: 'No. 45, Temple Road, Homagama',
+      locationAddress: '4th Cross Lane, Temple Road, Homagama North',
+      details: 'Excavation of Carpeted Road for Water Board Main Pipeline Connection (Length: 12 meters, Depth: 1.5 meters)',
+      documentName: 'WATER_BOARD_APPROVAL_LETTER.PDF',
+      inspectionDate: null,
+      approvalDate: null
+    },
+    {
+      id: 'GB-2026-015',
+      date: 'Jun 15, 2026',
+      category: L(
+        'ගලි බවුසරය ලබා ගැනීමේ ඉල්ලුම්පත්‍රය',
+        'Application for Municipal Gully Bowser Service',
+        'கல்லி பௌசர் சேவைக்கான விண்ணப்பம்'
+      ),
+      categoryCode: 'gully-bowser-service',
+      status: 'APPROVED',
+      applicantName: 'Sujith Fernando',
+      nicNumber: '198544332211',
+      phone: '075 444 3322',
+      address: 'No. 88, Katuwana Industrial Estate, Homagama',
+      locationAddress: 'No. 88, Katuwana Industrial Estate, Homagama',
+      details: 'Emergency Septic Tank & Wastewater Pit Clearance (Capacity: 5000 Liters, Commercial Premises)',
+      documentName: 'PREMISES_ASSESSMENT_TAX_RECEIPT.PDF',
+      inspectionDate: 'Jun 16, 2026',
+      approvalDate: 'Jun 16, 2026'
+    },
+    {
+      id: 'SL-2026-031',
+      date: 'May 20, 2026',
+      category: L(
+        'වීදි රේඛා, නොපවරා ගැනීමේ සහ නාගරික සහතික',
+        'Street Line, Non-Vesting & Municipal Certificates',
+        'வீதி கோடு மற்றும் பிரதேச சபை சான்றிதழ்கள்'
+      ),
+      categoryCode: 'street-line-certificate',
+      status: 'REJECTED',
+      applicantName: 'K. Premadasa',
+      nicNumber: '197855667788',
+      phone: '072 111 2233',
+      address: 'No. 12, Station Road, Homagama',
+      locationAddress: 'Lot 04, Plan SP-1204, Station Road, Homagama',
+      details: 'Street Line & Building Limit Verification Certificate (Returned due to missing survey plan annexure B)',
+      documentName: 'INCOMPLETE_SURVEY_PLAN.PDF',
+      inspectionDate: 'May 22, 2026',
+      approvalDate: 'May 24, 2026'
+    }
+  ]);
+
+  const handleAddSubmittedApplication = (newApp: ApplicationItem) => {
+    setMyApplications((prev) => [newApp, ...prev]);
+  };
 
   const applicationsData = [
     {
@@ -166,156 +287,226 @@ const Applications = () => {
       (item.formCode && item.formCode.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const openApplicationModal = (id, title) => {
+  const openApplicationModal = (id: string, title: string) => {
     setSelectedAppId(id);
     setSelectedAppTitle(title);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto font-sans animate-fadeIn">
-      {/* Top Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
-        <div className="space-y-2 max-w-2xl">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-            {L(
-              'ඩිජිටල් පුරවැසි අයදුම්පත්',
-              'Digital Citizen Applications',
-              'டிஜிட்டல் குடிமக்கள் விண்ணப்பங்கள்'
-            )}
-          </h1>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            {L(
-              'හෝමාගම ප්‍රාදේශීය සභාවේ නිල අයදුම්පත් හා අවසර පත්‍ර මාර්ගගතව ඉදිරිපත් කරන්න.',
-              'Submit and track formal applications, permits, and requests to the Homagama Pradeshiya Sabha through our unified portal.',
-              'ஹோமகம பிரதேச சபைக்கு உத்தியோகபூர்வ விண்ணப்பங்கள் மற்றும் அனுமதிப்பத்திரங்களை நிகழ்நிலையில் சமர்ப்பிக்கவும்.'
-            )}
-          </p>
-        </div>
-      </div>
+    <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-7xl mx-auto">
+        {/* Top Header & View Switcher */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-6 pb-4 border-b border-gray-200/80">
+          <div className="space-y-1.5 sm:space-y-2 max-w-2xl">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              {L(
+                'ඩිජිටල් පුරවැසි අයදුම්පත් හා බලපත්‍ර පැනලය',
+                'Digital Citizen Applications & Permits',
+                'டிஜிட்டல் குடிமக்கள் விண்ணப்பங்கள்'
+              )}
+            </h1>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+              {L(
+                'හෝමාගම ප්‍රාදේශීය සභාවේ නිල අයදුම්පත් හා අවසර පත්‍ර මාර්ගගතව ඉදිරිපත් කරන්න හෝ ඉදිරිපත් කළ අයදුම්පත් වල ප්‍රගතිය නිරීක්ෂණය කරන්න.',
+                'Submit formal applications online or switch to My Applications to view entered details and track live progress stages.',
+                'ஹோமகம பிரதேச சபைக்கு உத்தியோகபூர்வ விண்ணப்பங்கள் மற்றும் அனுமதிப்பத்திரங்களை சமர்ப்பிக்கவும்.'
+              )}
+            </p>
+          </div>
 
-      {/* Filter Applications Search Bar */}
-      <div className="mb-8">
-        <label htmlFor="application-search" className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 block select-none">
-          {L('අයදුම්පත් පෙරහන', 'FILTER APPLICATIONS', 'விண்ணப்பங்களை வடிகட்டவும்')}
-        </label>
-        <div className="relative w-full">
-          <input
-            id="application-search"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={L('අයදුම්පත් සොයන්න...', 'Search applications...', 'விண்ணப்பங்களைத் தேடுங்கள்...')}
-            className="w-full bg-[#f3f4f6] border border-transparent focus:border-gray-300 focus:bg-white rounded-xl py-3.5 pl-4 pr-11 text-sm text-gray-800 placeholder-gray-500 focus:outline-none transition-all duration-200 shadow-2xs"
-          />
-          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-            <SearchIcon />
+          {/* View Switcher Buttons */}
+          <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
+            <button
+              type="button"
+              onClick={() => setCurrentTab('forms')}
+              className={`px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-xs ${currentTab === 'forms'
+                  ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
+                  : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
+                }`}
+            >
+
+              <span>{L('නව අයදුම්පත් (Permit Catalog)', 'Apply for Permits', 'விண்ணப்பங்கள்')}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCurrentTab('my-applications')}
+              className={`px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 flex items-center gap-2.5 cursor-pointer shadow-xs ${currentTab === 'my-applications'
+                  ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
+                  : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
+                }`}
+            >
+
+              <span>{L('මගේ අයදුම්පත්', 'My Applications', 'எனது விண்ணப்பங்கள்')}</span>
+              <span
+                className={`text-[11px] font-mono px-2 py-0.5 rounded-full font-bold ${currentTab === 'my-applications'
+                    ? 'bg-white/20 text-white border border-white/20'
+                    : 'bg-[#8C1538]/10 text-[#8C1538]'
+                  }`}
+              >
+                {myApplications.length}
+              </span>
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Applications Grid */}
-      {filteredApplications.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center my-6">
-          <div className="text-4xl mb-3">🔍</div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">
-            {L('අයදුම්පත් කිසිවක් හමු නොවිණි', 'No applications found', 'விண்ணப்பங்கள் எதுவும் காணப்படவில்லை')}
-          </h3>
-          <p className="text-sm text-gray-500">
-            {L(
-              'ඔබගේ සෙවුමට ගැළපෙන අයදුම්පත් නොමැත. වෙනත් වචනයක් උත්සාහ කරන්න.',
-              'No municipal applications match your search query. Try another term.',
-              'உங்கள் தேடலுக்கு பொருந்தக்கூடிய விண்ணப்பங்கள் எதுவும் இல்லை.'
-            )}
-          </p>
-          <button
-            type="button"
-            onClick={() => setSearchTerm('')}
-            className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
-          >
-            {L('පෙරහන ඉවත් කරන්න', 'Clear filter', 'வடிகட்டலை அகற்று')}
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredApplications.map((application) => (
-            <div
-              key={application.id}
-              onClick={() => openApplicationModal(application.id, application.title)}
-              className="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-xs hover:shadow-lg hover:border-[#8C1538]/50 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    {application.icon}
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    {application.badgeText && (
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-[#8C1538]/10 text-[#8C1538] px-2.5 py-0.5 rounded-full">
-                        {application.badgeText}
-                      </span>
-                    )}
-                    {application.formCode && (
-                      <span className="text-[11px] font-mono font-medium text-gray-500">
-                        {application.formCode}
-                      </span>
-                    )}
-                  </div>
+        {/* Main Content Area Based on Active Tab */}
+        {currentTab === 'my-applications' ? (
+          <MyApplicationsDashboard
+            applications={myApplications}
+            onNavigateToForms={() => setCurrentTab('forms')}
+            L={L}
+          />
+        ) : (
+          <>
+            {/* Filter Applications Search Bar */}
+            <div className="mb-8">
+              <label
+                htmlFor="application-search"
+                className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 block select-none"
+              >
+                {L('අයදුම්පත් පෙරහන', 'FILTER APPLICATIONS', 'விண்ணப்பங்களை வடிகட்டவும்')}
+              </label>
+              <div className="relative w-full">
+                <input
+                  id="application-search"
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder={L('අයදුම්පත් සොයන්න...', 'Search applications...', 'விண்ணப்பங்களைத் தேடுங்கள்...')}
+                  className="w-full bg-[#f3f4f6] border border-transparent focus:border-gray-300 focus:bg-white rounded-xl py-3.5 pl-4 pr-11 text-sm text-gray-800 placeholder-gray-500 focus:outline-none transition-all duration-200 shadow-2xs"
+                />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <SearchIcon />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#8C1538] transition-colors leading-snug">
-                  {application.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
-                  {application.desc}
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#8C1538] group-hover:translate-x-1 transition-transform">
-                <span>{L('මාර්ගගතව අයදුම් කරන්න', 'Apply Online', 'ஆன்லைனில் விண்ணப்பிக்கவும்')}</span>
-                <span>→</span>
               </div>
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* Application Form Modal Switcher */}
-      {selectedAppId === 'promotional-ad-permit' ? (
-        <PromotionalAdFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          applicationTitle={selectedAppTitle}
-        />
-      ) : selectedAppId === 'waste-removal-permit' ? (
-        <WasteRemovalFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      ) : selectedAppId === 'road-excavation-permit' ? (
-        <RoadExcavationFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      ) : selectedAppId === 'gully-bowser-service' ? (
-        <GullyBowserFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      ) : selectedAppId === 'business-tax-permit' ? (
-        <BusinessTaxFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      ) : (
-        <ApplicationFormModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          applicationTitle={selectedAppTitle}
-        />
-      )}
+            {/* Applications Grid */}
+            {filteredApplications.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center my-6">
+                <div className="text-4xl mb-3">🔍</div>
+                <h3 className="text-lg font-bold text-gray-800 mb-1">
+                  {L('අයදුම්පත් කිසිවක් හමු නොවිණි', 'No applications found', 'விண்ணப்பங்கள் எதுவும் காணப்படவில்லை')}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {L(
+                    'ඔබගේ සෙවුමට ගැළපෙන අයදුම්පත් නොමැත. වෙනත් වචනයක් උත්සාහ කරන්න.',
+                    'No municipal applications match your search query. Try another term.',
+                    'உங்கள் தேடலுக்கு பொருந்தக்கூடிய விண்ணப்பங்கள் எதுவும் இல்லை.'
+                  )}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
+                >
+                  {L('පෙරහන ඉවත් කරන්න', 'Clear filter', 'வடிகட்டலை அகற்று')}
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredApplications.map((application) => (
+                  <div
+                    key={application.id}
+                    onClick={() => openApplicationModal(application.id, application.title)}
+                    className="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-xs hover:shadow-lg hover:border-[#8C1538]/50 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3.5 sm:mb-5">
+                        <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                          {application.icon}
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          {application.badgeText && (
+                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#8C1538]/10 text-[#8C1538] px-2 sm:px-2.5 py-0.5 rounded-full">
+                              {application.badgeText}
+                            </span>
+                          )}
+                          {application.formCode && (
+                            <span className="text-[10px] sm:text-[11px] font-mono font-medium text-gray-500">
+                              {application.formCode}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1.5 sm:mb-2 group-hover:text-[#8C1538] transition-colors leading-snug">
+                        {application.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 sm:mb-6">
+                        {application.desc}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#8C1538] group-hover:translate-x-1 transition-transform">
+                      <span>{L('මාර්ගගතව අයදුම් කරන්න', 'Apply Online', 'ஆன்லைனில் விண்ணப்பிக்கவும்')}</span>
+                      <span>→</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Application Form Modal Switcher */}
+        {selectedAppId === 'promotional-ad-permit' ? (
+          <PromotionalAdFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            applicationTitle={selectedAppTitle}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        ) : selectedAppId === 'waste-removal-permit' ? (
+          <WasteRemovalFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        ) : selectedAppId === 'road-excavation-permit' ? (
+          <RoadExcavationFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        ) : selectedAppId === 'gully-bowser-service' ? (
+          <GullyBowserFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        ) : selectedAppId === 'business-tax-permit' ? (
+          <BusinessTaxFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        ) : (
+          <ApplicationFormModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            applicationTitle={selectedAppTitle}
+            onAddApplication={(appData: any) => {
+              handleAddSubmittedApplication(appData);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
 export default Applications;
+
 
