@@ -45,8 +45,8 @@ const HelpCircleIcon = () => (
 const UserCircleIcon = () => (
   <svg className="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"></circle>
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-    <circle cx="12" cy="7" r="4"></circle>
+    <circle cx="12" cy="10" r="3"></circle>
+    <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>
   </svg>
 );
 
@@ -70,12 +70,14 @@ const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const isAuthPage = !isLoggedIn || location.pathname === '/login' || location.pathname === '/register';
 
   // Automatically close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setProfileMenuOpen(false);
   }, [location.pathname]);
 
   return (
@@ -225,14 +227,51 @@ const Header = () => {
               <HelpCircleIcon />
             </button>
 
-            {/* User Account Link */}
-            <Link
-              to="/profile"
-              aria-label="User profile"
-              className={`text-white hover:text-white/80 hover:bg-white/10 p-1.5 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-white/40 ${location.pathname === '/profile' ? 'bg-white/20 ring-2 ring-white/60' : ''}`}
-            >
-              <UserCircleIcon />
-            </Link>
+            {/* User Account Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="User profile menu"
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                className={`text-white hover:text-white/80 hover:bg-white/10 w-9 h-9 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/40 ${(profileMenuOpen || location.pathname === '/profile') ? 'bg-white/20 ring-2 ring-white/60' : ''}`}
+              >
+                <UserCircleIcon />
+              </button>
+
+              {/* Dropdown Menu */}
+              {profileMenuOpen && (
+                <>
+                  {/* Backdrop for closing when clicking outside */}
+                  <div 
+                    className="fixed inset-0 z-40"
+                    onClick={() => setProfileMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-fadeIn text-gray-800">
+                    <div className="px-4 py-2.5 border-b border-gray-50 mb-1">
+                      <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'Citizen'}</p>
+                      <p className="text-xs text-gray-500 truncate mt-0.5">{user?.email || 'citizen@example.com'}</p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="block px-4 py-2 text-sm font-medium hover:bg-gray-50 hover:text-[#8C1538] transition-colors"
+                    >
+                      {t('nav.profile', 'Profile')}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setProfileMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                    >
+                      {t('nav.logout', 'Log out')}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Navigation Drawer / Dropdown */}

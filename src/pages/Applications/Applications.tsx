@@ -297,16 +297,16 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
     <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Top Header & View Switcher */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-6 pb-4 border-b border-gray-200/80">
-          <div className="space-y-1.5 sm:space-y-2 max-w-2xl">
-            <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
+          <div className="space-y-2 max-w-2xl">
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
               {L(
                 'ඩිජිටල් පුරවැසි අයදුම්පත් හා බලපත්‍ර පැනලය',
                 'Digital Citizen Applications & Permits',
                 'டிஜிட்டல் குடிமக்கள் விண்ணப்பங்கள்'
               )}
             </h1>
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
               {L(
                 'හෝමාගම ප්‍රාදේශීය සභාවේ නිල අයදුම්පත් හා අවසර පත්‍ර මාර්ගගතව ඉදිරිපත් කරන්න හෝ ඉදිරිපත් කළ අයදුම්පත් වල ප්‍රගතිය නිරීක්ෂණය කරන්න.',
                 'Submit formal applications online or switch to My Applications to view entered details and track live progress stages.',
@@ -316,7 +316,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
           </div>
 
           {/* View Switcher Buttons */}
-          <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setCurrentTab('forms')}
