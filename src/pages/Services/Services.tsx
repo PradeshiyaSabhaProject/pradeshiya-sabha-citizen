@@ -71,27 +71,6 @@ const Services = () => {
       desc: t('home.letterDesc', 'Real-time application tracking.'),
       icon: <LettersIcon />,
       onClick: () => navigate('/letters')
-    },
-    {
-      id: 'utility',
-      title: 'Utility Request',
-      desc: 'Water, drainage and connections.',
-      icon: <UtilityIcon />,
-      onClick: () => alert('Opening Utility Request...')
-    },
-    {
-      id: 'assets',
-      title: 'Public Assets',
-      desc: 'Reserve community halls & parks.',
-      icon: <AssetsIcon />,
-      onClick: () => navigate('/appointments?tab=facility')
-    },
-    {
-      id: 'waste',
-      title: 'Waste Tracker',
-      desc: 'Collection schedules & updates.',
-      icon: <WasteIcon />,
-      onClick: () => alert('Opening Waste Tracker...')
     }
   ];
 
@@ -114,23 +93,7 @@ const Services = () => {
           </p>
         </div>
 
-        {/* Right Action Buttons */}
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            type="button"
-            onClick={() => alert('Starting a new citizen request...')}
-            className="bg-[#8C1538] hover:bg-[#73102d] text-white px-5 py-2.5 rounded-md font-semibold text-sm shadow-xs transition-all duration-200 cursor-pointer hover:shadow-sm"
-          >
-            {t('services.startRequest', 'Start New Request')}
-          </button>
-          <button
-            type="button"
-            onClick={() => alert('Viewing municipal documents and guides...')}
-            className="bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 cursor-pointer shadow-2xs hover:bg-gray-50"
-          >
-            {t('services.viewDocs', 'View Documents')}
-          </button>
-        </div>
+
       </div>
 
       {/* Filter Assets Search Bar */}

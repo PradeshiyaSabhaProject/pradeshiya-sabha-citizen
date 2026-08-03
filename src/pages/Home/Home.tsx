@@ -195,29 +195,6 @@ const Home = () => {
               <p className="text-xs text-gray-500 leading-relaxed">{t('home.letterDesc', 'Real-time application tracking.')}</p>
             </div>
 
-            <div onClick={() => alert('Opening Utility Request...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
-              <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <UtilityIcon />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Utility Request</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Water, drainage and connections.</p>
-            </div>
-
-            <div onClick={() => navigate('/appointments?tab=facility')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
-              <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <AssetsIcon />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Public Assets</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Reserve community halls & parks.</p>
-            </div>
-
-            <div onClick={() => alert('Opening Waste Tracker...')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
-              <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <WasteIcon />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">Waste Tracker</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">Collection schedules & updates.</p>
-            </div>
           </div>
         </div>
 
@@ -279,9 +256,9 @@ const Home = () => {
             <div key={idx} className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col group">
               {/* Card Image Banner */}
               <div className="h-48 relative overflow-hidden bg-gray-900">
-                <img 
-                  src={pradeshiyaImg} 
-                  alt={news.title} 
+                <img
+                  src={pradeshiyaImg}
+                  alt={news.title}
                   className="w-full h-full object-cover object-center opacity-60 group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${news.imgTint} mix-blend-multiply`} />
