@@ -5,8 +5,41 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
   if (!isOpen || !booking) return null;
 
   const isConfirmed = booking.status === 'CONFIRMED' || booking.status === 'RESERVED';
-  const isPending = booking.status === 'PENDING';
   const isCancelled = booking.status === 'CANCELLED';
+
+  // Step 3 timeline values
+  let step3Description = 'Awaiting final administrative sign-off and slot reservation.';
+  if (isConfirmed) {
+    step3Description = 'Verification check completed successfully.';
+  } else if (isCancelled) {
+    step3Description = 'Process halted due to cancellation.';
+  }
+
+  let step3Status = 'active';
+  if (isConfirmed) {
+    step3Status = 'completed';
+  } else if (isCancelled) {
+    step3Status = 'cancelled';
+  }
+
+  // Step 4 timeline values
+  let step4Description = 'Awaiting approval confirmation.';
+  if (isConfirmed) {
+    if (booking.type === 'appointment') {
+      step4Description = `Confirmed! Your appointment is scheduled for ${booking.date} at ${booking.time}`;
+    } else {
+      step4Description = `Reserved! Your facility booking is confirmed for ${booking.date} (${booking.time || 'Full Day'}). Price: ${booking.price || 'Paid'}`;
+    }
+  } else if (isCancelled) {
+    step4Description = booking.statusMessage || 'This booking has been cancelled.';
+  }
+
+  let step4Status = 'upcoming';
+  if (isConfirmed) {
+    step4Status = 'completed';
+  } else if (isCancelled) {
+    step4Status = 'cancelled';
+  }
 
   // Dynamic Timeline steps based on the booking configuration
   const steps = [
@@ -26,23 +59,13 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
     },
     {
       title: 'Status is Pending',
-      description: isConfirmed
-        ? 'Verification check completed successfully.'
-        : isCancelled
-          ? 'Process halted due to cancellation.'
-          : 'Awaiting final administrative sign-off and slot reservation.',
-      status: isConfirmed ? 'completed' : (isCancelled ? 'cancelled' : 'active'),
+      description: step3Description,
+      status: step3Status,
     },
     {
       title: isCancelled ? 'Request Cancelled' : 'Approved',
-      description: isConfirmed
-        ? (booking.type === 'appointment'
-          ? `Confirmed! Your appointment is scheduled for ${booking.date} at ${booking.time}`
-          : `Reserved! Your facility booking is confirmed for ${booking.date} (${booking.time || 'Full Day'}). Price: ${booking.price || 'Paid'}`)
-        : isCancelled
-          ? (booking.statusMessage || 'This booking has been cancelled.')
-          : 'Awaiting approval confirmation.',
-      status: isConfirmed ? 'completed' : (isCancelled ? 'cancelled' : 'upcoming'),
+      description: step4Description,
+      status: step4Status,
     }
   ];
 
@@ -57,7 +80,11 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
             </span>
             <h3 className="text-lg font-extrabold text-gray-800 mt-1">Booking #PS-BK-${booking.id}</h3>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl font-bold p-1 leading-none cursor-pointer">
+          <button 
+            type="button"
+            onClick={onClose} 
+            className="text-gray-400 hover:text-gray-600 text-2xl font-bold p-1 leading-none cursor-pointer"
+          >
             &times;
           </button>
         </div>
@@ -101,7 +128,7 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }) => {
               const isLast = index === steps.length - 1;
 
               return (
-                <div key={index} className="flex gap-4 items-start relative">
+                <div key={step.title} className="flex gap-4 items-start relative">
                   {/* Left Column: Bullet and Connector Line */}
                   <div className="flex flex-col items-center shrink-0">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 ${iconBg} z-10 bg-white shadow-xs`}>

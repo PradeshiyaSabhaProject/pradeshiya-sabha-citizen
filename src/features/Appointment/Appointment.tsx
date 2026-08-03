@@ -74,34 +74,12 @@ const Appointment = () => {
     }
   }, [location.pathname, location.search, setActiveTab]);
 
-  const handleFacilityReserve = (facility) => {
-    // Add facility reservation directly to user bookings
-    const confirmed = window.confirm(`Do you want to reserve ${facility.title}?`);
-    if (confirmed) {
-      const newBooking = {
-        type: 'facility',
-        facilityName: facility.title,
-        location: facility.subtitle.split(',').slice(0, 2).join(',') || facility.title,
-        date: 'Oct 30 - 31, 2026', // Mock date range
-        time: 'Full Day Event',
-        status: 'RESERVED',
-        statusMessage: `Amenities Included: ${facility.amenities.join(', ')}`,
-        price: `${facility.basePrice} Paid`,
-        avatar: '🏢'
-      };
-      // Trigger a confirm or just add it
-      appointmentService?.createBooking(newBooking).then(() => {
-        // Simple mock reload
-        window.location.reload();
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       {/* Inner Navigation Tabs (For debugging/testing switching) */}
       <div className="max-w-6xl mx-auto mb-6 flex justify-start border-b border-gray-250">
         <button
+          type="button"
           onClick={() => setActiveTab('overview')}
           className={`px-4 py-2.5 text-xs font-bold transition-all uppercase tracking-wide border-b-2 ${
             activeTab === 'overview' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
@@ -110,6 +88,7 @@ const Appointment = () => {
           {t('appointments.tab.overview', 'Portal Overview')}
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('bookings')}
           className={`px-4 py-2.5 text-xs font-bold transition-all uppercase tracking-wide border-b-2 ${
             activeTab === 'bookings' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
@@ -118,6 +97,7 @@ const Appointment = () => {
           {t('appointments.tab.bookings', 'My Bookings')}
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('schedule')}
           className={`px-4 py-2.5 text-xs font-bold transition-all uppercase tracking-wide border-b-2 ${
             activeTab === 'schedule' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'
@@ -126,6 +106,7 @@ const Appointment = () => {
           {t('appointments.tab.schedule', 'Schedule Appointment')}
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('facility')}
           className={`px-4 py-2.5 text-xs font-bold transition-all uppercase tracking-wide border-b-2 ${
             activeTab === 'facility' ? 'border-red-850 text-red-850' : 'border-transparent text-gray-400 hover:text-gray-600'

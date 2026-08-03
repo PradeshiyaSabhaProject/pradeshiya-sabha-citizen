@@ -30,6 +30,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
           {/* Card 1: Book Appointment */}
           <div className="relative border border-gray-150 rounded-xl p-6 bg-white hover:shadow-md transition-shadow flex flex-col justify-between h-48">
             <button 
+              type="button"
               onClick={() => onNavigate('schedule')}
               className="absolute top-4 right-4 text-xs font-semibold text-gray-500 hover:text-red-800 transition-colors"
             >
@@ -47,6 +48,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
               </p>
             </div>
             <button 
+              type="button"
               onClick={() => onNavigate('schedule')}
               className="mt-2 text-xs font-bold text-red-800 text-left hover:underline"
             >
@@ -68,6 +70,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
               </p>
             </div>
             <button 
+              type="button"
               onClick={() => onNavigate('facility')}
               className="text-xs font-bold text-red-800 text-left hover:underline"
             >
@@ -89,6 +92,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
               </p>
             </div>
             <button 
+              type="button"
               onClick={() => onNavigate('bookings')}
               className="text-xs font-bold text-red-800 text-left hover:underline"
             >
@@ -103,6 +107,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-gray-800">Upcoming Bookings & Reservations</h3>
           <button 
+            type="button"
             onClick={() => onNavigate('bookings')}
             className="text-xs font-bold text-gray-500 hover:text-red-800 transition-colors uppercase tracking-wider"
           >
@@ -117,9 +122,10 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingBookings.map(b => (
-              <div 
+              <button 
                 key={b.id} 
-                className="flex items-start justify-between border border-gray-150 rounded-xl p-5 bg-white relative hover:border-gray-300 transition-colors cursor-pointer"
+                type="button"
+                className="w-full flex items-start justify-between border border-gray-150 rounded-xl p-5 bg-white relative hover:border-gray-300 transition-colors cursor-pointer text-left"
                 onClick={() => onNavigate('bookings')}
               >
                 <div className="flex gap-4">
@@ -149,7 +155,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
                     {b.status}
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         )}

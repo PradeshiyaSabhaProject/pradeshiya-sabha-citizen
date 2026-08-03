@@ -73,6 +73,26 @@ export const useAppointments = () => {
     ? officials.filter(o => o.departmentId === selectedDept.id)
     : officials;
 
+  // Compute available time slots based on selected official and date
+  const computedTimeSlots = timeSlots.map(slot => {
+    const isBooked = bookingsList.some(booking => 
+      booking.type === 'appointment' &&
+      booking.officialName === selectedOfficial?.name &&
+      booking.date === `Oct ${selectedDate}, 2026` &&
+      booking.time === slot.time &&
+      booking.status !== 'CANCELLED'
+    );
+    return {
+      ...slot,
+      available: !isBooked
+    };
+  });
+
+  // Reset selected time slot if official or date changes to avoid invalid selections
+  useEffect(() => {
+    setSelectedTimeSlot(null);
+  }, [selectedOfficial, selectedDate]);
+
   // Filter facilities
   const filteredFacilities = facilities.filter(fac => {
     const matchesSearch = fac.title.toLowerCase().includes(facilitySearch.toLowerCase()) || 
@@ -167,7 +187,7 @@ export const useAppointments = () => {
     departments,
     officials: filteredOfficials,
     facilities,
-    timeSlots,
+    timeSlots: computedTimeSlots,
     loading,
 
     // Wizard
