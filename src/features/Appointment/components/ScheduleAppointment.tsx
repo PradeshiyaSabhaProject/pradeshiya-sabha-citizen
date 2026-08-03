@@ -319,7 +319,7 @@ const ScheduleAppointment = ({
                 </span>
                 <label 
                   htmlFor="appointment-file"
-                  className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer hover:border-red-800 focus-within:border-red-800 focus-within:ring-1 focus-within:ring-red-800 text-center block"
+                  className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer hover:border-red-800 focus-within:border-red-800 focus-within:ring-1 focus-within:ring-red-800 text-center"
                 >
                   <span className="text-xl mb-1">📤</span>
                   <div className="text-xs text-gray-600 text-center">
