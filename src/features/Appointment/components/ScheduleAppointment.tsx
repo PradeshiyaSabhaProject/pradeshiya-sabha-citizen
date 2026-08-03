@@ -1,3 +1,5 @@
+import React from 'react';
+
 const ScheduleAppointment = ({
   departments,
   officials,
@@ -232,31 +234,51 @@ const ScheduleAppointment = ({
                   Available Slots for Oct {selectedDate}th
                 </h4>
                 
-                <div className="relative">
-                  <select
-                    value={selectedTimeSlot?.id || ''}
-                    onChange={(e) => {
-                      const selected = timeSlots.find(s => s.id === e.target.value);
-                      setSelectedTimeSlot(selected || null);
-                    }}
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3.5 pr-10 text-xs font-bold text-gray-700 focus:outline-none focus:ring-1 focus:ring-red-800 focus:border-red-800 cursor-pointer shadow-2xs appearance-none"
-                  >
-                    <option value="" disabled>Select a Time Slot</option>
-                    {timeSlots.map(slot => (
-                      <option 
-                        key={slot.id} 
-                        value={slot.id}
-                        disabled={!slot.available}
-                      >
-                        {slot.time} {!slot.available ? '(Booked)' : ''}
-                      </option>
-                    ))}
-                  </select>
-                  {/* Chevron Icon */}
-                  <div className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none text-gray-400">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                  {timeSlots.map(slot => {
+                    const isSelected = selectedTimeSlot?.id === slot.id;
+                    if (slot.available) {
+                      return (
+                        <div
+                          key={slot.id}
+                          onClick={() => setSelectedTimeSlot(slot)}
+                          className={`w-full border rounded-lg px-4 py-3 text-xs font-bold transition-all cursor-pointer flex justify-between items-center ${
+                            isSelected
+                              ? 'border-red-800 bg-red-50/10 text-red-800 ring-1 ring-red-800'
+                              : 'border-gray-250 bg-white text-gray-700 hover:border-gray-300'
+                          }`}
+                        >
+                          <span>{slot.time}</span>
+                          {isSelected && (
+                            <svg className="w-4 h-4 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          key={slot.id}
+                          className="w-full border border-gray-250 bg-gray-200 text-gray-400 rounded-lg px-4 py-3 text-xs font-bold cursor-not-allowed flex justify-between items-center opacity-85"
+                        >
+                          <span className="line-through">{slot.time}</span>
+                          <span className="text-[11px] font-bold text-gray-500">Booked</span>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+
+                {/* Legend */}
+                <div className="flex gap-4 items-center justify-start mt-4 px-1">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-3.5 border border-gray-300 bg-white rounded-sm"></span>
+                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Available</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-3.5 border border-gray-300 bg-gray-200 rounded-sm"></span>
+                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Booked</span>
                   </div>
                 </div>
               </div>
