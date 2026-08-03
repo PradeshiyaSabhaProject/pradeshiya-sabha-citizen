@@ -326,6 +326,7 @@ const Payments = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
             <div className="space-y-2 max-w-2xl">
               <button
+                type="button"
                 onClick={() => { setActiveCategory(null); setSelectedSubService(null); }}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#8C1538] hover:text-[#6a102a] mb-2 cursor-pointer transition-colors"
               >
