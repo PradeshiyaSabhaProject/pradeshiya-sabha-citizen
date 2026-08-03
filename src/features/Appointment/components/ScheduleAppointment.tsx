@@ -1,5 +1,43 @@
 import React from 'react';
 
+const calendarDays = [
+  { id: 'prev-27', day: 27, currentMonth: false },
+  { id: 'prev-28', day: 28, currentMonth: false },
+  { id: 'prev-29', day: 29, currentMonth: false },
+  { id: 'prev-30', day: 30, currentMonth: false },
+  { id: 'curr-1', day: 1, currentMonth: true },
+  { id: 'curr-2', day: 2, currentMonth: true },
+  { id: 'curr-3', day: 3, currentMonth: true },
+  { id: 'curr-4', day: 4, currentMonth: true },
+  { id: 'curr-5', day: 5, currentMonth: true, selected: true },
+  { id: 'curr-6', day: 6, currentMonth: true },
+  { id: 'curr-7', day: 7, currentMonth: true },
+  { id: 'curr-8', day: 8, currentMonth: true },
+  { id: 'curr-9', day: 9, currentMonth: true },
+  { id: 'curr-10', day: 10, currentMonth: true },
+  { id: 'curr-11', day: 11, currentMonth: true, hasDots: true },
+  { id: 'curr-12', day: 12, currentMonth: true },
+  { id: 'curr-13', day: 13, currentMonth: true },
+  { id: 'curr-14', day: 14, currentMonth: true },
+  { id: 'curr-15', day: 15, currentMonth: true },
+  { id: 'curr-16', day: 16, currentMonth: true },
+  { id: 'curr-17', day: 17, currentMonth: true },
+  { id: 'curr-18', day: 18, currentMonth: true },
+  { id: 'curr-19', day: 19, currentMonth: true },
+  { id: 'curr-20', day: 20, currentMonth: true },
+  { id: 'curr-21', day: 21, currentMonth: true },
+  { id: 'curr-22', day: 22, currentMonth: true },
+  { id: 'curr-23', day: 23, currentMonth: true },
+  { id: 'curr-24', day: 24, currentMonth: true },
+  { id: 'curr-25', day: 25, currentMonth: true },
+  { id: 'curr-26', day: 26, currentMonth: true },
+  { id: 'curr-27', day: 27, currentMonth: true },
+  { id: 'curr-28', day: 28, currentMonth: true },
+  { id: 'curr-29', day: 29, currentMonth: true },
+  { id: 'curr-30', day: 30, currentMonth: true },
+  { id: 'curr-31', day: 31, currentMonth: true },
+];
+
 const ScheduleAppointment = ({
   departments,
   officials,
@@ -19,44 +57,6 @@ const ScheduleAppointment = ({
   onSubmit
 }) => {
 
-  const calendarDays = [
-    { day: 27, currentMonth: false },
-    { day: 28, currentMonth: false },
-    { day: 29, currentMonth: false },
-    { day: 30, currentMonth: false },
-    { day: 1, currentMonth: true },
-    { day: 2, currentMonth: true },
-    { day: 3, currentMonth: true },
-    { day: 4, currentMonth: true },
-    { day: 5, currentMonth: true, selected: true },
-    { day: 6, currentMonth: true },
-    { day: 7, currentMonth: true },
-    { day: 8, currentMonth: true },
-    { day: 9, currentMonth: true },
-    { day: 10, currentMonth: true },
-    { day: 11, currentMonth: true, hasDots: true },
-    { day: 12, currentMonth: true },
-    { day: 13, currentMonth: true },
-    { day: 14, currentMonth: true },
-    { day: 15, currentMonth: true },
-    { day: 16, currentMonth: true },
-    { day: 17, currentMonth: true },
-    { day: 18, currentMonth: true },
-    { day: 19, currentMonth: true },
-    { day: 20, currentMonth: true },
-    { day: 21, currentMonth: true },
-    { day: 22, currentMonth: true },
-    { day: 23, currentMonth: true },
-    { day: 24, currentMonth: true },
-    { day: 25, currentMonth: true },
-    { day: 26, currentMonth: true },
-    { day: 27, currentMonth: true },
-    { day: 28, currentMonth: true },
-    { day: 29, currentMonth: true },
-    { day: 30, currentMonth: true },
-    { day: 31, currentMonth: true },
-  ];
-
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold text-gray-800 border-b border-gray-150 pb-3">
@@ -75,20 +75,23 @@ const ScheduleAppointment = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {departments.map(dept => {
             const isSelected = selectedDept?.id === dept.id;
+
+            const handleSelectDept = () => {
+              setSelectedDept(dept);
+              const associatedOfficials = officials.filter(o => o.departmentId === dept.id);
+              if (associatedOfficials.length > 0) {
+                setSelectedOfficial(associatedOfficials[0]);
+              } else {
+                setSelectedOfficial(null);
+              }
+            };
+
             return (
-              <div
+              <button
                 key={dept.id}
-                onClick={() => {
-                  setSelectedDept(dept);
-                  // Auto-select first official in that department if available
-                  const associatedOfficials = officials.filter(o => o.departmentId === dept.id);
-                  if (associatedOfficials.length > 0) {
-                    setSelectedOfficial(associatedOfficials[0]);
-                  } else {
-                    setSelectedOfficial(null);
-                  }
-                }}
-                className={`border rounded-lg p-5 cursor-pointer flex justify-between items-start transition-all ${
+                type="button"
+                onClick={handleSelectDept}
+                className={`w-full border rounded-lg p-5 cursor-pointer flex justify-between items-start transition-all text-left ${
                   isSelected
                     ? 'border-red-800 bg-red-50/10 text-red-800 ring-1 ring-red-800'
                     : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'
@@ -107,7 +110,7 @@ const ScheduleAppointment = ({
                     </svg>
                   )}
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -134,10 +137,11 @@ const ScheduleAppointment = ({
                 officials.map(official => {
                   const isSelected = selectedOfficial?.id === official.id;
                   return (
-                    <div
+                    <button
                       key={official.id}
+                      type="button"
                       onClick={() => setSelectedOfficial(official)}
-                      className={`border rounded-lg p-4 cursor-pointer flex items-center justify-between transition-all ${
+                      className={`w-full border rounded-lg p-4 cursor-pointer flex items-center justify-between transition-all text-left ${
                         isSelected
                           ? 'border-red-800 bg-red-50/10 text-red-800 ring-1 ring-red-800'
                           : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -163,7 +167,7 @@ const ScheduleAppointment = ({
                           </svg>
                         )}
                       </div>
-                    </div>
+                    </button>
                   );
                 })
               )}
@@ -183,8 +187,8 @@ const ScheduleAppointment = ({
                 <div className="flex justify-between items-center mb-4 px-1">
                   <span className="text-sm font-bold text-gray-800">October 2026</span>
                   <div className="flex gap-2">
-                    <button className="text-gray-400 hover:text-gray-600 p-1 font-extrabold text-sm">&lt;</button>
-                    <button className="text-gray-400 hover:text-gray-600 p-1 font-extrabold text-sm">&gt;</button>
+                    <button type="button" className="text-gray-400 hover:text-gray-600 p-1 font-extrabold text-sm">&lt;</button>
+                    <button type="button" className="text-gray-400 hover:text-gray-600 p-1 font-extrabold text-sm">&gt;</button>
                   </div>
                 </div>
 
@@ -199,20 +203,24 @@ const ScheduleAppointment = ({
                 </div>
 
                 <div className="grid grid-cols-7 gap-y-2 text-center text-xs">
-                  {calendarDays.map((d, index) => {
+                  {calendarDays.map((d) => {
                     const isDaySelected = selectedDate === d.day && d.currentMonth;
+                    
+                    let buttonClass = 'text-gray-800 hover:bg-gray-100';
+                    if (!d.currentMonth) {
+                      buttonClass = 'text-gray-300 cursor-default';
+                    } else if (isDaySelected) {
+                      buttonClass = 'bg-red-850 text-white shadow-sm';
+                    }
+
                     return (
-                      <div key={index} className="flex flex-col items-center justify-center h-8 relative">
+                      <div key={d.id} className="flex flex-col items-center justify-center h-8 relative">
                         <button
                           type="button"
                           onClick={() => {
                             if (d.currentMonth) setSelectedDate(d.day);
                           }}
-                          className={`w-7 h-7 rounded-full flex items-center justify-center font-bold transition-colors ${
-                            !d.currentMonth ? 'text-gray-300 cursor-default' :
-                            isDaySelected ? 'bg-red-850 text-white shadow-sm' :
-                            'text-gray-800 hover:bg-gray-100'
-                          }`}
+                          className={`w-7 h-7 rounded-full flex items-center justify-center font-bold transition-colors ${buttonClass}`}
                         >
                           {d.day}
                         </button>
@@ -239,10 +247,11 @@ const ScheduleAppointment = ({
                     const isSelected = selectedTimeSlot?.id === slot.id;
                     if (slot.available) {
                       return (
-                        <div
+                        <button
                           key={slot.id}
+                          type="button"
                           onClick={() => setSelectedTimeSlot(slot)}
-                          className={`w-full border rounded-lg px-4 py-3 text-xs font-bold transition-all cursor-pointer flex justify-between items-center ${
+                          className={`w-full border rounded-lg px-4 py-3 text-xs font-bold transition-all cursor-pointer flex justify-between items-center text-left ${
                             isSelected
                               ? 'border-red-800 bg-red-50/10 text-red-800 ring-1 ring-red-800'
                               : 'border-gray-250 bg-white text-gray-700 hover:border-gray-300'
@@ -254,7 +263,7 @@ const ScheduleAppointment = ({
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           )}
-                        </div>
+                        </button>
                       );
                     } else {
                       return (
@@ -305,12 +314,12 @@ const ScheduleAppointment = ({
 
               {/* Upload field */}
               <div className="mt-2">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                <span className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
                   Attach Documents / Image (Optional)
-                </label>
-                <div 
-                  onClick={() => document.getElementById('appointment-file').click()}
-                  className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer hover:border-red-800"
+                </span>
+                <label 
+                  htmlFor="appointment-file"
+                  className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer hover:border-red-800 focus-within:border-red-800 focus-within:ring-1 focus-within:ring-red-800 text-center block"
                 >
                   <span className="text-xl mb-1">📤</span>
                   <div className="text-xs text-gray-600 text-center">
@@ -325,20 +334,21 @@ const ScheduleAppointment = ({
                         type="button" 
                         onClick={(e) => {
                           e.stopPropagation();
+                          e.preventDefault();
                           setAttachedFile(null);
                         }}
-                        className="text-gray-400 hover:text-red-750 font-bold ml-2 text-sm leading-none cursor-pointer"
+                        className="text-gray-400 hover:text-red-750 font-bold ml-2 text-sm leading-none cursor-pointer focus:outline-none"
                       >
                         &times;
                       </button>
                     </div>
                   )}
-                </div>
+                </label>
                 <input 
                   id="appointment-file" 
                   type="file" 
                   accept=".pdf,.doc,.docx,image/*" 
-                  className="hidden" 
+                  className="sr-only" 
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
                       setAttachedFile(e.target.files[0]);
@@ -348,6 +358,7 @@ const ScheduleAppointment = ({
               </div>
             </div>
             <button
+              type="button"
               onClick={onSubmit}
               className="w-full bg-red-850 hover:bg-red-900 text-white py-4 rounded-lg font-bold text-sm tracking-wider transition-colors shadow-md mt-6 shrink-0"
             >
