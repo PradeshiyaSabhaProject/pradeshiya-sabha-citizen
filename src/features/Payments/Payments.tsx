@@ -172,15 +172,30 @@ const Payments = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
+
+      let serviceTitle = t('payments.miscTitle', 'Miscellaneous');
+      if (selectedSubService) {
+        serviceTitle = selectedSubService.title;
+      } else if (activeCategory === 'utility') {
+        serviceTitle = t('payments.utilityTitle', 'Utility');
+      }
+
+      let paymentMethodName = 'Online Banking';
+      if (paymentMethod === 'card') {
+        paymentMethodName = 'Visa / Mastercard';
+      } else if (paymentMethod === 'lankaqr') {
+        paymentMethodName = 'LankaQR Direct';
+      }
+
       const newReceipt = {
         id: 'HPS-PAY-' + Math.floor(100000 + Math.random() * 900000),
         date: new Date().toLocaleDateString('en-CA'),
         time: new Date().toLocaleTimeString(),
-        service: selectedSubService ? selectedSubService.title : (activeCategory === 'utility' ? t('payments.utilityTitle', 'Utility') : t('payments.miscTitle', 'Miscellaneous')),
+        service: serviceTitle,
         accountNo: accountNumber,
         amount: `LKR ${Number(paymentAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
         payerName: payerName || 'Verified Citizen',
-        method: paymentMethod === 'card' ? 'Visa / Mastercard' : paymentMethod === 'lankaqr' ? 'LankaQR Direct' : 'Online Banking'
+        method: paymentMethodName
       };
       setReceiptData(newReceipt);
       setShowReceiptModal(true);
