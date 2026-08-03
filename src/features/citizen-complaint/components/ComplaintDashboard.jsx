@@ -189,6 +189,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
           </div>
           
           <button 
+            type="button"
             onClick={onNavigateToForm}
             className="bg-[#991b1b] hover:bg-[#7f1d1d] text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm flex items-center gap-2"
           >
@@ -221,6 +222,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                   </td>
                   <td className="p-4 text-center">
                     <button 
+                      type="button"
                       onClick={() => handleOpenModal(item)}
                       className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-red-800 transition-colors border border-gray-200 inline-block"
                       title="View Details"
@@ -250,6 +252,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
 
           <div className="flex items-center gap-1">
             <button
+              type="button"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className={`p-1.5 rounded-md border text-gray-600 bg-white transition-colors ${currentPage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100'}`}
@@ -261,6 +264,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
               const pageNum = index + 1;
               return (
                 <button
+                  type="button"
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
                   className={`w-7 h-7 font-semibold rounded-md transition-all ${
@@ -275,6 +279,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
             })}
 
             <button
+              type="button"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={`p-1.5 rounded-md border text-gray-600 bg-white transition-colors ${currentPage === totalPages ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100'}`}
@@ -295,7 +300,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
                 <span className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold">Complaint Details</span>
                 <h3 className="font-bold text-gray-900 text-xl">{selectedComplaint.id}</h3>
               </div>
-              <button onClick={() => setSelectedComplaint(null)} className="text-gray-400 hover:text-gray-700 text-xl leading-none">✕</button>
+              <button type="button" onClick={() => setSelectedComplaint(null)} className="text-gray-400 hover:text-gray-700 text-xl leading-none">✕</button>
             </div>
 
             <div className="p-6 space-y-5 text-sm text-gray-700 overflow-y-auto max-h-[70vh]">
@@ -473,13 +478,14 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
             <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
               {isEditing ? (
                 <>
-                  <button onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-medium text-xs bg-white hover:bg-gray-50">Cancel</button>
-                  <button onClick={handleSaveChanges} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded-lg">Save Changes</button>
+                  <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-medium text-xs bg-white hover:bg-gray-50">Cancel</button>
+                  <button type="button" onClick={handleSaveChanges} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded-lg">Save Changes</button>
                 </>
               ) : (
                 <>
                   {selectedComplaint.status === 'PENDING' && (
       <button 
+        type="button"
         onClick={() => setIsEditing(true)} 
         className="px-4 py-2 border border-amber-300 text-amber-700 hover:bg-amber-50 rounded-lg font-medium text-xs bg-white"
       >
@@ -488,7 +494,7 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
     )}
     
     {/* The close button should be normal. */}
-    <button onClick={() => setSelectedComplaint(null)} className="px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white font-medium text-xs rounded-lg">Close</button>
+    <button type="button" onClick={() => setSelectedComplaint(null)} className="px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white font-medium text-xs rounded-lg">Close</button>
   </>
               )}
             </div>
