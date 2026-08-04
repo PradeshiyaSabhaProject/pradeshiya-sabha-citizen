@@ -18,7 +18,7 @@ function generateOtp() {
 export default function OtpVerificationPage() {
   const { state, update, reset } = usePaymentFlow();
   const navigate = useNavigate();
-  const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
+  const [digits, setDigits] = useState(new Array(OTP_LENGTH).fill(""));
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [sentOtp, setSentOtp] = useState("");
@@ -46,7 +46,7 @@ export default function OtpVerificationPage() {
     update("otpCode", code);
     update("otpSentTo", state.mobile);
     setSecondsLeft(RESEND_SECONDS);
-    setDigits(Array(OTP_LENGTH).fill(""));
+    setDigits(new Array(OTP_LENGTH).fill(""));
     setError("");
   }
 
