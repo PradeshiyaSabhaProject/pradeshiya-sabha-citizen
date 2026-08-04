@@ -46,6 +46,54 @@ let bookings = [
     status: 'CANCELLED',
     statusMessage: 'Request was cancelled by the user on Oct 12th.',
     avatar: '🚜'
+  },
+  {
+    id: 5,
+    type: 'appointment',
+    officialName: 'Eng. R. Fernando',
+    role: 'Planning Department',
+    office: 'Planning Dept Room 104',
+    date: 'Oct 5, 2026',
+    time: '09:30 AM - 10:30 AM',
+    status: 'CONFIRMED',
+    statusMessage: '',
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face'
+  },
+  {
+    id: 6,
+    type: 'appointment',
+    officialName: 'Eng. R. Fernando',
+    role: 'Planning Department',
+    office: 'Planning Dept Room 104',
+    date: 'Oct 5, 2026',
+    time: '02:30 PM - 03:30 PM',
+    status: 'CONFIRMED',
+    statusMessage: '',
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face'
+  },
+  {
+    id: 7,
+    type: 'appointment',
+    officialName: 'Ms. Jayawardene',
+    role: 'Administrative Secretary',
+    office: 'Admin Sec Room 102',
+    date: 'Oct 5, 2026',
+    time: '09:30 AM - 10:30 AM',
+    status: 'CONFIRMED',
+    statusMessage: '',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face'
+  },
+  {
+    id: 8,
+    type: 'appointment',
+    officialName: 'Ms. Jayawardene',
+    role: 'Administrative Secretary',
+    office: 'Admin Sec Room 102',
+    date: 'Oct 5, 2026',
+    time: '02:30 PM - 03:30 PM',
+    status: 'CONFIRMED',
+    statusMessage: '',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face'
   }
 ];
 
@@ -153,7 +201,8 @@ const timeSlots = [
   { id: '3', time: '10:30 AM - 11:30 AM', available: true },
   { id: '4', time: '11:30 AM - 12:30 PM', available: true },
   { id: '5', time: '01:30 PM - 02:30 PM', available: true },
-  { id: '6', time: '02:30 PM - 03:30 PM', available: true }
+  { id: '6', time: '02:30 PM - 03:30 PM', available: true },
+  { id: '7', time: '03:30 PM - 04:30 PM', available: true }
 ];
 
 export const appointmentService = {

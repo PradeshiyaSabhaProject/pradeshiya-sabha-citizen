@@ -323,6 +323,7 @@ const ReserveFacility = ({
             <h2 className="text-xl font-bold mt-2 font-serif">Select Date & Time</h2>
           </div>
           <button 
+            type="button"
             onClick={() => setWizardStep('list')}
             className="text-white hover:text-gray-200 text-xs font-bold bg-black/20 hover:bg-black/35 px-4 py-2 rounded-lg transition-colors cursor-pointer"
           >
@@ -525,6 +526,7 @@ const ReserveFacility = ({
             {chosenTimeSlot ? `Selected: ${chosenDateObj.dateStr} at ${chosenTimeSlot.time}` : 'Please select date and time slot.'}
           </span>
           <button
+            type="button"
             onClick={handleNextStep}
             disabled={!chosenDateObj || !chosenTimeSlot}
             className={`px-6 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5 ${
@@ -562,6 +564,7 @@ const ReserveFacility = ({
             </h2>
           </div>
           <button 
+            type="button"
             onClick={() => setWizardStep('datetime')}
             className="text-white hover:text-gray-200 text-xs font-bold bg-black/20 hover:bg-black/35 px-4 py-2 rounded-lg transition-colors cursor-pointer"
           >
@@ -783,10 +786,14 @@ const ReserveFacility = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                    <label 
+                      htmlFor="death-certificate-no"
+                      className="block text-xs font-bold text-gray-700 mb-1"
+                    >
                       11. Death Certificate No. & Date (මරණ සහතිකයේ අංකය හා දිනය) <span className="text-red-850">*</span>
                     </label>
                     <input 
+                      id="death-certificate-no"
                       type="text"
                       value={deathCertificateNo}
                       onChange={(e) => setDeathCertificateNo(e.target.value)}
@@ -832,10 +839,14 @@ const ReserveFacility = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                    <label 
+                      htmlFor="registrar-address"
+                      className="block text-xs font-bold text-gray-700 mb-1"
+                    >
                       14. Registrar's Address / Office (ලේකම්ගේ ලිපිනය)
                     </label>
                     <input 
+                      id="registrar-address"
                       type="text"
                       value={registrarAddress}
                       onChange={(e) => setRegistrarAddress(e.target.value)}
@@ -845,9 +856,9 @@ const ReserveFacility = ({
                   </div>
 
                   <div className="md:col-span-2 border-t border-gray-100 pt-3">
-                    <label className="block text-xs font-bold text-gray-700 mb-2">
+                    <span className="block text-xs font-bold text-gray-700 mb-2">
                       15. Was an inquest or post-mortem conducted? (මරණය සම්බන්ධයෙන් පරීක්ෂණයක් පවත්වන ලද්දේ ද?)
-                    </label>
+                    </span>
                     <div className="flex gap-6 mb-3">
                       <label className="flex items-center gap-2 text-xs font-semibold text-gray-600 cursor-pointer">
                         <input 
@@ -905,9 +916,9 @@ const ReserveFacility = ({
                   </div>
 
                   <div className="md:col-span-2 border-t border-gray-100 pt-3">
-                    <label className="block text-xs font-bold text-gray-700 mb-2">
+                    <span className="block text-xs font-bold text-gray-700 mb-2">
                       16. Handing over body for cremation? (මෘත ශරීරය ආදාහනය කිරීමට ලබා දෙන්නේ ද?)
-                    </label>
+                    </span>
                     <div className="flex gap-6">
                       <label className="flex items-center gap-2 text-xs font-semibold text-gray-600 cursor-pointer">
                         <input 
@@ -1007,10 +1018,14 @@ const ReserveFacility = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                    <label 
+                      htmlFor="expected-attendance"
+                      className="block text-xs font-bold text-gray-700 mb-1"
+                    >
                       7. Expected Attendance (Persons)
                     </label>
                     <input 
+                      id="expected-attendance"
                       type="number"
                       value={expectedAttendance}
                       onChange={(e) => setExpectedAttendance(e.target.value)}
@@ -1111,6 +1126,7 @@ const ReserveFacility = ({
           </button>
           
           <button
+            type="button"
             onClick={handleSubmitBooking}
             className="bg-red-850 hover:bg-red-900 text-white px-7 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
           >
@@ -1250,6 +1266,7 @@ const ReserveFacility = ({
                     <span className="text-xs font-extrabold text-red-800">{fac.basePrice}</span>
                   </div>
                   <button
+                    type="button"
                     onClick={() => handleStartBooking(fac)}
                     className="bg-red-850 hover:bg-red-900 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors shadow-sm cursor-pointer"
                   >
