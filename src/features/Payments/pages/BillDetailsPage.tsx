@@ -36,7 +36,7 @@ export default function BillDetailsPage() {
 
   function handleAmountChange(e) {
     const nextValue = e.target.value;
-    if (nextValue === "" || /^\d*\.?\d*$/.test(nextValue)) {
+    if (nextValue === "" || /^\d*(?:\.\d*)?$/.test(nextValue)) {
       update("amount", nextValue);
     }
   }
