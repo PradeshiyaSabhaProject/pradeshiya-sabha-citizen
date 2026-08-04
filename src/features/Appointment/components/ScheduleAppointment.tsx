@@ -350,7 +350,7 @@ const ScheduleAppointment = ({
                   accept=".pdf,.doc,.docx,image/*" 
                   className="sr-only" 
                   onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
+                    if (e.target.files?.[0]) {
                       setAttachedFile(e.target.files[0]);
                     }
                   }}

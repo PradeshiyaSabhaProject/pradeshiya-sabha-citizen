@@ -172,12 +172,28 @@ const Appointment = () => {
             facilities={filteredFacilities}
             onReserve={async (fac, bookingDetails) => {
               // Create the new facility booking object
+              let location = 'Main Ground';
+              if (fac.title === 'Central Town Hall') {
+                location = 'South Wing, Level 1';
+              } else if (fac.title === 'Homagama Crematorium') {
+                location = 'Homagama Cremation Ground';
+              } else if (fac.title === 'Water Bowser Rental') {
+                location = 'Water Supply Dept';
+              }
+
+              let avatar = '⚽';
+              if (fac.category === 'Crematoriums') {
+                avatar = '🔥';
+              } else if (fac.category === 'Vehicles & Machinery') {
+                avatar = '🚚';
+              } else if (fac.title === 'Central Town Hall') {
+                avatar = '🏢';
+              }
+
               const newBookingObj = {
                 type: 'facility',
                 facilityName: fac.title,
-                location: fac.title === 'Central Town Hall' ? 'South Wing, Level 1' : 
-                          fac.title === 'Homagama Crematorium' ? 'Homagama Cremation Ground' : 
-                          fac.title === 'Water Bowser Rental' ? 'Water Supply Dept' : 'Main Ground',
+                location,
                 date: bookingDetails.date,
                 time: bookingDetails.time,
                 status: 'PENDING',
@@ -185,9 +201,7 @@ const Appointment = () => {
                   ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails.deathCertificateNo} is underway.`
                   : `Booking request received. Verification of rental purpose is underway.`,
                 price: `${fac.basePrice} (Awaiting Approval)`,
-                avatar: fac.category === 'Crematoriums' ? '🔥' : 
-                        fac.category === 'Vehicles & Machinery' ? '🚚' : 
-                        fac.title === 'Central Town Hall' ? '🏢' : '⚽',
+                avatar,
                 formDetails: bookingDetails.formDetails,
                 attachment: bookingDetails.attachment
               };
