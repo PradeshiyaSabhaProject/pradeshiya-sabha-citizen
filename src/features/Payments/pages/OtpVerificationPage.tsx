@@ -10,7 +10,9 @@ const RESEND_SECONDS = 30;
 // verified server-side and delivered via a real SMS gateway — never
 // generated or checked purely in the browser like this.
 function generateOtp() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  return (100000 + (array[0] % 900000)).toString();
 }
 
 export default function OtpVerificationPage() {
