@@ -141,6 +141,7 @@ export default function OtpVerificationPage() {
         </div>
 
         <button
+          type="button"
           onClick={handleVerify}
           className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3"
         >
@@ -148,6 +149,7 @@ export default function OtpVerificationPage() {
         </button>
 
         <button
+          type="button"
           onClick={sendOtp}
           disabled={secondsLeft > 0}
           className="text-xs font-semibold text-[#81081C] disabled:text-zinc-400 disabled:cursor-not-allowed"
