@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 
+interface ComplaintFormProps {
+  onSubmit: (data: any) => void;
+  onBackToDashboard: () => void;
+}
+
 // Maps the short "Complaint Type" codes used in this form
 // to the full category labels the Dashboard table/filter expects.
-const CATEGORY_LABELS = {
+const CATEGORY_LABELS: Record<string, string> = {
   Water: 'Water Issues',
   Waste: 'Waste Collection',
   Road: 'Road Damage',
@@ -10,7 +15,7 @@ const CATEGORY_LABELS = {
   Building: 'Building Approval',
 };
 
-export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
+export default function ComplaintForm({ onSubmit, onBackToDashboard }: ComplaintFormProps) {
   const [formData, setFormData] = useState({
     fullName: '', contactNumber: '', email: '',
     complaintType: '', incidentDate: '',
@@ -22,15 +27,15 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
   const imageInputRef = useRef<any>(null);
   const docInputRef = useRef<any>(null);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e, setFile) => {
-    if (e.target.files[0]) setFile(e.target.files[0]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setFile: (file: File) => void) => {
+    if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Build the object in the EXACT shape ComplaintDashboard expects
@@ -66,16 +71,16 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
               <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">👤 Personal Information</h3>
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
-                  <input name="fullName" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Enter your full name" required />
+                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
+                  <input id="fullName" name="fullName" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Enter your full name" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Contact Number</label>
-                  <input name="contactNumber" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="+94 XX XXX XXXX" required />
+                  <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-600 mb-1">Contact Number</label>
+                  <input id="contactNumber" name="contactNumber" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="+94 XX XXX XXXX" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Email Address</label>
-                  <input type="email" name="email" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="email@example.com" required />
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-1">Email Address</label>
+                  <input type="email" id="email" name="email" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="email@example.com" required />
                 </div>
               </div>
             </div>
@@ -87,8 +92,8 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
                 {/* Complaint Type Selection Dropdown -> feeds the Dashboard's "Category" column */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Complaint Type</label>
-                  <select name="complaintType" onChange={handleChange} className="w-full border rounded-lg p-2.5" required>
+                  <label htmlFor="complaintType" className="block text-sm font-medium text-gray-600 mb-1">Complaint Type</label>
+                  <select id="complaintType" name="complaintType" onChange={handleChange} className="w-full border rounded-lg p-2.5" required>
                     <option value="">Select issue type</option>
                     <option value="Water">Water Issues</option>
                     <option value="Waste">Waste Collection</option>
@@ -99,12 +104,12 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Incident Date</label>
-                  <input type="date" name="incidentDate" onChange={handleChange} className="w-full border rounded-lg p-2.5" required />
+                  <label htmlFor="incidentDate" className="block text-sm font-medium text-gray-600 mb-1">Incident Date</label>
+                  <input type="date" id="incidentDate" name="incidentDate" onChange={handleChange} className="w-full border rounded-lg p-2.5" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Location / Address</label>
-                  <input name="location" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Search address or street name" required />
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-600 mb-1">Location / Address</label>
+                  <input id="location" name="location" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Search address or street name" required />
                 </div>
               </div>
             </div>
@@ -118,18 +123,26 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div onClick={() => imageInputRef.current.click()} className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800">
+              <button
+                type="button"
+                onClick={() => imageInputRef.current.click()}
+                className="w-full border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-red-800"
+              >
                 <p className="text-sm font-bold">📷 Photo Evidence</p>
                 <p className="text-xs text-gray-400">JPG, PNG (Max 10MB)</p>
                 <input type="file" ref={imageInputRef} hidden accept="image/*" onChange={(e) => handleFileChange(e, setImage)} />
                 {image && <p className="text-green-600 text-xs mt-2 truncate">✓ {image.name}</p>}
-              </div>
-              <div onClick={() => docInputRef.current.click()} className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800">
+              </button>
+              <button
+                type="button"
+                onClick={() => docInputRef.current.click()}
+                className="w-full border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-red-800"
+              >
                 <p className="text-sm font-bold">📂 Documents & PDF</p>
                 <p className="text-xs text-gray-400">PDF, DOCX (Max 10MB)</p>
                 <input type="file" ref={docInputRef} hidden accept=".pdf,.docx" onChange={(e) => handleFileChange(e, setDocument)} />
                 {document && <p className="text-green-600 text-xs mt-2 truncate">✓ {document.name}</p>}
-              </div>
+              </button>
             </div>
           </div>
 
