@@ -13,8 +13,6 @@ const LetterRequests = () => {
     loading,
     searchQuery,
     setSearchQuery,
-    statusFilter,
-    setStatusFilter,
     categoryFilter,
     setCategoryFilter,
     dateRange,
