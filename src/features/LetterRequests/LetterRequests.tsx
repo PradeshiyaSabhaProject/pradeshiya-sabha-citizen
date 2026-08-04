@@ -44,8 +44,11 @@ const LetterRequests = () => {
 
   const { language: activeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
-  const L = (siText: string, enText: string, taText?: string) =>
-    lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
+  const L = (siText: string, enText: string, taText?: string) => {
+    if (lang === 'si') return siText;
+    if (lang === 'ta') return taText || enText;
+    return enText;
+  };
 
   // Status badges mapping
   const getStatusBadge = (status: string) => {
@@ -132,11 +135,10 @@ const LetterRequests = () => {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-xs ${
-                  activeTab === tab.id
-                    ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
-                    : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
-                }`}
+                className={`px-4 py-2 rounded-md font-semibold text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-xs ${activeTab === tab.id
+                  ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
+                  : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
+                  }`}
               >
                 {tab.label}
               </button>

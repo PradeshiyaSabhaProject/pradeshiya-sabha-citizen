@@ -16,8 +16,11 @@ const NewLetterModal = ({
   const [recipient, setRecipient] = useState('');
   const { language: activeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
-  const L = (siText: string, enText: string, taText?: string) =>
-    lang === 'si' ? siText : lang === 'ta' ? (taText || enText) : enText;
+  const L = (siText: string, enText: string, taText?: string) => {
+    if (lang === 'si') return siText;
+    if (lang === 'ta') return taText || enText;
+    return enText;
+  };
 
   if (!isOpen) return null;
 
