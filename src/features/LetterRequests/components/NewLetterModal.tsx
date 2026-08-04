@@ -26,10 +26,7 @@ const NewLetterModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
-      >
+      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left">
         {/* Top Header Banner */}
         <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex items-center justify-between gap-4 relative shadow-md shrink-0">
           <div className="space-y-0.5 sm:space-y-1 min-w-0">
