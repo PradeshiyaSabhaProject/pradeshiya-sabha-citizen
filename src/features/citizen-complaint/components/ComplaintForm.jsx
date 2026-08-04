@@ -66,16 +66,16 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
               <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">👤 Personal Information</h3>
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
-                  <input name="fullName" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Enter your full name" required />
+                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
+                  <input id="fullName" name="fullName" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Enter your full name" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Contact Number</label>
-                  <input name="contactNumber" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="+94 XX XXX XXXX" required />
+                  <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-600 mb-1">Contact Number</label>
+                  <input id="contactNumber" name="contactNumber" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="+94 XX XXX XXXX" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Email Address</label>
-                  <input type="email" name="email" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="email@example.com" required />
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-1">Email Address</label>
+                  <input type="email" id="email" name="email" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="email@example.com" required />
                 </div>
               </div>
             </div>
@@ -87,8 +87,8 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
                 {/* Complaint Type Selection Dropdown -> feeds the Dashboard's "Category" column */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Complaint Type</label>
-                  <select name="complaintType" onChange={handleChange} className="w-full border rounded-lg p-2.5" required>
+                  <label htmlFor="complaintType" className="block text-sm font-medium text-gray-600 mb-1">Complaint Type</label>
+                  <select id="complaintType" name="complaintType" onChange={handleChange} className="w-full border rounded-lg p-2.5" required>
                     <option value="">Select issue type</option>
                     <option value="Water">Water Issues</option>
                     <option value="Waste">Waste Collection</option>
@@ -99,12 +99,12 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Incident Date</label>
-                  <input type="date" name="incidentDate" onChange={handleChange} className="w-full border rounded-lg p-2.5" required />
+                  <label htmlFor="incidentDate" className="block text-sm font-medium text-gray-600 mb-1">Incident Date</label>
+                  <input type="date" id="incidentDate" name="incidentDate" onChange={handleChange} className="w-full border rounded-lg p-2.5" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Location / Address</label>
-                  <input name="location" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Search address or street name" required />
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-600 mb-1">Location / Address</label>
+                  <input id="location" name="location" onChange={handleChange} className="w-full border rounded-lg p-2.5" placeholder="Search address or street name" required />
                 </div>
               </div>
             </div>
