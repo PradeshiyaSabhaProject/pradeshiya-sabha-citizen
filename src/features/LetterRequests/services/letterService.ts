@@ -85,7 +85,9 @@ export const letterService = {
   },
   createLetterRequest: (newLetter) => {
     const nextId = letterRequests.length > 0 ? Math.max(...letterRequests.map(l => l.id)) + 1 : 1;
-    const randRef = `LTR-${Math.floor(2000 + Math.random() * 800)}`;
+    const randomArray = new Uint32Array(1);
+    window.crypto.getRandomValues(randomArray);
+    const randRef = `LTR-${2000 + (randomArray[0] % 800)}`;
     const now = new Date();
     
     // Formatting date and time

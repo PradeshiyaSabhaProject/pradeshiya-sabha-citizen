@@ -101,7 +101,7 @@ const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
               </span>
               <div className="space-y-5 relative pl-5 border-l-2 border-red-200 ml-2 pt-1">
                 {letter.timeline.map((step, idx) => (
-                  <div key={idx} className="relative">
+                  <div key={`${step.status}-${step.date}`} className="relative">
                     {/* Circle Dot */}
                     <div className="absolute -left-[27px] top-0.5 w-4 h-4 rounded-full bg-white border-2 border-[#8C1538] flex items-center justify-center shadow-2xs">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#8C1538]"></div>
