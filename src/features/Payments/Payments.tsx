@@ -230,56 +230,58 @@ const Payments = () => {
           {/* Payment Categories Grid - 2 Large Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Utility Card */}
-            <div
+            <button
+              type="button"
               onClick={() => {
                 setActiveCategory('utility');
                 setSelectedSubService(utilityServices[0]);
                 setPaymentAmount(utilityServices[0].defaultAmount);
               }}
-              className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer"
+              className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer text-left w-full font-sans"
             >
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200">
+              <span className="block">
+                <span className="w-12 h-12 rounded-xl bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200">
                   <DropletIcon />
-                </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
+                </span>
+                <span className="block text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
                   {t('payments.utilityTitle', 'Utility')}
-                </h2>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
+                </span>
+                <span className="block text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
                   {t('payments.utilityDesc', 'Pay water charges, assessment rates, and other recurring municipal utility bills.')}
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
                 <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
-              </div>
-            </div>
+              </span>
+            </button>
 
             {/* Miscellaneous Card */}
-            <div
+            <button
+              type="button"
               onClick={() => {
                 setActiveCategory('miscellaneous');
                 setSelectedSubService(miscServices[0]);
                 setPaymentAmount(miscServices[0].defaultAmount);
               }}
-              className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer"
+              className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer text-left w-full font-sans"
             >
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200">
+              <span className="block">
+                <span className="w-12 h-12 rounded-xl bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200">
                   <DocumentIcon />
-                </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
+                </span>
+                <span className="block text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
                   {t('payments.miscTitle', 'Miscellaneous')}
-                </h2>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
+                </span>
+                <span className="block text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
                   {t('payments.miscDesc', 'Settle one-off charges such as certificates, permits, fines, and other municipal fees.')}
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
                 <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
-              </div>
-            </div>
+              </span>
+            </button>
           </div>
 
           {/* Bottom Row - History Banner + Help Card */}
@@ -352,29 +354,30 @@ const Payments = () => {
               {(activeCategory === 'utility' ? utilityServices : miscServices).map((service) => {
                 const isSelected = selectedSubService?.id === service.id;
                 return (
-                  <div
+                  <button
                     key={service.id}
+                    type="button"
                     onClick={() => handleSelectSubService(service)}
-                    className={`p-5 rounded-xl border transition-all cursor-pointer ${isSelected
+                    className={`p-5 rounded-xl border transition-all cursor-pointer text-left w-full font-sans ${isSelected
                       ? 'border-[#8C1538] bg-[#8C1538]/5 shadow-sm'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h4 className={`font-bold text-base ${isSelected ? 'text-[#8C1538]' : 'text-gray-900'}`}>
+                    <span className="flex items-start justify-between gap-3 w-full">
+                      <span className="block">
+                        <span className={`block font-bold text-base ${isSelected ? 'text-[#8C1538]' : 'text-gray-900'}`}>
                           {service.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
+                        </span>
+                        <span className="block text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
                           {service.desc}
-                        </p>
-                      </div>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${isSelected ? 'border-[#8C1538] bg-[#8C1538]' : 'border-gray-300'
+                        </span>
+                      </span>
+                      <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${isSelected ? 'border-[#8C1538] bg-[#8C1538]' : 'border-gray-300'
                         }`}>
-                        {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
-                      </div>
-                    </div>
-                  </div>
+                        {isSelected && <span className="w-2 h-2 rounded-full bg-white block" />}
+                      </span>
+                    </span>
+                  </button>
                 );
               })}
             </div>
