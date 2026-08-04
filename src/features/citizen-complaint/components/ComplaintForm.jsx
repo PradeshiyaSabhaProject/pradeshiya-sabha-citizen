@@ -118,40 +118,26 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div 
-                role="button"
-                tabIndex={0}
-                onClick={() => imageInputRef.current.click()} 
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    imageInputRef.current.click();
-                  }
-                }}
-                className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800"
+              <button
+                type="button"
+                onClick={() => imageInputRef.current.click()}
+                className="w-full border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-red-800"
               >
                 <p className="text-sm font-bold">📷 Photo Evidence</p>
                 <p className="text-xs text-gray-400">JPG, PNG (Max 10MB)</p>
                 <input type="file" ref={imageInputRef} hidden accept="image/*" onChange={(e) => handleFileChange(e, setImage)} />
                 {image && <p className="text-green-600 text-xs mt-2 truncate">✓ {image.name}</p>}
-              </div>
-              <div 
-                role="button"
-                tabIndex={0}
-                onClick={() => docInputRef.current.click()} 
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    docInputRef.current.click();
-                  }
-                }}
-                className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800"
+              </button>
+              <button
+                type="button"
+                onClick={() => docInputRef.current.click()}
+                className="w-full border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-red-800"
               >
                 <p className="text-sm font-bold">📂 Documents & PDF</p>
                 <p className="text-xs text-gray-400">PDF, DOCX (Max 10MB)</p>
                 <input type="file" ref={docInputRef} hidden accept=".pdf,.docx" onChange={(e) => handleFileChange(e, setDocument)} />
                 {document && <p className="text-green-600 text-xs mt-2 truncate">✓ {document.name}</p>}
-              </div>
+              </button>
             </div>
           </div>
 
