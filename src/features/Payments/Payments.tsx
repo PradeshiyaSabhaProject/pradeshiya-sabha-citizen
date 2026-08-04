@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Crisp SVG Icons matching exact screenshot design
 const DropletIcon = () => (
@@ -46,6 +47,7 @@ const CheckCircleIcon = () => (
 );
 
 const Payments = () => {
+  const { t } = useLanguage();
   // Navigation & Interactive States
   const [activeCategory, setActiveCategory] = useState(null); // null = default view, 'utility' or 'miscellaneous'
   const [selectedSubService, setSelectedSubService] = useState(null);
@@ -110,23 +112,23 @@ const Payments = () => {
   const utilityServices = [
     {
       id: 'water',
-      title: 'Water Supply & Municipal Utility Bill',
-      desc: 'Pay your monthly municipal water charges and recurring utility bills.',
-      placeholder: 'Enter Water Account Number (e.g. W-99104)',
+      title: t('payments.srvWaterTitle', 'Water Supply & Municipal Utility Bill'),
+      desc: t('payments.srvWaterDesc', 'Pay your monthly municipal water charges and recurring utility bills.'),
+      placeholder: t('payments.srvWaterPlaceholder', 'Enter Water Account Number (e.g. W-99104)'),
       defaultAmount: '2450.00'
     },
     {
       id: 'assessment',
-      title: 'Property Assessment & Council Rates',
-      desc: 'Settle quarterly property assessment rates and municipal taxes.',
-      placeholder: 'Enter Assessment Property No. (e.g. ASM-4421)',
+      title: t('payments.srvAssessmentTitle', 'Property Assessment & Council Rates'),
+      desc: t('payments.srvAssessmentDesc', 'Settle quarterly property assessment rates and municipal taxes.'),
+      placeholder: t('payments.srvAssessmentPlaceholder', 'Enter Assessment Property No. (e.g. ASM-4421)'),
       defaultAmount: '4800.00'
     },
     {
       id: 'shop-rent',
-      title: 'Municipal Commercial Shop Rent',
-      desc: 'Monthly rental fee for municipal council commercial stalls and shops.',
-      placeholder: 'Enter Stall / Shop ID (e.g. SHP-018)',
+      title: t('payments.srvShopTitle', 'Municipal Commercial Shop Rent'),
+      desc: t('payments.srvShopDesc', 'Monthly rental fee for municipal council commercial stalls and shops.'),
+      placeholder: t('payments.srvShopPlaceholder', 'Enter Stall / Shop ID (e.g. SHP-018)'),
       defaultAmount: '8500.00'
     }
   ];
@@ -134,23 +136,23 @@ const Payments = () => {
   const miscServices = [
     {
       id: 'certificate',
-      title: 'Certificate & Official Document Fee',
-      desc: 'Settle fees for birth, marriage, non-vesting, or ownership certificates.',
-      placeholder: 'Enter Application Reference No.',
+      title: t('payments.srvCertTitle', 'Certificate & Official Document Fee'),
+      desc: t('payments.srvCertDesc', 'Settle fees for birth, marriage, non-vesting, or ownership certificates.'),
+      placeholder: t('payments.srvCertPlaceholder', 'Enter Application Reference No.'),
       defaultAmount: '1200.00'
     },
     {
       id: 'permit',
-      title: 'Trade & Building Permit Processing',
-      desc: 'One-off charges for trade licenses, building approvals, and inspections.',
-      placeholder: 'Enter Permit Ref No.',
+      title: t('payments.srvPermitTitle', 'Trade & Building Permit Processing'),
+      desc: t('payments.srvPermitDesc', 'One-off charges for trade licenses, building approvals, and inspections.'),
+      placeholder: t('payments.srvPermitPlaceholder', 'Enter Permit Ref No.'),
       defaultAmount: '3500.00'
     },
     {
       id: 'fines',
-      title: 'Municipal Fine & Violation Settlement',
-      desc: 'Pay environmental, parking, or administrative council penalty notices.',
-      placeholder: 'Enter Notice / Ticket No.',
+      title: t('payments.srvFineTitle', 'Municipal Fine & Violation Settlement'),
+      desc: t('payments.srvFineDesc', 'Pay environmental, parking, or administrative council penalty notices.'),
+      placeholder: t('payments.srvFinePlaceholder', 'Enter Notice / Ticket No.'),
       defaultAmount: '1000.00'
     }
   ];
@@ -174,7 +176,7 @@ const Payments = () => {
         id: 'HPS-PAY-' + Math.floor(100000 + Math.random() * 900000),
         date: new Date().toLocaleDateString('en-CA'),
         time: new Date().toLocaleTimeString(),
-        service: selectedSubService ? selectedSubService.title : activeCategory,
+        service: selectedSubService ? selectedSubService.title : (activeCategory === 'utility' ? t('payments.utilityTitle', 'Utility') : t('payments.miscTitle', 'Miscellaneous')),
         accountNo: accountNumber,
         amount: `LKR ${Number(paymentAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
         payerName: payerName || 'Verified Citizen',
@@ -193,48 +195,21 @@ const Payments = () => {
 
   return (
     <div className="min-h-[calc(100vh-180px)] py-10 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto font-sans animate-fadeIn">
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center text-xs sm:text-sm mb-8 select-none">
-        <Link
-          to="/"
-          onClick={() => { setActiveCategory(null); setSelectedSubService(null); }}
-          className="text-gray-700 hover:text-black font-medium transition-colors"
-        >
-          Dashboard
-        </Link>
-        <span className="text-gray-400 mx-2.5 font-light">›</span>
-        {activeCategory ? (
-          <>
-            <button
-              onClick={() => { setActiveCategory(null); setSelectedSubService(null); }}
-              className="text-gray-700 hover:text-black font-medium transition-colors cursor-pointer"
-            >
-              Payments
-            </button>
-            <span className="text-gray-400 mx-2.5 font-light">›</span>
-            <span className="text-[#8C1538] font-bold capitalize">
-              {activeCategory}
-            </span>
-          </>
-        ) : (
-          <span className="text-[#8C1538] font-bold">Payments</span>
-        )}
-      </nav>
+
 
       {/* PAGE 1: EXACT SCREENSHOT DESIGN DEFAULT VIEW */}
       {!activeCategory && (
         <>
-          {/* Section Header */}
-          <div className="mb-10">
-            <span className="text-xs font-bold tracking-widest text-[#8C1538] uppercase mb-2 block">
-              PAYMENTS
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
-              Make a payment
-            </h1>
-            <p className="text-gray-600 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Choose a payment category to get started. You'll select the specific service to pay for on the next step.
-            </p>
+          {/* Top Header Section */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
+            <div className="space-y-2 max-w-2xl">
+              <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                {t('payments.title', 'Make a payment')}
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                {t('payments.subtitle', "Choose a payment category to get started. You'll select the specific service to pay for on the next step.")}
+              </p>
+            </div>
           </div>
 
           {/* Payment Categories Grid - 2 Large Cards */}
@@ -253,14 +228,14 @@ const Payments = () => {
                   <DropletIcon />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
-                  Utility
+                  {t('payments.utilityTitle', 'Utility')}
                 </h2>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
-                  Pay water charges, assessment rates, and other recurring municipal utility bills.
+                  {t('payments.utilityDesc', 'Pay water charges, assessment rates, and other recurring municipal utility bills.')}
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
-                <span>Select</span>
+                <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
               </div>
             </div>
@@ -279,14 +254,14 @@ const Payments = () => {
                   <DocumentIcon />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
-                  Miscellaneous
+                  {t('payments.miscTitle', 'Miscellaneous')}
                 </h2>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
-                  Settle one-off charges such as certificates, permits, fines, and other municipal fees.
+                  {t('payments.miscDesc', 'Settle one-off charges such as certificates, permits, fines, and other municipal fees.')}
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
-                <span>Select</span>
+                <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
               </div>
             </div>
@@ -298,10 +273,10 @@ const Payments = () => {
             <div className="lg:col-span-2 bg-white border border-gray-200/80 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="max-w-xl">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">
-                  Need a history of your transactions?
+                  {t('payments.historyBannerTitle', 'Need a history of your transactions?')}
                 </h3>
                 <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  Access your digital receipts and payment history directly from your citizen dashboard.
+                  {t('payments.historyBannerDesc', 'Access your digital receipts and payment history directly from your citizen dashboard.')}
                 </p>
               </div>
               <button
@@ -309,7 +284,7 @@ const Payments = () => {
                 onClick={() => setShowHistoryModal(true)}
                 className="bg-[#610A1D] hover:bg-[#4D0817] text-white font-semibold text-xs sm:text-sm px-7 py-3.5 rounded-lg shadow-xs transition-all duration-200 text-center leading-tight whitespace-nowrap shrink-0 cursor-pointer"
               >
-                View<br />History
+                <span dangerouslySetInnerHTML={{ __html: t('payments.viewHistoryBtn', 'View<br />History') }} />
               </button>
             </div>
 
@@ -319,10 +294,10 @@ const Payments = () => {
                 <HelpBoxIcon />
               </div>
               <h4 className="text-sm sm:text-base font-bold text-gray-900 mb-1">
-                Help & Support
+                {t('payments.helpTitle', 'Help & Support')}
               </h4>
               <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                Available 24/7 for payment inquiries.
+                {t('payments.helpDesc', 'Available 24/7 for payment inquiries.')}
               </p>
             </div>
           </div>
@@ -333,21 +308,21 @@ const Payments = () => {
       {activeCategory && (
         <div className="animate-fadeIn">
           {/* Back button and Section header */}
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <div>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-2 border-b border-gray-100">
+            <div className="space-y-2 max-w-2xl">
               <button
                 onClick={() => { setActiveCategory(null); setSelectedSubService(null); }}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#8C1538] hover:text-[#6a102a] mb-2 cursor-pointer transition-colors"
               >
-                <span>← Back to Payment Categories</span>
+                <span>{t('payments.backBtn', '← Back to Payment Categories')}</span>
               </button>
-              <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight capitalize">
-                {activeCategory} Payments
+              <h1 className="text-3xl font-bold text-gray-900 tracking-tight capitalize">
+                {t('payments.categoryTitle', '{activeCategory} Payments').replace('{activeCategory}', activeCategory === 'utility' ? t('payments.utilityTitle', 'Utility') : t('payments.miscTitle', 'Miscellaneous'))}
               </h1>
-              <p className="text-gray-600 text-sm sm:text-base mt-1">
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1">
                 {activeCategory === 'utility'
-                  ? 'Select a utility service below and enter your account details to check and pay dues.'
-                  : 'Select a fee category below and enter your reference number to complete your payment.'}
+                  ? t('payments.utilityCategoryDesc', 'Select a utility service below and enter your account details to check and pay dues.')
+                  : t('payments.miscCategoryDesc', 'Select a fee category below and enter your reference number to complete your payment.')}
               </p>
             </div>
           </div>
@@ -356,7 +331,7 @@ const Payments = () => {
             {/* Left side: Sub-service selector cards */}
             <div className="lg:col-span-5 space-y-3">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                1. Select Specific Service
+                {t('payments.step1Title', '1. Select Specific Service')}
               </h3>
               {(activeCategory === 'utility' ? utilityServices : miscServices).map((service) => {
                 const isSelected = selectedSubService?.id === service.id;
@@ -364,11 +339,10 @@ const Payments = () => {
                   <div
                     key={service.id}
                     onClick={() => handleSelectSubService(service)}
-                    className={`p-5 rounded-xl border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-[#8C1538] bg-[#8C1538]/5 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
+                    className={`p-5 rounded-xl border transition-all cursor-pointer ${isSelected
+                      ? 'border-[#8C1538] bg-[#8C1538]/5 shadow-sm'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -379,9 +353,8 @@ const Payments = () => {
                           {service.desc}
                         </p>
                       </div>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${
-                        isSelected ? 'border-[#8C1538] bg-[#8C1538]' : 'border-gray-300'
-                      }`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${isSelected ? 'border-[#8C1538] bg-[#8C1538]' : 'border-gray-300'
+                        }`}>
                         {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                       </div>
                     </div>
@@ -394,7 +367,7 @@ const Payments = () => {
             <div className="lg:col-span-7">
               <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100 flex items-center justify-between">
-                  <span>2. Payment & Billing Details</span>
+                  <span>{t('payments.step2Title', '2. Payment & Billing Details')}</span>
                   {selectedSubService && (
                     <span className="text-xs font-semibold px-3 py-1 bg-[#8C1538]/10 text-[#8C1538] rounded-full">
                       {selectedSubService.title}
@@ -405,34 +378,34 @@ const Payments = () => {
                 <form onSubmit={handlePaymentSubmit} className="space-y-5">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Account / Reference Number *
+                      {t('payments.formAccountNo', 'Account / Reference Number *')}
                     </label>
                     <input
                       type="text"
                       required
                       value={accountNumber}
                       onChange={(e) => setAccountNumber(e.target.value)}
-                      placeholder={selectedSubService?.placeholder || 'Enter Account / Reference No.'}
+                      placeholder={selectedSubService?.placeholder || t('payments.formAccountNoPlaceholder', 'Enter Account / Reference No.')}
                       className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538] focus:bg-white transition-all"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Payer Name (Optional)
+                      {t('payments.formPayerName', 'Payer Name (Optional)')}
                     </label>
                     <input
                       type="text"
                       value={payerName}
                       onChange={(e) => setPayerName(e.target.value)}
-                      placeholder="Enter citizen or business name"
+                      placeholder={t('payments.formPayerNamePlaceholder', 'Enter citizen or business name')}
                       className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538] focus:bg-white transition-all"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Amount to Pay (LKR) *
+                      {t('payments.formAmount', 'Amount to Pay (LKR) *')}
                     </label>
                     <input
                       type="number"
@@ -448,23 +421,22 @@ const Payments = () => {
                   {/* Payment Method Selection */}
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                      Payment Gateway Method
+                      {t('payments.formMethod', 'Payment Gateway Method')}
                     </label>
                     <div className="grid grid-cols-3 gap-3">
                       {[
-                        { id: 'card', label: 'Credit / Debit Card' },
-                        { id: 'lankaqr', label: 'LankaQR Pay' },
-                        { id: 'bank', label: 'Online Banking' }
+                        { id: 'card', label: t('payments.methodCard', 'Credit / Debit Card') },
+                        { id: 'lankaqr', label: t('payments.methodQR', 'LankaQR Pay') },
+                        { id: 'bank', label: t('payments.methodBank', 'Online Banking') }
                       ].map((method) => (
                         <button
                           key={method.id}
                           type="button"
                           onClick={() => setPaymentMethod(method.id)}
-                          className={`py-3 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer text-center ${
-                            paymentMethod === method.id
-                              ? 'border-[#8C1538] bg-[#8C1538]/10 text-[#8C1538]'
-                              : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                          }`}
+                          className={`py-3 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer text-center ${paymentMethod === method.id
+                            ? 'border-[#8C1538] bg-[#8C1538]/10 text-[#8C1538]'
+                            : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                            }`}
                         >
                           {method.label}
                         </button>
@@ -479,9 +451,9 @@ const Payments = () => {
                       className="w-full bg-[#8C1538] hover:bg-[#73102d] text-white font-bold py-3.5 rounded-xl text-sm shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
                     >
                       {isProcessing ? (
-                        <span>Processing Payment Gateway...</span>
+                        <span>{t('payments.processingBtn', 'Processing Payment Gateway...')}</span>
                       ) : (
-                        <span>Proceed to Pay • LKR {Number(paymentAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                        <span>{t('payments.proceedBtn', 'Proceed to Pay')} • LKR {Number(paymentAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                       )}
                     </button>
                   </div>
@@ -500,10 +472,10 @@ const Payments = () => {
             <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
               <div>
                 <h3 className="text-lg font-bold text-gray-900">
-                  Transaction & Payment History
+                  {t('payments.histTitle', 'Transaction & Payment History')}
                 </h3>
                 <p className="text-xs text-gray-500">
-                  Digital council receipts for your account
+                  {t('payments.histSubtitle', 'Digital council receipts for your account')}
                 </p>
               </div>
               <button
@@ -521,7 +493,7 @@ const Payments = () => {
                 type="text"
                 value={historySearch}
                 onChange={(e) => setHistorySearch(e.target.value)}
-                placeholder="Search by receipt number, account or service name..."
+                placeholder={t('payments.histSearch', 'Search by receipt number, account or service name...')}
                 className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#8C1538]"
               />
             </div>
@@ -530,7 +502,7 @@ const Payments = () => {
             <div className="p-6 overflow-y-auto space-y-3">
               {filteredHistory.length === 0 ? (
                 <div className="text-center py-10 text-gray-500 text-sm">
-                  No matching transactions found.
+                  {t('payments.histNoMatch', 'No matching transactions found.')}
                 </div>
               ) : (
                 filteredHistory.map((tx) => (
@@ -548,9 +520,9 @@ const Payments = () => {
                         </span>
                       </div>
                       <div className="text-xs text-gray-500 space-x-3">
-                        <span>Receipt: <strong className="text-gray-700">{tx.id}</strong></span>
-                        <span>Acct: <strong className="text-gray-700">{tx.accountNo}</strong></span>
-                        <span>Date: {tx.date}</span>
+                        <span>{t('payments.histReceipt', 'Receipt:')} <strong className="text-gray-700">{tx.id}</strong></span>
+                        <span>{t('payments.histAcct', 'Acct:')} <strong className="text-gray-700">{tx.accountNo}</strong></span>
+                        <span>{t('payments.histDate', 'Date:')} {tx.date}</span>
                       </div>
                     </div>
 
@@ -581,7 +553,7 @@ const Payments = () => {
                         }}
                         className="text-xs font-bold text-[#8C1538] hover:underline px-3 py-1.5 rounded-lg bg-[#8C1538]/5 cursor-pointer"
                       >
-                        Receipt
+                        {t('payments.receiptBtn', 'Receipt')}
                       </button>
                     </div>
                   </div>
@@ -596,7 +568,7 @@ const Payments = () => {
                 onClick={() => setShowHistoryModal(false)}
                 className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold transition-colors cursor-pointer"
               >
-                Close
+                {t('payments.histClose', 'Close')}
               </button>
             </div>
           </div>
@@ -610,40 +582,40 @@ const Payments = () => {
             <div className="p-6 text-center border-b border-gray-100">
               <CheckCircleIcon />
               <h3 className="text-xl font-bold text-gray-900">
-                Payment Successful
+                {t('payments.rcptSuccess', 'Payment Successful')}
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                Official Digital Receipt • Homagama Pradeshiya Sabha
+                {t('payments.rcptSubtitle', 'Official Digital Receipt • Homagama Pradeshiya Sabha')}
               </p>
             </div>
 
             <div className="p-6 space-y-3 text-sm bg-gray-50/50">
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Receipt Number</span>
+                <span className="text-gray-500">{t('payments.rcptNo', 'Receipt Number')}</span>
                 <span className="font-bold text-gray-900">{receiptData.id}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Service Category</span>
+                <span className="text-gray-500">{t('payments.rcptCategory', 'Service Category')}</span>
                 <span className="font-semibold text-gray-800">{receiptData.service}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Account / Ref No.</span>
+                <span className="text-gray-500">{t('payments.rcptAcct', 'Account / Ref No.')}</span>
                 <span className="font-semibold text-gray-800">{receiptData.accountNo}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Payer Name</span>
+                <span className="text-gray-500">{t('payments.rcptPayer', 'Payer Name')}</span>
                 <span className="font-semibold text-gray-800">{receiptData.payerName}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Payment Gateway</span>
+                <span className="text-gray-500">{t('payments.rcptGateway', 'Payment Gateway')}</span>
                 <span className="font-semibold text-gray-800">{receiptData.method}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100">
-                <span className="text-gray-500">Date & Time</span>
+                <span className="text-gray-500">{t('payments.rcptDateTime', 'Date & Time')}</span>
                 <span className="font-semibold text-gray-800">{receiptData.date} {receiptData.time}</span>
               </div>
               <div className="flex justify-between pt-2 text-base font-bold text-gray-900">
-                <span>Total Paid</span>
+                <span>{t('payments.rcptTotal', 'Total Paid')}</span>
                 <span className="text-[#8C1538]">{receiptData.amount}</span>
               </div>
             </div>
@@ -656,7 +628,7 @@ const Payments = () => {
                 }}
                 className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
               >
-                Download PDF
+                {t('payments.rcptDownload', 'Download PDF')}
               </button>
               <button
                 type="button"
@@ -666,7 +638,7 @@ const Payments = () => {
                 }}
                 className="flex-1 bg-[#8C1538] hover:bg-[#73102d] text-white font-bold py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
               >
-                Done
+                {t('payments.rcptDone', 'Done')}
               </button>
             </div>
           </div>

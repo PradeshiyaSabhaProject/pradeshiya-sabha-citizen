@@ -87,6 +87,11 @@ const Profile = () => {
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  // SMS OTP verification state strictly for updating security credentials
+  const [isVerifyingPasswordOtp, setIsVerifyingPasswordOtp] = useState(false);
+  const [passwordOtpCode, setPasswordOtpCode] = useState('');
+  const [passwordOtpError, setPasswordOtpError] = useState('');
+
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordData(prev => ({ ...prev, [name]: value }));
@@ -107,11 +112,28 @@ const Profile = () => {
       setPasswordError(t('profile.pwdMismatch', 'New password and confirm password do not match.'));
       return;
     }
+
+    setPasswordOtpError('');
+    setPasswordOtpCode('');
+    setIsVerifyingPasswordOtp(true);
+  };
+
+  const executeCredentialUpdate = () => {
     setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    setIsVerifyingPasswordOtp(false);
     setPasswordSuccessToast(true);
     setTimeout(() => {
       setPasswordSuccessToast(false);
     }, 4000);
+  };
+
+  const handleConfirmPasswordOtp = () => {
+    if (passwordOtpCode.trim().length < 6) {
+      setPasswordOtpError('Please enter the valid 6-digit SMS verification code.');
+      return;
+    }
+    setPasswordOtpError('');
+    executeCredentialUpdate();
   };
 
   const [formData, setFormData] = useState({
@@ -617,91 +639,150 @@ const Profile = () => {
                   <div>
                     <div className="text-sm font-bold text-gray-900 flex items-center gap-2">
                       <LockIcon />
-                      <span>Security & Password Management</span>
+                      <span>Update Security Credentials & Password Management</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      Update your account password regularly to ensure your personal civic portal stays secure.
+                      Update your account credentials regularly and verify security changes with SMS OTP.
                     </p>
                   </div>
                 </div>
 
-                <form onSubmit={handlePasswordSubmit} className="bg-gray-50/80 p-5 rounded-xl border border-gray-200 space-y-4">
-                  {passwordError && (
-                    <div className="bg-red-50 text-red-700 border border-red-200 px-3.5 py-2.5 rounded-lg text-xs font-semibold flex items-center gap-2">
-                      <span>⚠️</span>
-                      <span>{passwordError}</span>
+                {isVerifyingPasswordOtp ? (
+                  <div className="bg-red-50/60 border border-[#8C1538]/30 rounded-xl p-5 space-y-4 animate-fadeIn">
+                    <div className="flex items-center gap-2 text-[#8C1538]">
+                      <ShieldCheckIcon />
+                      <h4 className="font-bold text-sm">SMS OTP Challenge Verification Required</h4>
                     </div>
-                  )}
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      To complete updating your security credentials, enter the 6-digit verification code sent via SMS to your registered mobile number <strong className="font-mono text-gray-900">{formData.phone}</strong>.
+                    </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {passwordOtpError && (
+                      <div className="bg-red-100 text-red-800 p-2 rounded text-xs font-semibold">
+                        ⚠️ {passwordOtpError}
+                      </div>
+                    )}
+
                     <div>
-                      <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
-                        Current Password <span className="text-red-500">*</span>
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1.5">
+                        Enter 6-Digit SMS OTP
                       </label>
-                      <div className="relative">
+                      <div className="flex gap-2">
                         <input
-                          type={showPassword ? 'text' : 'password'}
-                          name="currentPassword"
-                          value={passwordData.currentPassword}
-                          onChange={handlePasswordChange}
-                          placeholder="••••••••"
-                          className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
+                          type="text"
+                          maxLength={6}
+                          placeholder="e.g. 894215"
+                          value={passwordOtpCode}
+                          onChange={(e) => setPasswordOtpCode(e.target.value.replace(/\D/g, ''))}
+                          className="flex-1 bg-white border border-gray-300 rounded-lg px-3.5 py-2 font-mono font-bold text-base tracking-widest text-center text-[#8C1538] focus:outline-none focus:ring-2 focus:ring-[#8C1538] focus:border-transparent"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setPasswordOtpCode('894215')}
+                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-xs font-bold transition-colors cursor-pointer shrink-0"
+                        >
+                          Auto-fill Demo
+                        </button>
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
-                        New Password <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          name="newPassword"
-                          value={passwordData.newPassword}
-                          onChange={handlePasswordChange}
-                          placeholder="At least 6 chars"
-                          className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
-                        Confirm New Password <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          name="confirmPassword"
-                          value={passwordData.confirmPassword}
-                          onChange={handlePasswordChange}
-                          placeholder="Re-enter password"
-                          className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
-                        />
-                      </div>
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-200/60">
+                      <button
+                        type="button"
+                        onClick={() => setIsVerifyingPasswordOtp(false)}
+                        className="text-xs font-semibold text-gray-600 hover:text-gray-900 cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleConfirmPasswordOtp}
+                        className="bg-[#8C1538] hover:bg-[#73102d] text-white px-4 py-2 rounded-md font-semibold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
+                      >
+                        <CheckIcon />
+                        <span>Verify & Update Credentials</span>
+                      </button>
                     </div>
                   </div>
+                ) : (
+                  <form onSubmit={handlePasswordSubmit} className="bg-gray-50/80 p-5 rounded-xl border border-gray-200 space-y-4">
+                    {passwordError && (
+                      <div className="bg-red-50 text-red-700 border border-red-200 px-3.5 py-2.5 rounded-lg text-xs font-semibold flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>{passwordError}</span>
+                      </div>
+                    )}
 
-                  <div className="flex items-center justify-between pt-2 border-t border-gray-200/60">
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="text-xs font-semibold text-gray-600 hover:text-gray-900 flex items-center gap-1.5 cursor-pointer select-none"
-                    >
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                      <span>{showPassword ? 'Hide Passwords' : 'Show Passwords'}</span>
-                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
+                          Current Password <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            name="currentPassword"
+                            value={passwordData.currentPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="••••••••"
+                            className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
+                          />
+                        </div>
+                      </div>
 
-                    <button
-                      type="submit"
-                      className="bg-[#8C1538] hover:bg-[#73102d] text-white px-4 py-2 rounded-md font-semibold text-xs shadow-xs transition-all duration-200 cursor-pointer hover:shadow-sm flex items-center gap-1.5"
-                    >
-                      <CheckIcon />
-                      <span>Update Password</span>
-                    </button>
-                  </div>
-                </form>
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
+                          New Password <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            name="newPassword"
+                            value={passwordData.newPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="At least 6 chars"
+                            className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-gray-700 mb-1.5">
+                          Confirm New Password <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            name="confirmPassword"
+                            value={passwordData.confirmPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="Re-enter password"
+                            className="w-full bg-white border border-gray-300 rounded-md px-3.5 py-2 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538]/20 focus:border-[#8C1538] transition-all"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-200/60">
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-xs font-semibold text-gray-600 hover:text-gray-900 flex items-center gap-1.5 cursor-pointer select-none"
+                      >
+                        {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        <span>{showPassword ? 'Hide Passwords' : 'Show Passwords'}</span>
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="bg-[#8C1538] hover:bg-[#73102d] text-white px-4 py-2 rounded-md font-semibold text-xs shadow-xs transition-all duration-200 cursor-pointer hover:shadow-sm flex items-center gap-1.5"
+                      >
+                        <CheckIcon />
+                        <span>Update Security Credentials</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
 
               {/* Logout / Switch Account Zone */}
