@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 
+interface ComplaintFormProps {
+  onSubmit: (data: any) => void;
+  onBackToDashboard: () => void;
+}
+
 // Maps the short "Complaint Type" codes used in this form
 // to the full category labels the Dashboard table/filter expects.
-const CATEGORY_LABELS = {
+const CATEGORY_LABELS: Record<string, string> = {
   Water: 'Water Issues',
   Waste: 'Waste Collection',
   Road: 'Road Damage',
@@ -10,7 +15,7 @@ const CATEGORY_LABELS = {
   Building: 'Building Approval',
 };
 
-export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
+export default function ComplaintForm({ onSubmit, onBackToDashboard }: ComplaintFormProps) {
   const [formData, setFormData] = useState({
     fullName: '', contactNumber: '', email: '',
     complaintType: '', incidentDate: '',
@@ -22,15 +27,15 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
   const imageInputRef = useRef<any>(null);
   const docInputRef = useRef<any>(null);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e, setFile) => {
-    if (e.target.files[0]) setFile(e.target.files[0]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setFile: (file: File) => void) => {
+    if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Build the object in the EXACT shape ComplaintDashboard expects
@@ -118,13 +123,35 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }) {
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div onClick={() => imageInputRef.current.click()} className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => imageInputRef.current.click()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    imageInputRef.current.click();
+                  }
+                }}
+                className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800"
+              >
                 <p className="text-sm font-bold">📷 Photo Evidence</p>
                 <p className="text-xs text-gray-400">JPG, PNG (Max 10MB)</p>
                 <input type="file" ref={imageInputRef} hidden accept="image/*" onChange={(e) => handleFileChange(e, setImage)} />
                 {image && <p className="text-green-600 text-xs mt-2 truncate">✓ {image.name}</p>}
               </div>
-              <div onClick={() => docInputRef.current.click()} className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => docInputRef.current.click()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    docInputRef.current.click();
+                  }
+                }}
+                className="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-red-800"
+              >
                 <p className="text-sm font-bold">📂 Documents & PDF</p>
                 <p className="text-xs text-gray-400">PDF, DOCX (Max 10MB)</p>
                 <input type="file" ref={docInputRef} hidden accept=".pdf,.docx" onChange={(e) => handleFileChange(e, setDocument)} />
