@@ -36,7 +36,7 @@ export default function BillDetailsPage() {
 
   function handleAmountChange(e) {
     const nextValue = e.target.value;
-    if (nextValue === "" || /^\d*\.?\d*$/.test(nextValue)) {
+    if (nextValue === "" || /^\d*(?:\.\d*)?$/.test(nextValue)) {
       update("amount", nextValue);
     }
   }
@@ -85,8 +85,9 @@ export default function BillDetailsPage() {
         </p>
 
         <div className="mb-4">
-          <label className="block text-xs font-bold text-zinc-600 mb-1">Bill Type *</label>
+          <label htmlFor="billType" className="block text-xs font-bold text-zinc-600 mb-1">Bill Type *</label>
           <select
+            id="billType"
             value={state.billType}
             onChange={(e) => update("billType", e.target.value)}
             className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C] ${
@@ -105,8 +106,9 @@ export default function BillDetailsPage() {
 
         {state.billType === "other" && (
           <div className="mb-4">
-            <label className="block text-xs font-bold text-zinc-600 mb-1">Describe the Fee *</label>
+            <label htmlFor="otherBillDesc" className="block text-xs font-bold text-zinc-600 mb-1">Describe the Fee *</label>
             <input
+              id="otherBillDesc"
               type="text"
               value={state.otherBillDesc}
               onChange={(e) => update("otherBillDesc", e.target.value)}
@@ -121,8 +123,9 @@ export default function BillDetailsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">Account / Bill Number *</label>
+            <label htmlFor="accountNumber" className="block text-xs font-bold text-zinc-600 mb-1">Account / Bill Number *</label>
             <input
+              id="accountNumber"
               type="text"
               value={state.accountNumber}
               onChange={(e) => update("accountNumber", e.target.value)}
@@ -134,8 +137,9 @@ export default function BillDetailsPage() {
             {errors.accountNumber && <p className="text-xs text-red-600 mt-1">{errors.accountNumber}</p>}
           </div>
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">Full Name *</label>
+            <label htmlFor="fullName" className="block text-xs font-bold text-zinc-600 mb-1">Full Name *</label>
             <input
+              id="fullName"
               type="text"
               value={state.fullName}
               onChange={(e) => update("fullName", e.target.value)}
@@ -150,8 +154,9 @@ export default function BillDetailsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">NIC Number</label>
+            <label htmlFor="nic" className="block text-xs font-bold text-zinc-600 mb-1">NIC Number</label>
             <input
+              id="nic"
               type="text"
               value={state.nic}
               onChange={(e) => update("nic", e.target.value)}
@@ -160,10 +165,11 @@ export default function BillDetailsPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">
+            <label htmlFor="mobile" className="block text-xs font-bold text-zinc-600 mb-1">
               Mobile Number * <span className="font-normal text-zinc-400">(for OTP)</span>
             </label>
             <input
+              id="mobile"
               type="tel"
               value={state.mobile}
               onChange={(e) => update("mobile", e.target.value)}
@@ -178,10 +184,11 @@ export default function BillDetailsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">
+            <label htmlFor="email" className="block text-xs font-bold text-zinc-600 mb-1">
               Email <span className="font-normal text-zinc-400">(for receipt)</span>
             </label>
             <input
+              id="email"
               type="email"
               value={state.email}
               onChange={(e) => update("email", e.target.value)}
@@ -190,8 +197,9 @@ export default function BillDetailsPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-zinc-600 mb-1">Amount (Rs.) *</label>
+            <label htmlFor="amount" className="block text-xs font-bold text-zinc-600 mb-1">Amount (Rs.) *</label>
             <input
+              id="amount"
               type="text"
               inputMode="decimal"
               pattern="^\d*\.?\d*$"
