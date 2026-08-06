@@ -107,7 +107,7 @@ export default function OtpVerificationPage() {
         <div className="flex justify-center gap-2 mb-4">
           {digits.map((d, i) => (
             <input
-              key={i}
+              key={`otp-input-${i + 1}`}
               ref={(el) => {
                 inputsRef.current[i] = el;
               }}
