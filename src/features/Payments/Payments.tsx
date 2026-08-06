@@ -210,6 +210,13 @@ const Payments = () => {
     t.id.toLowerCase().includes(historySearch.toLowerCase())
   );
 
+  const handleCardKeyDown = (event, callback) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      callback();
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-180px)] py-10 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto font-sans animate-fadeIn">
 
@@ -232,13 +239,19 @@ const Payments = () => {
           {/* Payment Categories Grid - 2 Large Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Utility Card */}
-            <button
-              type="button"
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => {
                 setActiveCategory('utility');
                 setSelectedSubService(utilityServices[0]);
                 setPaymentAmount(utilityServices[0].defaultAmount);
               }}
+              onKeyDown={(event) => handleCardKeyDown(event, () => {
+                setActiveCategory('utility');
+                setSelectedSubService(utilityServices[0]);
+                setPaymentAmount(utilityServices[0].defaultAmount);
+              })}
               className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer text-left w-full font-sans"
             >
               <span className="block">
@@ -256,16 +269,22 @@ const Payments = () => {
                 <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
               </span>
-            </button>
+            </div>
 
             {/* Miscellaneous Card */}
-            <button
-              type="button"
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => {
                 setActiveCategory('miscellaneous');
                 setSelectedSubService(miscServices[0]);
                 setPaymentAmount(miscServices[0].defaultAmount);
               }}
+              onKeyDown={(event) => handleCardKeyDown(event, () => {
+                setActiveCategory('miscellaneous');
+                setSelectedSubService(miscServices[0]);
+                setPaymentAmount(miscServices[0].defaultAmount);
+              })}
               className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer text-left w-full font-sans"
             >
               <span className="block">
@@ -283,7 +302,7 @@ const Payments = () => {
                 <span>{t('payments.select', 'Select')}</span>
                 <ArrowRightIcon />
               </span>
-            </button>
+            </div>
           </div>
 
           {/* Bottom Row - History Banner + Help Card */}
