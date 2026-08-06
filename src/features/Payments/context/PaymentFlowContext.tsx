@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 const initialState = {
   // Step 1 — bill details
@@ -52,8 +52,10 @@ export function PaymentFlowProvider({ children }) {
     setState(initialState);
   }
 
+  const value = useMemo(() => ({ state, update, updateMany, reset }), [state]);
+
   return (
-    <PaymentFlowContext.Provider value={{ state, update, updateMany, reset }}>
+    <PaymentFlowContext.Provider value={value}>
       {children}
     </PaymentFlowContext.Provider>
   );
