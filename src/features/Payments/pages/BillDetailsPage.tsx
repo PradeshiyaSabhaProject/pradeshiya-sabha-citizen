@@ -123,7 +123,9 @@ export default function BillDetailsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="accountNumber" className="block text-xs font-bold text-zinc-600 mb-1">Account / Bill Number *</label>
+            <label htmlFor="accountNumber" className="block text-xs font-bold text-zinc-600 mb-1">
+              Account / Bill Number *
+            </label>
             <input
               id="accountNumber"
               type="text"
