@@ -178,10 +178,11 @@ export default function PaymentMethodPage() {
                 </button>
               </div>
 
-              <label className="block text-xs font-bold text-zinc-600 mb-1">
+              <label htmlFor="govBank" className="block text-xs font-bold text-zinc-600 mb-1">
                 Select {govChannelType === "bank" ? "Your Bank" : "Fintech App"} *
               </label>
               <select
+                id="govBank"
                 value={state.govBank}
                 onChange={(e) => update("govBank", e.target.value)}
                 className={`w-full border rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-[#81081C] ${
@@ -205,31 +206,43 @@ export default function PaymentMethodPage() {
 
           {state.method === "card" && (
             <div className="mb-6 flex flex-col gap-3">
-              <input
-                type="text"
-                value={state.cardNumber}
-                onChange={(e) => update("cardNumber", e.target.value)}
-                placeholder="Card Number"
-                maxLength={19}
-                className="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
-              />
+              <label className="block text-xs font-bold text-zinc-600">
+                Card Number
+                <input
+                  id="cardNumber"
+                  type="text"
+                  value={state.cardNumber}
+                  onChange={(e) => update("cardNumber", e.target.value)}
+                  placeholder="Card Number"
+                  maxLength={19}
+                  className="mt-1 w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
+                />
+              </label>
               <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  value={state.cardExpiry}
-                  onChange={(e) => update("cardExpiry", e.target.value)}
-                  placeholder="MM/YY"
-                  maxLength={5}
-                  className="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
-                />
-                <input
-                  type="text"
-                  value={state.cardCvv}
-                  onChange={(e) => update("cardCvv", e.target.value)}
-                  placeholder="CVV"
-                  maxLength={3}
-                  className="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
-                />
+                <label className="block text-xs font-bold text-zinc-600">
+                  Expiry
+                  <input
+                    id="cardExpiry"
+                    type="text"
+                    value={state.cardExpiry}
+                    onChange={(e) => update("cardExpiry", e.target.value)}
+                    placeholder="MM/YY"
+                    maxLength={5}
+                    className="mt-1 w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
+                  />
+                </label>
+                <label className="block text-xs font-bold text-zinc-600">
+                  CVV
+                  <input
+                    id="cardCvv"
+                    type="text"
+                    value={state.cardCvv}
+                    onChange={(e) => update("cardCvv", e.target.value)}
+                    placeholder="CVV"
+                    maxLength={3}
+                    className="mt-1 w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
+                  />
+                </label>
               </div>
               {errors.cardNumber && <p className="text-xs text-red-600 mt-1">{errors.cardNumber}</p>}
             </div>
@@ -237,8 +250,11 @@ export default function PaymentMethodPage() {
 
           {state.method === "bank" && (
             <div className="mb-6">
-              <label className="block text-xs font-bold text-zinc-600 mb-1">Bank Account Reference *</label>
+              <label htmlFor="bankAccountRef" className="block text-xs font-bold text-zinc-600 mb-1">
+                Bank Account Reference *
+              </label>
               <input
+                id="bankAccountRef"
                 type="text"
                 value={state.bankAccountRef}
                 onChange={(e) => update("bankAccountRef", e.target.value)}

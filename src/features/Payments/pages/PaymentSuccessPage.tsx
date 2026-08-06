@@ -38,13 +38,6 @@ export default function PaymentSuccessPage() {
 
   const billLabel = state.billType === "other" ? state.otherBillDesc : billTypeLabel(state.billType);
   const paidDate = state.paidAt ? new Date(state.paidAt) : new Date();
-  let paymentMethodLabel = "Online Bank Transfer";
-
-  if (state.method === "govpay") {
-    paymentMethodLabel = `GovPay — ${state.govBank}`;
-  } else if (state.method === "card") {
-    paymentMethodLabel = "Debit / Credit Card";
-  }
 
   function handleDone() {
     reset();
@@ -76,7 +69,16 @@ export default function PaymentSuccessPage() {
           <ReceiptRow label="Bill Type" value={billLabel} />
           <ReceiptRow label="Account Number" value={state.accountNumber} />
           <ReceiptRow label="Name" value={state.fullName} />
-          <ReceiptRow label="Payment Method" value={paymentMethodLabel} />
+          <ReceiptRow
+            label="Payment Method"
+            value={
+              state.method === "govpay"
+                ? `GovPay — ${state.govBank}`
+                : state.method === "card"
+                  ? "Debit / Credit Card"
+                  : "Online Bank Transfer"
+            }
+          />
           <div className="flex justify-between items-center pt-3 mt-3 border-t border-zinc-200">
             <span className="text-sm font-bold text-[#1B1C1C]">Amount Paid</span>
             <span className="text-lg font-extrabold text-[#81081C]">
