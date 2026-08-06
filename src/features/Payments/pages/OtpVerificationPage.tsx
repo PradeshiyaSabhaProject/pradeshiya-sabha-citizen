@@ -140,11 +140,7 @@ export default function OtpVerificationPage() {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleVerify}
-          className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3"
-        >
+        <button type="button" onClick={handleVerify} className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3">
           Verify Code
         </button>
 
