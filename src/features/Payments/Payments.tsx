@@ -186,8 +186,11 @@ const Payments = () => {
         paymentMethodName = 'LankaQR Direct';
       }
 
+      const randomValue = new Uint32Array(1);
+      globalThis.crypto.getRandomValues(randomValue);
+
       const newReceipt = {
-        id: 'HPS-PAY-' + Math.floor(100000 + Math.random() * 900000),
+        id: `HPS-PAY-${100000 + (randomValue[0] % 900000)}`,
         date: new Date().toLocaleDateString('en-CA'),
         time: new Date().toLocaleTimeString(),
         service: serviceTitle,
