@@ -22,7 +22,7 @@ export default function OtpVerificationPage() {
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [sentOtp, setSentOtp] = useState("");
-  const inputsRef = useRef([]);
+  const inputsRef = useRef(new Array(OTP_LENGTH).fill(null));
 
   useEffect(() => {
     if (!state.verified) {
