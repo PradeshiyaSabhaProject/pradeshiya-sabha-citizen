@@ -156,17 +156,17 @@ export default function BillDetailsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="nic" className="block text-xs font-bold text-zinc-600 mb-1">
-              NIC Number
+            <label className="block text-xs font-bold text-zinc-600 mb-1">
+              <span className="block">NIC Number</span>
+              <input
+                id="nic"
+                type="text"
+                value={state.nic}
+                onChange={(e) => update("nic", e.target.value)}
+                placeholder="200012345678"
+                className="mt-1 w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
+              />
             </label>
-            <input
-              id="nic"
-              type="text"
-              value={state.nic}
-              onChange={(e) => update("nic", e.target.value)}
-              placeholder="200012345678"
-              className="w-full border border-zinc-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#81081C]"
-            />
           </div>
           <div>
             <label htmlFor="mobile" className="block text-xs font-bold text-zinc-600 mb-1">
