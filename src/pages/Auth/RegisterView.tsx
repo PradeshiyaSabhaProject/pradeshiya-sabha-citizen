@@ -152,10 +152,11 @@ const RegisterView = ({ onCancel }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="reg-name" className="block text-sm font-medium text-gray-700 mb-1.5">
               Full Name (as per NIC)
             </label>
             <input
+              id="reg-name"
               type="text"
               name="name"
               value={formData.name}
@@ -168,10 +169,11 @@ const RegisterView = ({ onCancel }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="reg-nic" className="block text-sm font-medium text-gray-700 mb-1.5">
                 National Identity Card (NIC)
               </label>
               <input
+                id="reg-nic"
                 type="text"
                 name="nic"
                 value={formData.nic}
@@ -182,10 +184,11 @@ const RegisterView = ({ onCancel }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Phone Number
               </label>
               <input
+                id="reg-phone"
                 type="text"
                 name="phone"
                 value={formData.phone}
@@ -198,10 +201,11 @@ const RegisterView = ({ onCancel }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700 mb-1.5">
               Email Address
             </label>
             <input
+              id="reg-email"
               type="email"
               name="email"
               value={formData.email}
@@ -213,10 +217,11 @@ const RegisterView = ({ onCancel }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="reg-address" className="block text-sm font-medium text-gray-700 mb-1.5">
               Home Address
             </label>
             <textarea
+              id="reg-address"
               name="address"
               rows={3}
               value={formData.address}
