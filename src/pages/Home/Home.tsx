@@ -62,21 +62,25 @@ const Home = () => {
   // Dummy status updates
   const statusUpdates = [
     {
+      id: 'su-1',
       time: 'Today, 09:45 AM',
       title: 'Application #HMG-4521 Approved',
       desc: 'Your building permit request has been reviewed and approved by the engineering department.'
     },
     {
+      id: 'su-2',
       time: 'Yesterday, 04:20 PM',
       title: 'Waste Collection Update',
       desc: 'Standard route delayed by 2 hours in Zone 04 due to heavy rain. Please keep bins secured.'
     },
     {
+      id: 'su-3',
       time: '2 days ago',
       title: 'Appointment Reminder',
       desc: "Your meeting with the Chairman's Secretary is confirmed for Wednesday at 10:30 AM."
     },
     {
+      id: 'su-4',
       time: '3 days ago',
       title: 'Inquiry Resolved',
       desc: 'Ticket #CR-882: The street lamp on 4th Cross Lane has been replaced.'
@@ -86,6 +90,7 @@ const Home = () => {
   // Dummy news
   const newsItems = [
     {
+      id: 'news-1',
       tag: 'Development',
       tagColor: 'bg-[#0f3b7d] text-white',
       title: 'New Community Center Opening',
@@ -94,6 +99,7 @@ const Home = () => {
       imgTint: 'from-blue-900/80 to-slate-900/90'
     },
     {
+      id: 'news-2',
       tag: 'Public Notice',
       tagColor: 'bg-[#b34000] text-white',
       title: 'Town Hall Meeting: Road Planning',
@@ -102,6 +108,7 @@ const Home = () => {
       imgTint: 'from-amber-950/80 to-stone-900/90'
     },
     {
+      id: 'news-3',
       tag: 'Sustainability',
       tagColor: 'bg-[#2e6b35] text-white',
       title: 'Solar Initiative Phase 1',
@@ -208,8 +215,8 @@ const Home = () => {
 
             {/* Timeline List */}
             <div className="p-5 space-y-5 flex-grow">
-              {statusUpdates.map((item, idx) => (
-                <div key={idx} className="border-l-2 border-[#8C1538] pl-3.5 py-0.5 relative">
+              {statusUpdates.map((item) => (
+                <div key={item.id} className="border-l-2 border-[#8C1538] pl-3.5 py-0.5 relative">
                   <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
                     {item.time}
                   </div>
@@ -252,8 +259,8 @@ const Home = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {newsItems.map((news, idx) => (
-            <div key={idx} className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col group">
+          {newsItems.map((news) => (
+            <div key={news.id} className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col group">
               {/* Card Image Banner */}
               <div className="h-48 relative overflow-hidden bg-gray-900">
                 <img
