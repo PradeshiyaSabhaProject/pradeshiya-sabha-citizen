@@ -287,7 +287,7 @@ const RegisterView = ({ onCancel }) => {
             <div className="flex justify-center gap-2 sm:gap-3 mb-6">
               {otp.map((digit, idx) => (
                 <input
-                  key={idx}
+                  key={`otp-input-${idx}`}
                   id={`reg-otp-${idx}`}
                   type="text"
                   inputMode="numeric"
