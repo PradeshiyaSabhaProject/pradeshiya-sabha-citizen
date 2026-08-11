@@ -234,8 +234,9 @@ const RegisterView = ({ onCancel }) => {
             />
           </div>
 
-          <label className="flex items-start gap-3 pt-2 cursor-pointer select-none">
+          <label htmlFor="confirmAccurate" className="flex items-start gap-3 pt-2 cursor-pointer select-none">
             <input
+              id="confirmAccurate"
               type="checkbox"
               name="confirmAccurate"
               checked={formData.confirmAccurate}
@@ -352,9 +353,10 @@ const RegisterView = ({ onCancel }) => {
               </div>
             )}
             <div>
-              <label className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
+              <label htmlFor="frontFile" className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
                 <span>Select File</span>
                 <input
+                  id="frontFile"
                   type="file"
                   accept="image/*,.pdf"
                   onChange={(e) => handleFileChange(e, 'frontFile')}
@@ -377,9 +379,10 @@ const RegisterView = ({ onCancel }) => {
               </div>
             )}
             <div>
-              <label className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
+              <label htmlFor="backFile" className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
                 <span>Select File</span>
                 <input
+                  id="backFile"
                   type="file"
                   accept="image/*,.pdf"
                   onChange={(e) => handleFileChange(e, 'backFile')}
