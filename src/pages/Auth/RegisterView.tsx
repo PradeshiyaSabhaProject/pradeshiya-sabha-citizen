@@ -26,6 +26,8 @@ const IdIcon = () => (
   </svg>
 );
 
+const OTP_SLOTS = ['otp-input-1', 'otp-input-2', 'otp-input-3', 'otp-input-4', 'otp-input-5', 'otp-input-6'];
+
 const RegisterView = ({ onCancel }) => {
   const { t } = useLanguage();
   const { login, isLoading } = useAuth();
@@ -290,16 +292,16 @@ const RegisterView = ({ onCancel }) => {
 
           <form onSubmit={handleStep2Submit}>
             <div className="flex justify-center gap-2 sm:gap-3 mb-6">
-              {otp.map((digit, idx) => (
+              {OTP_SLOTS.map((slotKey, idx) => (
                 <input
-                  key={`otp-input-${idx}`}
+                  key={slotKey}
                   id={`reg-otp-${idx}`}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
-                  value={digit}
+                  value={otp[idx]}
                   onChange={(e) => handleOtpChange(idx, e.target.value)}
-                  className="w-11 h-12 text-center text-lg font-bold border border-gray-300 rounded-lg focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all shadow-2xs"
+                  className="w-11 h-12 text-center text-lg font-bold border border-[#8C1538]/20 rounded-lg focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all shadow-2xs"
                 />
               ))}
             </div>
