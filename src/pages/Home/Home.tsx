@@ -285,7 +285,7 @@ const Home = () => {
                   {news.desc}
                 </p>
                 <a
-                  href={`#news-${idx}`}
+                  href={`#news-${news.id}`}
                   onClick={(e) => { e.preventDefault(); alert(`Reading story: ${news.title}`); }}
                   className="text-xs font-bold text-[#8C1538] hover:underline inline-flex items-center gap-1.5 mt-auto group-hover:translate-x-1 transition-transform"
                 >

@@ -26,6 +26,8 @@ const IdIcon = () => (
   </svg>
 );
 
+const OTP_SLOTS = ['otp-input-1', 'otp-input-2', 'otp-input-3', 'otp-input-4', 'otp-input-5', 'otp-input-6'];
+
 const RegisterView = ({ onCancel }) => {
   const { t } = useLanguage();
   const { login, isLoading } = useAuth();
@@ -232,8 +234,9 @@ const RegisterView = ({ onCancel }) => {
             />
           </div>
 
-          <label className="flex items-start gap-3 pt-2 cursor-pointer select-none">
+          <label htmlFor="confirmAccurate" className="flex items-start gap-3 pt-2 cursor-pointer select-none">
             <input
+              id="confirmAccurate"
               type="checkbox"
               name="confirmAccurate"
               checked={formData.confirmAccurate}
@@ -290,16 +293,16 @@ const RegisterView = ({ onCancel }) => {
 
           <form onSubmit={handleStep2Submit}>
             <div className="flex justify-center gap-2 sm:gap-3 mb-6">
-              {otp.map((digit, idx) => (
+              {OTP_SLOTS.map((slotKey, idx) => (
                 <input
                   key={`otp-input-${idx}`}
                   id={`reg-otp-${idx}`}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
-                  value={digit}
+                  value={otp[idx]}
                   onChange={(e) => handleOtpChange(idx, e.target.value)}
-                  className="w-11 h-12 text-center text-lg font-bold border border-gray-300 rounded-lg focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all shadow-2xs"
+                  className="w-11 h-12 text-center text-lg font-bold border border-[#8C1538]/20 rounded-lg focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all shadow-2xs"
                 />
               ))}
             </div>
@@ -350,9 +353,10 @@ const RegisterView = ({ onCancel }) => {
               </div>
             )}
             <div>
-              <label className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
+              <label htmlFor="frontFile" className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
                 <span>Select File</span>
                 <input
+                  id="frontFile"
                   type="file"
                   accept="image/*,.pdf"
                   onChange={(e) => handleFileChange(e, 'frontFile')}
@@ -375,9 +379,10 @@ const RegisterView = ({ onCancel }) => {
               </div>
             )}
             <div>
-              <label className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
+              <label htmlFor="backFile" className="inline-block border border-[#8C1538] text-[#8C1538] hover:bg-maroon-50 px-6 py-1.5 rounded-lg text-sm font-medium bg-white transition-colors cursor-pointer shadow-2xs">
                 <span>Select File</span>
                 <input
+                  id="backFile"
                   type="file"
                   accept="image/*,.pdf"
                   onChange={(e) => handleFileChange(e, 'backFile')}
