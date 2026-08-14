@@ -119,10 +119,11 @@ const LoginView = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="forgot-identifier" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Registered Mobile / NIC / Email <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="forgot-identifier"
                   type="text"
                   value={forgotIdentifier}
                   onChange={(e) => {
@@ -263,11 +264,12 @@ const LoginView = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="forgot-new-password" className="block text-sm font-medium text-gray-700 mb-1.5">
                   New Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="forgot-new-password"
                     type={showForgotPwd ? 'text' : 'password'}
                     value={forgotPasswordData.newPassword}
                     onChange={(e) => {
@@ -282,11 +284,12 @@ const LoginView = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="forgot-confirm-password" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Confirm New Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="forgot-confirm-password"
                     type={showForgotPwd ? 'text' : 'password'}
                     value={forgotPasswordData.confirmPassword}
                     onChange={(e) => {
@@ -446,10 +449,11 @@ const LoginView = () => {
           /* Mode 1: Mobile OTP only (Login1.png) */
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="login-mobile-phone" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Mobile Number
               </label>
               <input
+                id="login-mobile-phone"
                 type="text"
                 name="phone"
                 value={formData.phone}
@@ -462,7 +466,7 @@ const LoginView = () => {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="login-mobile-password" className="block text-sm font-medium text-gray-700">
                   Password <span className="text-xs font-normal text-gray-400">(Optional if using OTP)</span>
                 </label>
                 <button
@@ -479,6 +483,7 @@ const LoginView = () => {
               </div>
               <div className="relative">
                 <input
+                  id="login-mobile-password"
                   type={showLoginPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
@@ -511,10 +516,11 @@ const LoginView = () => {
           /* Mode 2: Detailed Email / Admin mode (login2.png) */
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="login-full-name" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Full Name
               </label>
               <input
+                id="login-full-name"
                 type="text"
                 name="name"
                 value={formData.name}
@@ -527,10 +533,11 @@ const LoginView = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="login-nic" className="block text-sm font-medium text-gray-700 mb-1.5">
                   National ID (NIC)
                 </label>
                 <input
+                  id="login-nic"
                   type="text"
                   name="nic"
                   value={formData.nic}
@@ -541,10 +548,11 @@ const LoginView = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="login-phone" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Mobile Number
                 </label>
                 <input
+                  id="login-phone"
                   type="text"
                   name="phone"
                   value={formData.phone}
@@ -557,10 +565,11 @@ const LoginView = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Gmail Address
               </label>
               <input
+                id="login-email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -573,7 +582,7 @@ const LoginView = () => {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="login-password" className="block text-sm font-medium text-gray-700">
                   Password <span className="text-xs font-normal text-gray-400">(Optional if using OTP)</span>
                 </label>
                 <button
@@ -590,6 +599,7 @@ const LoginView = () => {
               </div>
               <div className="relative">
                 <input
+                  id="login-password"
                   type={showLoginPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
