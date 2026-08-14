@@ -40,11 +40,11 @@ const Footer = () => {
             <p>හෝමාගම</p>
           </div>
           <p className="text-gray-300 text-sm mb-2">
-            <span className="text-gray-400">Phone: </span> 
+            <span className="text-gray-400">Phone:</span>{ ' ' }
             +94 11 285 5230 / +94 11 275 5108
           </p>
           <p className="text-gray-300 text-sm mb-5">
-            <span className="text-gray-400">Email: </span> 
+            <span className="text-gray-400">Email:</span>{ ' ' }
             <a 
               href="mailto:homagamapradeshiyasabawa@gmail.com" 
               className="hover:text-white transition-colors underline-offset-2 hover:underline"
