@@ -181,7 +181,7 @@ const LoginView = () => {
               <div className="flex justify-center gap-2 sm:gap-3 mb-6">
                 {forgotOtp.map((digit, idx) => (
                   <input
-                    key={idx}
+                    key={`forgot-otp-slot-${idx}`}
                     id={`forgot-otp-${idx}`}
                     type="text"
                     inputMode="numeric"
@@ -383,7 +383,7 @@ const LoginView = () => {
           <div className="flex justify-center gap-2 sm:gap-3 mb-6">
             {otp.map((digit, idx) => (
               <input
-                key={idx}
+                key={`login-otp-slot-${idx}`}
                 id={`login-otp-${idx}`}
                 type="text"
                 inputMode="numeric"
