@@ -234,7 +234,7 @@ const RegisterView = ({ onCancel }) => {
             />
           </div>
 
-          <label htmlFor="confirmAccurate" className="flex items-start gap-3 pt-2 cursor-pointer select-none">
+          <div className="flex items-start gap-3 pt-2">
             <input
               id="confirmAccurate"
               type="checkbox"
@@ -244,10 +244,10 @@ const RegisterView = ({ onCancel }) => {
               required
               className="mt-1 w-4 h-4 rounded-sm text-[#8C1538] focus:ring-[#8C1538] border-gray-300 cursor-pointer"
             />
-            <span className="text-xs text-gray-600 leading-relaxed">
+            <label htmlFor="confirmAccurate" className="text-xs text-gray-600 leading-relaxed cursor-pointer select-none">
               I confirm that the information provided is accurate and belongs to me. I understand that false information may lead to the rejection of future service applications.
-            </span>
-          </label>
+            </label>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-gray-100">
             <button
