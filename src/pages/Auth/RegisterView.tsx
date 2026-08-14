@@ -107,6 +107,18 @@ const RegisterView = ({ onCancel }) => {
     });
   };
 
+  const stepTitles: Record<number, string> = {
+    1: 'Details',
+    2: 'Verification',
+    3: 'Documents',
+  };
+
+  const stepProgressWidths: Record<number, string> = {
+    1: '33.33%',
+    2: '66.66%',
+    3: '100%',
+  };
+
   return (
     <div className="py-2 animate-fadeIn font-sans">
       {/* Header & Progress Bar */}
@@ -124,7 +136,7 @@ const RegisterView = ({ onCancel }) => {
             STEP {step} OF 3
           </span>
           <span className="text-sm font-bold text-gray-800">
-            {step === 1 ? 'Details' : step === 2 ? 'Verification' : 'Documents'}
+            {stepTitles[step] ?? 'Details'}
           </span>
         </div>
       </div>
@@ -133,7 +145,7 @@ const RegisterView = ({ onCancel }) => {
       <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden mb-6">
         <div 
           className="bg-[#8C1538] h-full transition-all duration-300 ease-out rounded-full"
-          style={{ width: step === 1 ? '33.33%' : step === 2 ? '66.66%' : '100%' }}
+          style={{ width: stepProgressWidths[step] ?? '33.33%' }}
         />
       </div>
 
