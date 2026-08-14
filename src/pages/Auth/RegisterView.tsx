@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useLanguage } from '../../context/LanguageContext';
 
 const RightArrow = () => (
   <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
@@ -29,7 +28,6 @@ const IdIcon = () => (
 const OTP_SLOTS = ['otp-input-1', 'otp-input-2', 'otp-input-3', 'otp-input-4', 'otp-input-5', 'otp-input-6'];
 
 const RegisterView = ({ onCancel }) => {
-  const { t } = useLanguage();
   const { login, isLoading } = useAuth();
   const [step, setStep] = useState(1);
 
