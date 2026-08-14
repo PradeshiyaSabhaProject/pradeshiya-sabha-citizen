@@ -155,10 +155,14 @@ const Home = () => {
               <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Active Complaints</div>
             </div>
 
-            <div onClick={() => navigate('/appointments?tab=bookings')} className="bg-white rounded-xl border border-gray-200/80 p-4 text-center shadow-xs min-w-[130px] sm:min-w-[150px] hover:border-[#8C1538]/30 transition-all cursor-pointer">
+            <button
+              type="button"
+              onClick={() => navigate('/appointments?tab=bookings')}
+              className="bg-white rounded-xl border border-gray-200/80 p-4 text-center shadow-xs min-w-[130px] sm:min-w-[150px] hover:border-[#8C1538]/30 transition-all cursor-pointer"
+            >
               <div className="text-3xl font-extrabold text-[#8C1538] mb-0.5">1</div>
               <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Pending Appointment</div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -178,29 +182,41 @@ const Home = () => {
 
           {/* 6 Grid Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div onClick={() => navigate('/complaints')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <button
+              type="button"
+              onClick={() => navigate('/complaints')}
+              className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col text-left w-full"
+            >
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <ComplaintIcon />
               </div>
               <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.complaintTitle', 'Complaints')}</h3>
               <p className="text-xs text-gray-500 leading-relaxed">{t('home.complaintDesc', 'Street lights, waste, or roads.')}</p>
-            </div>
+            </button>
 
-            <div onClick={() => navigate('/appointments')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <button
+              type="button"
+              onClick={() => navigate('/appointments')}
+              className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col text-left w-full"
+            >
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <CalendarIcon />
               </div>
               <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.facilityTitle', 'Appointments & Reservations')}</h3>
               <p className="text-xs text-gray-500 leading-relaxed">{t('home.facilityDesc', 'Schedule a meet with officials.')}</p>
-            </div>
+            </button>
 
-            <div onClick={() => navigate('/letters')} className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col">
+            <button
+              type="button"
+              onClick={() => navigate('/letters')}
+              className="bg-white rounded-xl border border-gray-200/80 p-5 hover:border-[#8C1538]/40 hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col text-left w-full"
+            >
               <div className="w-11 h-11 rounded-xl bg-red-50 text-[#8C1538] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <LettersIcon />
               </div>
               <h3 className="font-bold text-gray-900 mb-1 group-hover:text-[#8C1538] transition-colors">{t('home.letterTitle', 'Letters')}</h3>
               <p className="text-xs text-gray-500 leading-relaxed">{t('home.letterDesc', 'Real-time application tracking.')}</p>
-            </div>
+            </button>
 
           </div>
         </div>
