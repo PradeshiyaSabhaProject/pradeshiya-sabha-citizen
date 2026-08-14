@@ -115,7 +115,10 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
       alert('කරුණාකර කොන්දේසි වලට යටත්ව ඉල්ලුම් කරන බව තහවුරු කරන්න / Please confirm your agreement to the statutory conditions.');
       return;
     }
-    const randomRef = 'HMG-SL-' + Math.floor(100000 + Math.random() * 900000);
+    const randomBuffer = new Uint32Array(1);
+    window.crypto.getRandomValues(randomBuffer);
+    const randomNumber = 100000 + (randomBuffer[0] % 900000);
+    const randomRef = 'HMG-SL-' + randomNumber;
     setReferenceNo(randomRef);
     setIsSubmitted(true);
     if (onAddApplication) {
