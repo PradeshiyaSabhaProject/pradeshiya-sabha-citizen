@@ -15,6 +15,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   Building: 'Building Approval',
 };
 
+/**
+ * Renders the form used to submit a new citizen complaint.
+ * @param {ComplaintFormProps} props - Form submission and navigation callbacks.
+ * @returns {React.JSX.Element} The complaint submission form.
+ */
 export default function ComplaintForm({ onSubmit, onBackToDashboard }: ComplaintFormProps) {
   const [formData, setFormData] = useState({
     fullName: '', contactNumber: '', email: '',
@@ -27,14 +32,27 @@ export default function ComplaintForm({ onSubmit, onBackToDashboard }: Complaint
   const imageInputRef = useRef<any>(null);
   const docInputRef = useRef<any>(null);
 
+  /**
+   * Updates a form field when its value changes.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} e - Field change event.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Stores the selected file using the provided state setter.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - File input change event.
+   * @param {(file: File) => void} setFile - State setter for the selected file.
+   */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setFile: (file: File) => void) => {
     if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
 
+  /**
+   * Validates the form event and submits the complaint in dashboard format.
+   * @param {React.FormEvent} e - Form submission event.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 

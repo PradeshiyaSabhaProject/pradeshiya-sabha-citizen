@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
 
+/**
+ * Displays, filters, paginates, and manages the citizen's complaints.
+ */
 export default function ComplaintDashboard({ onNavigateToForm, complaints = [], onUpdateComplaint }) {
   const { t } = useLanguage();
   
@@ -25,6 +28,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
     desc: ''
   });
 
+  /**
+   * Returns the badge classes for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} CSS classes for the status badge.
+   */
   const getStatusStyle = (status) => {
     switch (status) {
       case 'RESOLVED': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
@@ -34,6 +42,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   };
 
   // Colors for the "Current Status" banner shown inside the details modal
+  /**
+   * Returns the banner classes for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} CSS classes for the status banner.
+   */
   const getStatusBannerStyle = (status) => {
     switch (status) {
       case 'RESOLVED': return 'bg-emerald-50 border-emerald-200 text-emerald-800';
@@ -42,6 +55,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
     }
   };
 
+  /**
+   * Returns the explanatory message for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} Status message for the details banner.
+   */
   const getStatusBannerMessage = (status) => {
     switch (status) {
       case 'RESOLVED': return 'This issue has been resolved and closed.';
@@ -52,6 +70,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
 
   // Builds a simple, read-only progress timeline for the citizen to track their complaint.
   // This reflects the status set by the handling officer - citizens can view it, not edit it.
+  /**
+   * Builds the read-only progress timeline for a complaint.
+   * @param {object} complaint - Complaint whose progress is being displayed.
+   * @returns {Array<object>} Timeline steps with completion state.
+   */
   const getTimelineSteps = (complaint) => {
     const statusOrder = ['PENDING', 'IN PROGRESS', 'RESOLVED'];
     const currentIndex = Math.max(statusOrder.indexOf(complaint.status), 0);
@@ -95,17 +118,29 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredComplaints.slice(indexOfFirstItem, indexOfLastItem);
 
+  /**
+   * Changes the current complaints page when the requested page is valid.
+   * @param {number} pageNumber - Page number to display.
+   */
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
+  /**
+   * Applies a status filter and returns the list to its first page.
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - Status select change event.
+   */
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
     setCurrentPage(1);
   };
 
+  /**
+   * Applies a category filter and returns the list to its first page.
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - Category select change event.
+   */
   const handleCategoryFilterChange = (e) => {
     setCategoryFilter(e.target.value);
     setCurrentPage(1);
@@ -116,12 +151,19 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const activeCount = complaints.filter(c => c.status === 'PENDING' || c.status === 'IN PROGRESS').length;
   const resolvedCount = complaints.filter(c => c.status === 'RESOLVED').length;
 
+  /**
+   * Opens the complaint details modal for the selected complaint.
+   * @param {object} complaint - Complaint to display.
+   */
   const handleOpenModal = (complaint) => {
     setSelectedComplaint(complaint);
     setEditForm({ ...complaint });
     setIsEditing(false);
   };
 
+  /**
+   * Saves the edited complaint and closes edit mode and the modal.
+   */
   const handleSaveChanges = () => {
     onUpdateComplaint(editForm);
     setIsEditing(false);

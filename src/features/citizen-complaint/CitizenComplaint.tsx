@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import ComplaintDashboard from './components/ComplaintDashboard';
 import ComplaintForm from './components/ComplaintForm';
 
+/**
+ * Coordinates the complaint dashboard and complaint submission views.
+ * @returns {React.JSX.Element} The active complaint view.
+ */
 export default function CitizenComplaint() {
   // State used to toggle pages
   const [currentView, setCurrentView] = useState('dashboard');
@@ -51,6 +55,10 @@ export default function CitizenComplaint() {
   ]);
 
   // 2. Function to add a new Complaint (Added to the top of the array - LIFO)
+  /**
+   * Adds a new complaint to the beginning of the complaint list.
+   * @param {object} newComplaintData - Complaint data submitted by the form.
+   */
   const handleAddNewComplaint = (newComplaintData) => {
     // ID is generated exactly in your old format (e.g., CMP-2024-026)
     const nextIdNumber = complaints.length + 1;
@@ -80,6 +88,10 @@ export default function CitizenComplaint() {
   };
 
   // 3. Function to completely edit and save a previously submitted Complaint
+  /**
+   * Replaces an existing complaint with its updated values.
+   * @param {object} updatedComplaint - Updated complaint data.
+   */
   const handleUpdateComplaint = (updatedComplaint) => {
     setComplaints((prevComplaints) =>
       prevComplaints.map((c) => (c.id === updatedComplaint.id ? updatedComplaint : c))
