@@ -40,14 +40,26 @@ const PaymentFlowContext = createContext<any>(undefined);
 export function PaymentFlowProvider({ children }) {
   const [state, setState] = useState(initialState);
 
+  /**
+   * Updates a single key in the payment flow state.
+   * @param key State key to update
+   * @param value New value to set
+   */
   function update(key, value) {
     setState((s) => ({ ...s, [key]: value }));
   }
 
+  /**
+   * Updates multiple keys in the payment flow state using a patch object.
+   * @param patch Object containing key-value pairs to merge into state
+   */
   function updateMany(patch) {
     setState((s) => ({ ...s, ...patch }));
   }
 
+  /**
+   * Resets the payment flow state back to its initial default values.
+   */
   function reset() {
     setState(initialState);
   }
@@ -59,6 +71,10 @@ export function PaymentFlowProvider({ children }) {
   );
 }
 
+/**
+ * Custom hook to access payment flow state and updater methods.
+ * @returns Context containing state, update, updateMany, and reset
+ */
 export function usePaymentFlow(): any {
   const ctx = useContext(PaymentFlowContext);
   if (!ctx) throw new Error("usePaymentFlow must be used within a PaymentFlowProvider");

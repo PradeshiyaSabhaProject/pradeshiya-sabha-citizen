@@ -5,12 +5,17 @@ const steps = [
   { n: 4, label: "Receipt" },
 ];
 
+/**
+ * Component that renders a 4-step horizontal progress bar for the payment flow.
+ * @param current The active step number (1 to 4)
+ */
 export default function StepIndicator({ current }) {
   return (
     <div className="flex items-center justify-between max-w-lg mx-auto mb-8 px-2">
       {steps.map((s, i) => (
         <div key={s.n} className="flex items-center flex-1 last:flex-none">
           <div className="flex flex-col items-center">
+            {/** Calculates step badge styling based on completed, active, or pending status */}
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 ${
                 s.n < current

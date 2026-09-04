@@ -18,22 +18,34 @@ const MOCK_BILLS = {
   "EB-118820": { fullName: "S. Fernando", amount: "8450" },
 };
 
+/**
+ * Renders Step 1 of the payment flow where citizens enter utility bill and account details.
+ */
 export default function BillDetailsPage() {
   const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<any>({});
   const [verifying, setVerifying] = useState(false);
 
-  // Allow the user to abandon the flow at any time and return to the main services area.
+  /**
+   * Resets the payment flow state and returns the user to the main services catalog.
+   */
   function handleCancel() {
     reset();
     navigate("/services");
   }
 
+  /**
+   * Navigates back to the main services page.
+   */
   function handleBack() {
     navigate("/services");
   }
 
+  /**
+   * Handles payment amount input changes, validating positive decimal syntax via regex.
+   * @param e Input change event from the amount field
+   */
   function handleAmountChange(e) {
     const nextValue = e.target.value;
     if (nextValue === "" || /^\d*(?:\.\d*)?$/.test(nextValue)) {
@@ -41,6 +53,10 @@ export default function BillDetailsPage() {
     }
   }
 
+  /**
+   * Validates required bill form fields and mobile number format using regex rules.
+   * @returns True if all fields are valid, false if validation errors exist
+   */
   function validate() {
     const e: any = {};
     if (!state.billType) e.billType = "Please select a bill type.";
@@ -56,6 +72,10 @@ export default function BillDetailsPage() {
     return Object.keys(e).length === 0;
   }
 
+  /**
+   * Validates form input, simulates an account verification API call, and navigates to OTP step.
+   * @param ev Form submission event
+   */
   function handleVerify(ev) {
     ev.preventDefault();
     if (!validate()) return;

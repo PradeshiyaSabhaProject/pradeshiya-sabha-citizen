@@ -26,11 +26,20 @@ const GOVPAY_BANKS = [
 // shipping, and keep the "Other" fallback either way.
 const GOVPAY_FINTECH = ["iPay", "HelaPay", "Other Fintech App (shown on GovPay)"];
 
+/**
+ * Generates a mock payment reference code using the current timestamp.
+ * @returns Formatted reference string starting with 'HPS-PAY-'
+ */
 function generateReference() {
   const ts = Date.now().toString().slice(-8);
   return `HPS-PAY-${ts}`;
 }
 
+/**
+ * Formats a number or string into a Sri Lankan Rupee currency string formatted to 2 decimal places.
+ * @param value Raw numeric or string amount
+ * @returns Formatted currency string (e.g. "2,450.00")
+ */
 function formatAmount(value) {
   const amount = Number(value || 0);
   return amount.toLocaleString("en-LK", {
@@ -39,6 +48,11 @@ function formatAmount(value) {
   });
 }
 
+/**
+ * Maps a bill category key to its human-readable title label.
+ * @param type Category key string
+ * @returns Descriptive label string for the bill type
+ */
 function billTypeLabel(type) {
   switch (type) {
     case "water":
@@ -54,6 +68,9 @@ function billTypeLabel(type) {
   }
 }
 
+/**
+ * Renders Step 3 of the payment flow for selecting and filling payment gateway credentials.
+ */
 export default function PaymentMethodPage() {
   const { state, update, updateMany, reset } = usePaymentFlow();
   const navigate = useNavigate();
@@ -61,23 +78,32 @@ export default function PaymentMethodPage() {
   const [processing, setProcessing] = useState(false);
   const [govChannelType, setGovChannelType] = useState("bank");
 
+  /** Guards access to step 3, redirecting back to OTP verification if unverified */
   useEffect(() => {
     if (!state.otpVerified) {
       navigate("/payments/verify-otp", { replace: true });
     }
   }, [state.otpVerified, navigate]);
 
-  // Return to the previous verification step when the user needs to check the OTP again.
+  /**
+   * Navigates back to Step 2 for OTP verification.
+   */
   function handleBack() {
     navigate("/payments/verify-otp");
   }
 
-  // Clear the pending payment state and leave the flow when the user cancels the payment.
+  /**
+   * Clears the payment flow state and exits to the main services page.
+   */
   function handleCancel() {
     reset();
     navigate("/services");
   }
 
+  /**
+   * Validates required form inputs based on the active payment method choice.
+   * @returns True if payment inputs are valid, false if validation errors exist
+   */
   function validate() {
     const e: any = {};
     if (!state.method) e.method = "Select a payment method.";
@@ -90,6 +116,10 @@ export default function PaymentMethodPage() {
     return Object.keys(e).length === 0;
   }
 
+  /**
+   * Handles payment submission, simulates gateway processing delay, records reference details, and advances to receipt page.
+   * @param ev Form submission event
+   */
   function handlePay(ev) {
     ev.preventDefault();
     if (!validate()) return;
@@ -281,6 +311,14 @@ export default function PaymentMethodPage() {
   );
 }
 
+/**
+ * Renders an interactive payment option choice card.
+ * @param selected Whether option is currently selected
+ * @param onClick Selection callback handler
+ * @param icon Icon or emoji display element
+ * @param title Primary payment option title
+ * @param subtitle Option detail description
+ */
 function PaymentOption({ selected, onClick, icon, title, subtitle }) {
   return (
     <button
