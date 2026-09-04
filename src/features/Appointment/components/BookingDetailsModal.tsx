@@ -8,6 +8,7 @@ interface Step {
 }
 
 const getStep3Details = (isConfirmed: boolean, isCancelled: boolean) => {
+  // The timeline gives terminal booking states priority over the pending state.
   if (isConfirmed) {
     return { desc: 'Verification check completed successfully.', status: 'completed' };
   }
@@ -19,6 +20,7 @@ const getStep3Details = (isConfirmed: boolean, isCancelled: boolean) => {
 
 const getStep4Details = (booking: any, isConfirmed: boolean, isCancelled: boolean) => {
   if (isConfirmed) {
+    // Appointment and facility confirmations need different user-facing summaries.
     const desc = booking.type === 'appointment'
       ? `Confirmed! Your appointment is scheduled for ${booking.date} at ${booking.time}`
       : `Reserved! Your facility booking is confirmed for ${booking.date} (${booking.time || 'Full Day'}). Price: ${booking.price || 'Paid'}`;
@@ -34,6 +36,7 @@ const getTimelineSteps = (booking: any, isConfirmed: boolean, isCancelled: boole
   const step3 = getStep3Details(isConfirmed, isCancelled);
   const step4 = getStep4Details(booking, isConfirmed, isCancelled);
 
+  // Build one shared timeline while varying only the details that depend on booking type.
   return [
     {
       title: 'Sent to Relevant Officer',
@@ -127,6 +130,7 @@ const FormDetailsSummary = ({ booking }: { booking: any }) => {
         {isCremation ? 'Cremation Details' : 'Reservation Details'}
       </div>
       <div className="p-4 space-y-2 bg-white max-h-48 overflow-y-auto">
+        {/* Cremation bookings expose regulated information; other facilities show event details. */}
         {isCremation ? (
           <div className="grid grid-cols-2 gap-y-1 gap-x-2">
             <span className="text-gray-400 font-bold">Applicant Name:</span>
@@ -232,6 +236,7 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }: { isOpen: boolean; on
         <FormDetailsSummary booking={booking} />
 
         {/* Attached Document (Optional) */}
+        {/* Attachments are optional, so the document row is omitted when none was provided. */}
         {booking.attachment && (
           <div className="mb-6 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex justify-between items-center text-xs">
             <div className="flex items-center gap-2 text-gray-700 min-w-0">
