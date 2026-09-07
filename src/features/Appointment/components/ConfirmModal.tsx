@@ -5,7 +5,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, attachedFile }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in font-sans">
       <div className="w-full max-w-md scale-95 overflow-hidden rounded-lg bg-white p-6 shadow-2xl transition-all duration-300 ease-out border border-gray-150">
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-800">Confirm New Booking</h3>

@@ -68,14 +68,14 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden font-sans">
       {/* Header */}
       <div className="bg-red-850 p-6 text-white flex justify-between items-center">
         <div>
           <span className="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
             Step 1 of 2: Booking Schedule
           </span>
-          <h2 className="text-xl font-bold mt-2 font-serif">Select Date & Time</h2>
+          <h2 className="text-xl font-bold mt-2">Select Date & Time</h2>
         </div>
         <button 
           type="button"
@@ -102,7 +102,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
               Starting at {selectedFacility.basePrice}
             </span>
           </div>
-          <h3 className="text-lg font-bold text-gray-800 mt-1 font-serif">{selectedFacility.title}</h3>
+          <h3 className="text-lg font-bold text-gray-800 mt-1">{selectedFacility.title}</h3>
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
             {selectedFacility.subtitle}
           </p>

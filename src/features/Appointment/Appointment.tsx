@@ -75,7 +75,7 @@ const Appointment = () => {
   }, [location.pathname, location.search, setActiveTab]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
       {/* Inner Navigation Tabs (For debugging/testing switching) */}
       <div className="max-w-6xl mx-auto mb-6 flex justify-start border-b border-gray-250">
         <button

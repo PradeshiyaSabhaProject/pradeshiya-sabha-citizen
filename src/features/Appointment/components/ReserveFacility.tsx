@@ -284,7 +284,7 @@ const ReserveFacility = ({
   // RENDER: DEFAULT VIEW - FACILITIES GRID
   // ----------------------------------------------------
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto font-sans">
       
       {/* Left Sidebar Filter Panel */}
       <div className="lg:col-span-3 bg-white border border-gray-150 rounded-xl p-5 shadow-xs h-fit space-y-6">
@@ -347,7 +347,7 @@ const ReserveFacility = ({
         {/* Title and Sort Bar */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 font-serif">Reserve Community Facilities</h2>
+            <h2 className="text-2xl font-bold text-gray-800">Reserve Community Facilities</h2>
             <p className="text-xs text-gray-500 mt-1">
               Book venues for your next event, sports match, or community gathering.
             </p>
@@ -384,7 +384,7 @@ const ReserveFacility = ({
               {/* Card Body */}
               <div className="p-4 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-gray-800 mb-2 font-serif">{fac.title}</h3>
+                  <h3 className="text-sm font-bold text-gray-800 mb-2">{fac.title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed line-clamp-3 mb-4">
                     {fac.subtitle}
                   </p>

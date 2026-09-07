@@ -189,7 +189,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
   });
 
   return (
-    <div className="bg-white border border-gray-150 rounded-xl p-6 shadow-xs max-w-4xl mx-auto">
+    <div className="bg-white border border-gray-150 rounded-xl p-6 shadow-xs max-w-4xl mx-auto font-sans">
       {/* Header */}
       <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-150">
         <h2 className="text-2xl font-bold text-gray-800">My Bookings</h2>

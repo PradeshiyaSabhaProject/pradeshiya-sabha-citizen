@@ -229,14 +229,14 @@ export const FormStep: React.FC<FormStepProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden font-sans">
       {/* Header */}
       <div className="bg-red-850 p-6 text-white flex justify-between items-center">
         <div>
           <span className="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
             Step 2 of 2: Information Form
           </span>
-          <h2 className="text-xl font-bold mt-2 font-serif">
+          <h2 className="text-xl font-bold mt-2">
             {isCremation ? 'Application for Cremation (English Digital Version)' : 'Facility Reservation Request Form'}
           </h2>
         </div>

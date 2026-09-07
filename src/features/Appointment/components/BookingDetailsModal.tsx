@@ -197,7 +197,7 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }: { isOpen: boolean; on
   const steps = getTimelineSteps(booking, isConfirmed, isCancelled);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in font-sans">
       <div className="w-full max-w-lg scale-95 overflow-hidden rounded-xl bg-white p-6 shadow-2xl transition-all duration-300 ease-out border border-gray-150">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-5">
