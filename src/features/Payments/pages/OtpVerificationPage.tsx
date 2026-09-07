@@ -10,13 +10,15 @@ const RESEND_SECONDS = 30;
 // verified server-side and delivered via a real SMS gateway — never
 // generated or checked purely in the browser like this.
 function generateOtp() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  return (100000 + (array[0] % 900000)).toString();
 }
 
 export default function OtpVerificationPage() {
   const { state, update, reset } = usePaymentFlow();
   const navigate = useNavigate();
-  const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
+  const [digits, setDigits] = useState(new Array(OTP_LENGTH).fill(""));
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [sentOtp, setSentOtp] = useState("");
@@ -44,7 +46,7 @@ export default function OtpVerificationPage() {
     update("otpCode", code);
     update("otpSentTo", state.mobile);
     setSecondsLeft(RESEND_SECONDS);
-    setDigits(Array(OTP_LENGTH).fill(""));
+    setDigits(new Array(OTP_LENGTH).fill(""));
     setError("");
   }
 
@@ -139,6 +141,7 @@ export default function OtpVerificationPage() {
         </div>
 
         <button
+          type="button"
           onClick={handleVerify}
           className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3"
         >
@@ -146,6 +149,7 @@ export default function OtpVerificationPage() {
         </button>
 
         <button
+          type="button"
           onClick={sendOtp}
           disabled={secondsLeft > 0}
           className="text-xs font-semibold text-[#81081C] disabled:text-zinc-400 disabled:cursor-not-allowed"
