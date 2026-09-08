@@ -1,0 +1,145 @@
+.payment-page {
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 68px);
+}
+
+/* Top decorative strip */
+.payment-page__hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(160deg, #4a0e0e 0%, #6b1a1a 40%, #8b2020 100%);
+  z-index: 0;
+}
+
+.payment-page__container {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 4rem;
+}
+
+/* ---- Header ---- */
+.payment-page__header {
+  margin-bottom: 2rem;
+}
+
+.payment-page__header-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.9rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  margin-bottom: 0.9rem;
+  backdrop-filter: blur(8px);
+}
+
+.payment-page__header-badge span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.payment-page__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.payment-page__description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* ---- Cards ---- */
+.payment-page__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* ---- Info strip ---- */
+.payment-page__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.payment-page__info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.payment-page__info-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.payment-page__info-dot--green {
+  background: #22c55e;
+}
+
+.payment-page__info-dot--blue {
+  background: #3b82f6;
+}
+
+.payment-page__info-dot--yellow {
+  background: #f59e0b;
+}
+
+/* ---- Breadcrumb override for dark bg ---- */
+.payment-page__container .breadcrumb {
+  padding-bottom: 0;
+}
+
+.payment-page__container .breadcrumb__link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.payment-page__container .breadcrumb__link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+}
+
+.payment-page__container .breadcrumb__separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.payment-page__container .breadcrumb__current {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .payment-page__title {
+    font-size: 1.6rem;
+  }
+
+  .payment-page__info {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}

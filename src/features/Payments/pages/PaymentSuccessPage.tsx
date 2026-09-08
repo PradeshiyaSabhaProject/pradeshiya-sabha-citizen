@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { usePaymentFlow } from "../context/PaymentFlowContext";
 import StepIndicator from "../components/StepIndicator";
 
+/**
+ * Formats a numeric currency value into Sri Lankan Rupee format with 2 decimal places.
+ * @param value Raw numeric or string amount
+ * @returns Formatted currency string (e.g. "2,450.00")
+ */
 function formatAmount(value) {
   const amount = Number(value || 0);
   return amount.toLocaleString("en-LK", {
@@ -11,6 +16,11 @@ function formatAmount(value) {
   });
 }
 
+/**
+ * Resolves a bill category identifier to its human-readable title.
+ * @param type Category key string
+ * @returns Descriptive title label string
+ */
 function billTypeLabel(type) {
   switch (type) {
     case "water":
@@ -26,10 +36,14 @@ function billTypeLabel(type) {
   }
 }
 
+/**
+ * Renders Step 4 of the payment flow displaying a successful payment receipt and confirmation details.
+ */
 export default function PaymentSuccessPage() {
   const { state, reset } = usePaymentFlow();
   const navigate = useNavigate();
 
+  /** Redirects to initial bill page if no payment reference number is present in state */
   useEffect(() => {
     if (!state.referenceNumber) {
       navigate("/payments", { replace: true });
@@ -39,6 +53,9 @@ export default function PaymentSuccessPage() {
   const billLabel = state.billType === "other" ? state.otherBillDesc : billTypeLabel(state.billType);
   const paidDate = state.paidAt ? new Date(state.paidAt) : new Date();
 
+  /**
+   * Resets the payment flow context state and navigates back to start a new payment.
+   */
   function handleDone() {
     reset();
     navigate("/payments");
@@ -106,6 +123,11 @@ export default function PaymentSuccessPage() {
   );
 }
 
+/**
+ * Renders a key-value detail row in the payment receipt card.
+ * @param label Detail field title
+ * @param value Detail field value string or element
+ */
 function ReceiptRow({ label, value }) {
   return (
     <div className="flex justify-between text-sm py-1">

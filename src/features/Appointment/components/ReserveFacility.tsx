@@ -143,6 +143,7 @@ const ReserveFacility = ({
   const handleStartBooking = (facility) => {
     setSelectedFacility(facility);
     
+    // Start each booking from the portal's configured current date and availability.
     const todayDate = new Date(2026, 6, 10);
     const day = todayDate.getDate();
     const month = todayDate.getMonth();
@@ -165,7 +166,7 @@ const ReserveFacility = ({
     setChosenTimeSlot(null);
     setWizardStep('datetime');
     
-    // Reset specific fields
+    // Clear booking-specific data so a new reservation cannot inherit a previous draft.
     setDeceasedName('');
     setDeceasedAddress('');
     setDeceasedGrama('');
@@ -189,6 +190,7 @@ const ReserveFacility = ({
   // RENDER: STEP 1 - DATE & TIME SELECTION
   // ----------------------------------------------------
   if (wizardStep === 'datetime') {
+    // The child step owns calendar interactions while this component retains the wizard state.
     return (
       <DateTimeSelectionStep
         selectedFacility={selectedFacility}
@@ -212,6 +214,7 @@ const ReserveFacility = ({
   // RENDER: STEP 2 - RESERVATION FORMS (CREMATION / GENERAL)
   // ----------------------------------------------------
   if (wizardStep === 'form') {
+    // FormStep receives both shared applicant fields and cremation-specific fields.
     return (
       <FormStep
         selectedFacility={selectedFacility}
@@ -363,6 +366,7 @@ const ReserveFacility = ({
         {/* Facilities Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {facilities.map((fac) => (
+            // Keep the card presentational; starting a reservation is handled by the wizard.
             <div key={fac.id} className="border border-gray-150 rounded-xl overflow-hidden bg-white hover:shadow-md transition-shadow flex flex-col justify-between">
               
               {/* Card Header & Image */}

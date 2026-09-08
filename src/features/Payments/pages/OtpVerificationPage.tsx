@@ -6,15 +6,19 @@ import StepIndicator from "../components/StepIndicator";
 const OTP_LENGTH = 6;
 const RESEND_SECONDS = 30;
 
-// Demo-only OTP generator. In production, OTPs must be generated and
-// verified server-side and delivered via a real SMS gateway — never
-// generated or checked purely in the browser like this.
+/**
+ * Generates a random 6-digit OTP code using crypto for demo purposes.
+ * @returns A 6-digit numeric string
+ */
 function generateOtp() {
   const array = new Uint32Array(1);
   crypto.getRandomValues(array);
   return (100000 + (array[0] % 900000)).toString();
 }
 
+/**
+ * Renders Step 2 of the payment flow for 6-digit mobile OTP verification.
+ */
 export default function OtpVerificationPage() {
   const { state, update, reset } = usePaymentFlow();
   const navigate = useNavigate();
@@ -22,8 +26,9 @@ export default function OtpVerificationPage() {
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [sentOtp, setSentOtp] = useState("");
-  const inputsRef = useRef([]);
+  const inputsRef = useRef(new Array(OTP_LENGTH).fill(null));
 
+  /** Ensures account details are verified before proceeding; initiates OTP dispatch on mount */
   useEffect(() => {
     if (!state.verified) {
       navigate("/payments", { replace: true });
@@ -33,13 +38,16 @@ export default function OtpVerificationPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /** Decrements the resend timer every second until reaching zero */
   useEffect(() => {
     if (secondsLeft <= 0) return;
     const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
     return () => clearInterval(t);
   }, [secondsLeft]);
 
-  // Generate a temporary OTP for the demo flow and keep the code in context for verification.
+  /**
+   * Generates and dispatches a demo OTP code, updating state and resetting the countdown timer.
+   */
   function sendOtp() {
     const code = generateOtp();
     setSentOtp(code);
@@ -50,17 +58,26 @@ export default function OtpVerificationPage() {
     setError("");
   }
 
-  // Return to the previous step so the user can revise the bill details if needed.
+  /**
+   * Returns the user to Step 1 so they can revise bill details.
+   */
   function handleBack() {
     navigate("/payments");
   }
 
-  // Clear the draft payment and exit the flow when the user cancels the payment journey.
+  /**
+   * Resets payment flow state and exits to the main services page.
+   */
   function handleCancel() {
     reset();
     navigate("/services");
   }
 
+  /**
+   * Handles single-digit OTP input changes, updating state and auto-advancing focus to the next input.
+   * @param i Input slot index (0 to 5)
+   * @param value Single digit string entered in the input slot
+   */
   function handleChange(i, value) {
     if (!/^\d?$/.test(value)) return;
     const next = [...digits];
@@ -69,12 +86,20 @@ export default function OtpVerificationPage() {
     if (value && i < OTP_LENGTH - 1) inputsRef.current[i + 1]?.focus();
   }
 
+  /**
+   * Handles keypresses on OTP input slots, auto-focusing the previous input when backspacing an empty slot.
+   * @param i Input slot index (0 to 5)
+   * @param e Keyboard event object
+   */
   function handleKeyDown(i, e) {
     if (e.key === "Backspace" && !digits[i] && i > 0) {
       inputsRef.current[i - 1]?.focus();
     }
   }
 
+  /**
+   * Validates the 6-digit OTP entry against the generated code and navigates to the payment method step.
+   */
   function handleVerify() {
     const entered = digits.join("");
     if (entered.length < OTP_LENGTH) {
@@ -107,7 +132,7 @@ export default function OtpVerificationPage() {
         <div className="flex justify-center gap-2 mb-4">
           {digits.map((d, i) => (
             <input
-              key={i}
+              key={`otp-input-${i + 1}`}
               ref={(el) => {
                 inputsRef.current[i] = el;
               }}
@@ -140,11 +165,7 @@ export default function OtpVerificationPage() {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleVerify}
-          className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3"
-        >
+        <button type="button" onClick={handleVerify} className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3">
           Verify Code
         </button>
 
