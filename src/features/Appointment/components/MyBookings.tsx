@@ -8,6 +8,7 @@ const BookingCard = ({ b, onOpenDetails, onCancelBooking }) => {
   const isCancelled = b.status === 'CANCELLED';
 
   let iconClass = 'bg-red-50 text-red-800';
+  // Terminal and pending states override the default type-based icon color.
   if (isCancelled) {
     iconClass = 'bg-gray-100 text-gray-400';
   } else if (isPending) {
@@ -17,6 +18,7 @@ const BookingCard = ({ b, onOpenDetails, onCancelBooking }) => {
   }
 
   let badgeClass = 'bg-gray-200 text-gray-600 font-bold';
+  // Confirmed and reserved records share the successful status treatment.
   if (isConfirmed || isReserved) {
     badgeClass = 'bg-green-100 text-green-700 font-bold';
   } else if (isPending) {
@@ -103,7 +105,8 @@ const BookingCard = ({ b, onOpenDetails, onCancelBooking }) => {
         </div>
       )}
 
-      {isReserved && ( // Reserved Bar
+      {/* Reserved bookings expose price and allow the citizen to cancel the reservation. */}
+      {isReserved && (
         <div className="bg-gray-50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
           <span className="text-gray-500 italic">
             {b.statusMessage}
@@ -134,7 +137,8 @@ const BookingCard = ({ b, onOpenDetails, onCancelBooking }) => {
         </div>
       )}
 
-      {isPending && ( // Pending Approval Bar
+      {/* Pending bookings can still be cancelled while awaiting official approval. */}
+      {isPending && (
         <div className="bg-red-50/30 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
           <span className="text-red-700 font-medium italic">
             Awaiting official approval
@@ -162,7 +166,8 @@ const BookingCard = ({ b, onOpenDetails, onCancelBooking }) => {
         </div>
       )}
 
-      {isCancelled && ( // Cancelled Bar
+      {/* Cancelled records remain visible for history but have no active actions. */}
+      {isCancelled && (
         <div className="bg-gray-50/50 border-t border-gray-150 px-5 py-3 text-xs text-gray-400 italic">
           {b.statusMessage}
         </div>
@@ -175,6 +180,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
   const [activeSubTab, setActiveSubTab] = useState('appointments'); // 'appointments' | 'reservations'
 
   const filteredBookings = bookings.filter(b => {
+    // The active tab is the single source of truth for which booking type is shown.
     if (activeSubTab === 'appointments') {
       return b.type === 'appointment';
     } else {
@@ -232,6 +238,7 @@ const MyBookings = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) 
         </button>
       </div>
 
+      {/* Keep the empty-state guidance specific to appointments or facility reservations. */}
       {filteredBookings.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-gray-200 rounded-lg text-gray-400 text-sm">
           {activeSubTab === 'appointments' 

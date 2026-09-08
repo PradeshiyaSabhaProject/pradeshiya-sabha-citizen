@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, attachedFile }) => {
+  // Keep the modal out of the DOM until the parent explicitly opens it.
   if (!isOpen) return null;
 
   return (
@@ -12,6 +13,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, attachedFile }) => {
             Are you want to build a new booking?
           </p>
           
+          {/* Show the selected document summary so the citizen can verify it before submitting. */}
           {attachedFile && (
             <div className="mt-4 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex items-center gap-2 text-xs text-gray-600">
               <span className="text-sm">📎</span>
