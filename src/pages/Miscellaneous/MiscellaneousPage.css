@@ -1,0 +1,131 @@
+.misc-page {
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 68px);
+}
+
+.misc-page__hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(160deg, #4a0e0e 0%, #6b1a1a 40%, #8b2020 100%);
+  z-index: 0;
+}
+
+.misc-page__container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 4rem;
+}
+
+/* ---- Header ---- */
+.misc-page__header {
+  margin-bottom: 1.5rem;
+}
+
+.misc-page__header-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.9rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  margin-bottom: 0.9rem;
+  backdrop-filter: blur(8px);
+}
+
+.misc-page__header-badge span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.misc-page__title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.misc-page__description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+/* ---- Count tag ---- */
+.misc-page__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.misc-page__count-number {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #6b1a1a;
+}
+
+.misc-page__count-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* ---- Grid ---- */
+.misc-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 0.9rem;
+}
+
+/* ---- Breadcrumb override for dark bg ---- */
+.misc-page__container .breadcrumb {
+  padding-bottom: 0;
+}
+
+.misc-page__container .breadcrumb__link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.misc-page__container .breadcrumb__link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+}
+
+.misc-page__container .breadcrumb__separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.misc-page__container .breadcrumb__current {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .misc-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .misc-page__title {
+    font-size: 1.5rem;
+  }
+}
