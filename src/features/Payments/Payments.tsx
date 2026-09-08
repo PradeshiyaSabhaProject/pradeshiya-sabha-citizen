@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 
 // Crisp SVG Icons matching exact screenshot design
+/** Renders a droplet SVG icon for Utility payment category cards */
 const DropletIcon = () => (
   <svg className="w-6 h-6 text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
@@ -9,6 +10,7 @@ const DropletIcon = () => (
   </svg>
 );
 
+/** Renders a document SVG icon for Miscellaneous payment category cards */
 const DocumentIcon = () => (
   <svg className="w-6 h-6 text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -19,12 +21,14 @@ const DocumentIcon = () => (
   </svg>
 );
 
+/** Renders a right arrow SVG icon for navigation actions */
 const ArrowRightIcon = () => (
   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M5 12h14M12 5l7 7-7 7" />
   </svg>
 );
 
+/** Renders a help box SVG icon for support card widgets */
 const HelpBoxIcon = () => (
   <svg className="w-6 h-6 text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="2.5" ry="2.5" />
@@ -33,18 +37,23 @@ const HelpBoxIcon = () => (
   </svg>
 );
 
+/** Renders a close modal cross SVG icon for dialog headers */
 const CloseModalIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
+/** Renders a green success checkmark circle SVG icon for receipt modals */
 const CheckCircleIcon = () => (
   <svg className="w-12 h-12 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
 
+/**
+ * Renders the main Payments hub page with category selection, payment form, transaction history, and digital receipt modal.
+ */
 const Payments = () => {
   const { t } = useLanguage();
   // Navigation & Interactive States
@@ -156,12 +165,20 @@ const Payments = () => {
     }
   ];
 
+  /**
+   * Updates state to select a sub-service option and populates its default fee amount.
+   * @param service Selected sub-service item configuration
+   */
   const handleSelectSubService = (service) => {
     setSelectedSubService(service);
     setPaymentAmount(service.defaultAmount);
     setAccountNumber('');
   };
 
+  /**
+   * Validates reference input, simulates payment gateway processing, constructs digital receipt data, and opens the receipt modal.
+   * @param e Form submission event
+   */
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
     if (!accountNumber.trim()) {
@@ -204,6 +221,7 @@ const Payments = () => {
     }, 1100);
   };
 
+  /** Filters sample transaction history based on history search text matching service, account number, or receipt ID */
   const filteredHistory = transactions.filter(t =>
     t.service.toLowerCase().includes(historySearch.toLowerCase()) ||
     t.accountNo.toLowerCase().includes(historySearch.toLowerCase()) ||
