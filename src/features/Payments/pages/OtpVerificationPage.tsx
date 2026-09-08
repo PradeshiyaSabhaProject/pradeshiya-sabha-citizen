@@ -26,7 +26,7 @@ export default function OtpVerificationPage() {
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [sentOtp, setSentOtp] = useState("");
-  const inputsRef = useRef([]);
+  const inputsRef = useRef(new Array(OTP_LENGTH).fill(null));
 
   /** Ensures account details are verified before proceeding; initiates OTP dispatch on mount */
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function OtpVerificationPage() {
         <div className="flex justify-center gap-2 mb-4">
           {digits.map((d, i) => (
             <input
-              key={i}
+              key={`otp-input-${i + 1}`}
               ref={(el) => {
                 inputsRef.current[i] = el;
               }}
@@ -165,11 +165,7 @@ export default function OtpVerificationPage() {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleVerify}
-          className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3"
-        >
+        <button type="button" onClick={handleVerify} className="w-full bg-[#81081C] hover:bg-[#5E0614] text-white font-bold py-3 rounded-lg text-sm transition-colors mb-3">
           Verify Code
         </button>
 
