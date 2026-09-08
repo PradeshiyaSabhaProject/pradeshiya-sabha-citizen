@@ -33,11 +33,13 @@ const getStep4Details = (booking: any, isConfirmed: boolean, isCancelled: boolea
   return { desc: 'Awaiting approval confirmation.', status: 'upcoming' };
 };
 
-const getTimelineSteps = (booking: any, isConfirmed: boolean, isCancelled: boolean): Step[] => {
-  const step3 = getStep3Details(isConfirmed, isCancelled);
-  const step4 = getStep4Details(booking, isConfirmed, isCancelled);
+const getTimelineSteps = (booking: any): Step[] => {
+  const isApproved = booking.status === 'APPROVED' || booking.status === 'CONFIRMED' || booking.status === 'Approved' || booking.status === 'Confirmed';
+  const isRescheduled = booking.status === 'RESCHEDULED' || booking.status === 'Rescheduled';
+  const isCompleted = booking.status === 'COMPLETED' || booking.status === 'Completed';
+  const isRejected = booking.status === 'REJECTED' || booking.status === 'Rejected';
+  const isCancelled = booking.status === 'CANCELLED' || booking.status === 'Cancelled';
 
-  // Build one shared timeline while varying only the details that depend on booking type.
   return [
     {
       title: '1. Request Intake & Submission',
@@ -128,11 +130,9 @@ const TimelineStep = ({ step, isLast }: { step: Step; isLast: boolean }) => {
   );
 };
 
-interface BookingDetailsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  booking: BookingItem | null;
-}
+const FormDetailsSummary = ({ booking }: { booking: any }) => {
+  const isCremation = booking.facilityType === 'crematorium' || booking.serviceName?.toLowerCase().includes('crematorium');
+  if (!booking.formDetails) return null;
 
   return (
     <div className="mb-5 border border-gray-150 rounded-xl overflow-hidden text-xs">
@@ -205,8 +205,8 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }: { isOpen: boolean; on
   const steps = getTimelineSteps(booking);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 overflow-y-auto animate-fadeIn">
-      <div className="w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300 border border-gray-200 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto animate-fadeIn select-none font-sans">
+      <div className="w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl border border-gray-200 my-8 animate-modalScaleIn text-left">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#8C1538] to-[#5c0d24] p-5 sm:p-6 text-white flex items-center justify-between">
           <div>

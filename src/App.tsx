@@ -1,12 +1,14 @@
-import "./index.css";
-import Layout from "./components/Layout/Layout";
-import AppRoutes from "./router/AppRoutes";
+import { AuthProvider } from './context/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
+import AppRoutes from './routes/AppRoutes';
 
-function App(): React.ReactElement {
+function App() {
   return (
-    <Layout>
-      <AppRoutes />
-    </Layout>
+    <AuthProvider>
+      <LanguageProvider>
+        <AppRoutes />
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 

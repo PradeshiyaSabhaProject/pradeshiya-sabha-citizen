@@ -17,9 +17,11 @@ import OtpVerificationPage from "../features/Payments/pages/OtpVerificationPage"
 import PaymentMethodPage from "../features/Payments/pages/PaymentMethodPage";
 import PaymentSuccessPage from "../features/Payments/pages/PaymentSuccessPage";
 import Payments from '../features/Payments/Payments';
+import MiscellaneousPage from '../pages/Miscellaneous/MiscellaneousPage';
+import ServiceForm from '../pages/Service/ServiceForm';
 import Profile from '../pages/Profile/Profile';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn } = useAuth();
   const { hasSelectedLanguage } = useLanguage();
   if (!isLoggedIn) {
@@ -51,6 +53,18 @@ const AppRoutes = () => {
       <Routes>
         <Route 
           path="/login" 
+          element={
+            isLoggedIn ? (
+              <Navigate to="/" replace />
+            ) : (
+              <CitizenLayout>
+                <AuthPortal />
+              </CitizenLayout>
+            )
+          } 
+        />
+        <Route 
+          path="/auth" 
           element={
             isLoggedIn ? (
               <Navigate to="/" replace />
@@ -110,6 +124,14 @@ const AppRoutes = () => {
           } 
         />
         <Route 
+          path="/facilities" 
+          element={
+            <ProtectedRoute>
+              <Appointment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
           path="/reservations" 
           element={
             <ProtectedRoute>
@@ -150,18 +172,41 @@ const AppRoutes = () => {
           } 
         />
         <Route 
-          path="/letters" 
+          path="/payments/miscellaneous" 
           element={
             <ProtectedRoute>
-              <LetterRequests />
+              <MiscellaneousPage />
             </ProtectedRoute>
           } 
         />
         <Route 
-          path="/reservations" 
+          path="/payments/miscellaneous/:service" 
           element={
             <ProtectedRoute>
-              <Appointment />
+              <ServiceForm />
+            </ProtectedRoute>
+          } 
+        />
+        <Route
+          path="/payments/flow/*"
+          element={
+            <PaymentFlowProvider>
+              <CitizenLayout>
+                <Routes>
+                  <Route index element={<BillDetailsPage />} />
+                  <Route path="verify-otp" element={<OtpVerificationPage />} />
+                  <Route path="method" element={<PaymentMethodPage />} />
+                  <Route path="success" element={<PaymentSuccessPage />} />
+                </Routes>
+              </CitizenLayout>
+            </PaymentFlowProvider>
+          }
+        />
+        <Route 
+          path="/letters" 
+          element={
+            <ProtectedRoute>
+              <LetterRequests />
             </ProtectedRoute>
           } 
         />
@@ -180,22 +225,6 @@ const AppRoutes = () => {
               <Home />
             </ProtectedRoute>
           } 
-        />
-        <Route
-          path="/payments/*"
-          element={
-            // Wrap the payment journey in the shared citizen layout so every step shows the main header and footer.
-            <PaymentFlowProvider>
-              <CitizenLayout>
-                <Routes>
-                  <Route index element={<BillDetailsPage />} />
-                  <Route path="verify-otp" element={<OtpVerificationPage />} />
-                  <Route path="method" element={<PaymentMethodPage />} />
-                  <Route path="success" element={<PaymentSuccessPage />} />
-                </Routes>
-              </CitizenLayout>
-            </PaymentFlowProvider>
-          }
         />
       </Routes>
     </Router>

@@ -32,6 +32,8 @@ const getStatusBadgeStyle = (status: AppointmentStatus | string) => {
 
 const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBooking }) => {
   const isApproved = b.status === 'APPROVED' || b.status === 'CONFIRMED' || b.status === 'RESERVED';
+  const isConfirmed = b.status === 'CONFIRMED' || b.status === 'APPROVED';
+  const isReserved = b.status === 'RESERVED';
   const isRescheduled = b.status === 'RESCHEDULED';
   const isPending = b.status === 'PENDING';
   const isRejected = b.status === 'REJECTED';
@@ -39,13 +41,17 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
   const isCancelled = b.status === 'CANCELLED';
   const isNoShow = b.status === 'NO-SHOW';
 
+  const isAppointment = b.type === 'appointment';
+  const isFacility = b.type === 'facility';
+  const documentsCount = (b.documents?.length || 0) + (b.attachment ? 1 : 0);
+
   let iconClass = 'bg-red-50 text-red-800';
   // Terminal and pending states override the default type-based icon color.
   if (isCancelled) {
     iconClass = 'bg-gray-100 text-gray-400';
   } else if (isPending) {
     iconClass = 'bg-amber-50 text-amber-600';
-  } else if (b.type === 'appointment') {
+  } else if (isAppointment) {
     iconClass = 'bg-blue-50 text-blue-600';
   }
 
@@ -315,6 +321,9 @@ interface MyBookingsProps {
   onCancelBooking: (id: string | number) => void;
   onOpenDetails: (booking: BookingItem) => void;
 }
+
+const MyBookings: React.FC<MyBookingsProps> = ({ bookings, onNewBooking, onCancelBooking, onOpenDetails }) => {
+  const [activeSubTab, setActiveSubTab] = useState<'appointments' | 'reservations'>('appointments');
 
   const filteredBookings = bookings.filter(b => {
     // The active tab is the single source of truth for which booking type is shown.

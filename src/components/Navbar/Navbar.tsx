@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
     <header className="navbar">
       <div className="navbar__inner">
         {/* Logo */}
-        <div className="navbar__brand">
+        <Link to="/" className="navbar__brand" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="navbar__logo-icon">
             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="40" height="40" rx="8" fill="rgba(255,255,255,0.15)" />
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
             <span className="navbar__brand-main">Homagama</span>
             <span className="navbar__brand-sub">Pradeshiya Sabha</span>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop Nav Links */}
         <nav className="navbar__links" aria-label="Main navigation">
@@ -78,16 +78,16 @@ const Navbar: React.FC = () => {
             <span>Verified Citizen</span>
           </button>
 
-          <button className="navbar__icon-btn" type="button" aria-label="Help">
+          <Link to="/about" className="navbar__icon-btn" aria-label="Help">
             <MdHelp />
-          </button>
+          </Link>
           <button className="navbar__icon-btn" type="button" aria-label="Notifications">
             <MdNotifications />
             <span className="navbar__notif-badge">3</span>
           </button>
-          <button className="navbar__icon-btn navbar__profile-btn" type="button" aria-label="Profile">
+          <Link to="/profile" className="navbar__icon-btn navbar__profile-btn" aria-label="Profile">
             <MdAccountCircle />
-          </button>
+          </Link>
         </div>
 
         {/* Mobile hamburger */}

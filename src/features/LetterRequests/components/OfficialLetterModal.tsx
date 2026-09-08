@@ -11,8 +11,8 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
   if (!isOpen || !letter) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans print:p-0 print:bg-white">
-      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left print:max-h-none print:shadow-none print:border-none print:rounded-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-xs overflow-hidden animate-fadeIn select-none font-sans print:p-0 print:bg-white">
+      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left animate-modalScaleIn print:max-h-none print:shadow-none print:border-none print:rounded-none">
         {/* Modal Header Banner (Hidden in print) */}
         <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-5 flex items-center justify-between gap-4 relative shadow-md shrink-0 print:hidden">
           <div className="flex items-center gap-3">

@@ -5,9 +5,13 @@
   --color-red-900: #731331;
 }
 
+*, *::before, *::after {
+  font-family: 'Inter', 'Public Sans', 'Noto Sans Sinhala', 'Noto Sans Tamil', system-ui, -apple-system, sans-serif;
+}
+
 /* Base style resets and root font scaling for user-friendly, refined sizing */
 html {
-  font-size: 14px; /* 1rem = 14px on mobile screens (instead of 16px default) */
+  font-size: 14px; /* 1rem = 14px on mobile screens */
 }
 
 @media (min-width: 640px) {
@@ -23,24 +27,42 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Public Sans', 'Noto Sans Sinhala', 'Noto Sans Tamil', system-ui, -apple-system, sans-serif;
   background-color: #f9fafb;
   color: #1f2937;
-  font-size: 0.9375rem; /* ~14px baseline text size across standard body text */
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
 }
 
-/* Simple animations */
+/* Standard animation primitives */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.15s ease-out forwards;
+}
+
 .animate-fade-in {
-  animation: fadeIn 0.2s ease-out forwards;
+  animation: fadeIn 0.15s ease-out forwards;
+}
+
+.animate-modalScaleIn {
+  animation: modalScaleIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

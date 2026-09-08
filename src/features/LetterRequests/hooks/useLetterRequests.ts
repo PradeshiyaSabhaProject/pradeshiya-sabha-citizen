@@ -117,9 +117,17 @@ export const useLetterRequests = () => {
     setSelectedLetter(null);
   };
 
-  const handleCreateLetterSubmit = async (e) => {
-    e.preventDefault();
-    if (!formSubject.trim() || !formDescription.trim()) {
+  const handleCreateLetterSubmit = async (payloadOrEvent?: any) => {
+    if (payloadOrEvent && typeof payloadOrEvent.preventDefault === 'function') {
+      payloadOrEvent.preventDefault();
+    }
+
+    const payload = payloadOrEvent && !payloadOrEvent.preventDefault ? payloadOrEvent : null;
+    const subjectToSubmit = payload?.subject || formSubject;
+    const categoryToSubmit = payload?.category || formCategory;
+    const descToSubmit = payload?.description || formDescription;
+
+    if (!subjectToSubmit.trim() || !descToSubmit.trim()) {
       alert('Please fill in all the required fields.');
       return;
     }
@@ -127,9 +135,16 @@ export const useLetterRequests = () => {
     setLoading(true);
     try {
       const newLetter = {
-        subject: formSubject,
-        category: formCategory,
-        description: formDescription
+        subject: subjectToSubmit,
+        category: categoryToSubmit,
+        description: descToSubmit,
+        recipient: payload?.recipient || 'Chairman / Secretary',
+        senderName: payload?.senderName || 'Verified Citizen',
+        senderPhone: payload?.senderPhone || '077 123 4567',
+        senderEmail: payload?.senderEmail || '',
+        urgency: payload?.urgency || 'Normal',
+        document: payload?.document || null,
+        documentName: payload?.documentName || null
       };
       await letterService.createLetterRequest(newLetter);
       await fetchLetters();

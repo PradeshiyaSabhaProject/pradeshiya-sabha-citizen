@@ -1,7 +1,109 @@
 import React from 'react';
 import { useLanguage } from '../../../context/LanguageContext';
+import { downloadSlip } from '../../../utils/pdfGenerator';
 
-const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
+interface LetterDetailsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  letter: any;
+}
+
+interface Step {
+  title: string;
+  description: string;
+  status: 'completed' | 'active' | 'cancelled' | 'upcoming';
+}
+
+const getTimelineSteps = (letter: any): Step[] => {
+  const isResolved = letter.status === 'Resolved';
+  const isInTransit = letter.status === 'In transit' || letter.status === 'In review';
+  const isReturned = letter.status === 'Returned';
+
+  return [
+    {
+      title: '1. Letter Registered & Dispatched',
+      description: `Formal correspondence received in central secretariat on ${letter.dateSubmitted || letter.date}.`,
+      status: 'completed',
+    },
+    {
+      title: '2. Secretarial Assignment & Division Routing',
+      description: isReturned
+        ? 'Review halted: Returned for additional citizen documentation.'
+        : isInTransit || isResolved
+        ? `Routed to ${letter.category || 'Competent Division'} for review.`
+        : 'Awaiting desk review.',
+      status: isReturned ? 'cancelled' : isInTransit || isResolved ? 'completed' : 'active',
+    },
+    {
+      title: '3. Departmental Evaluation & Drafting',
+      description: isReturned
+        ? (letter.remarks || 'Returned by council secretariat.')
+        : isResolved
+        ? 'Evaluation finalized and official response letter authored.'
+        : isInTransit
+        ? 'Departmental reviewer is assessing the request against municipal bylaws.'
+        : 'Pending review.',
+      status: isReturned ? 'cancelled' : isResolved ? 'completed' : isInTransit ? 'active' : 'upcoming',
+    },
+    {
+      title: '4. Official Response Issued',
+      description: isResolved
+        ? 'Official signed letter issued and archived in municipal correspondence ledger.'
+        : 'Pending final executive approval.',
+      status: isResolved ? 'completed' : 'upcoming',
+    },
+  ];
+};
+
+const TimelineStep = ({ step, isLast }: { step: Step; isLast: boolean }) => {
+  let iconBg = 'bg-gray-50 border-gray-200 text-gray-400';
+  let icon = <span className="w-2 h-2 bg-gray-300 rounded-full" />;
+  let titleColor = 'text-gray-400 font-medium';
+
+  if (step.status === 'completed') {
+    iconBg = 'bg-emerald-50 border-emerald-600 text-emerald-600';
+    icon = (
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+      </svg>
+    );
+    titleColor = 'text-gray-900 font-bold';
+  } else if (step.status === 'active') {
+    iconBg = 'bg-amber-50 border-amber-600 text-amber-700 animate-pulse';
+    icon = (
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    );
+    titleColor = 'text-amber-900 font-extrabold';
+  } else if (step.status === 'cancelled') {
+    iconBg = 'bg-red-50 border-red-600 text-red-600';
+    icon = (
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    );
+    titleColor = 'text-red-700 font-bold';
+  }
+
+  return (
+    <div className="flex gap-4 items-start relative">
+      <div className="flex flex-col items-center shrink-0">
+        <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 ${iconBg} z-10 bg-white shadow-2xs`}>
+          {icon}
+        </div>
+        {!isLast && <div className="w-0.5 h-10 my-0.5 bg-gray-200" />}
+      </div>
+
+      <div className="pt-0.5 pb-2">
+        <h4 className={`text-xs ${titleColor}`}>{step.title}</h4>
+        <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">{step.description}</p>
+      </div>
+    </div>
+  );
+};
+
+const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose, letter }) => {
   const { language: activeLanguage } = useLanguage();
   const lang = activeLanguage || 'si';
   const L = (siText: string, enText: string, taText?: string) =>
@@ -10,134 +112,140 @@ const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
   if (!isOpen || !letter) return null;
 
   const isResolved = letter.status === 'Resolved';
-
-  // Badge colors
-  const statusColors = {
-    'In review': 'border-amber-200 bg-amber-50/80 text-amber-800',
-    'Resolved': 'border-green-200 bg-green-50/80 text-green-800',
-    'In transit': 'border-blue-200 bg-blue-50/80 text-blue-800',
-    'Returned': 'border-red-200 bg-red-50/80 text-red-800'
-  };
+  const isInTransit = letter.status === 'In transit' || letter.status === 'In review';
+  const isReturned = letter.status === 'Returned';
+  const steps = getTimelineSteps(letter);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left">
-        {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-0.5 sm:space-y-1 min-w-0">
-            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight">
-              {L('ඉල්ලුම්පත් විස්තරය', 'Request Details', 'கோரிக்கை விவரங்கள்')} - #{letter.refNo}
-            </h2>
-            <p className="text-[11px] sm:text-sm text-white/90 font-medium truncate sm:whitespace-normal">
-              {L(
-                'ලිපියේ ප්‍රගතිය, කාලරේඛාව සහ නිල ප්‍රතිචාර නිරීක්ෂණය කරන්න',
-                'Track status, correspondence timeline, and official actions',
-                'நிலை, கடிதத் தொடர்பு காலவரிசை மற்றும் அதிகாரபூர்வ நடவடிக்கைகளைக் கண்காணிக்கவும்'
-              )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto animate-fadeIn select-none font-sans">
+      <div className="w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl border border-gray-200 my-8 animate-modalScaleIn text-left">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#8C1538] to-[#5c0d24] p-5 sm:p-6 text-white flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold bg-white/20 px-2.5 py-0.5 rounded-md">
+                #{letter.refNo || letter.id}
+              </span>
+              <span className="text-xs uppercase tracking-wider font-semibold text-rose-100">
+                • {letter.category}
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-extrabold text-white mt-1.5">
+              {letter.subject}
+            </h3>
+            <p className="text-xs text-rose-200 mt-0.5 font-medium">
+              🏢 {letter.department || 'Homagama Pradeshiya Sabha Secretariat'}
             </p>
           </div>
+
           <button
-            onClick={onClose}
             type="button"
-            className="text-white/80 hover:text-white text-2xl sm:text-3xl font-bold p-1 transition-all cursor-pointer leading-none"
-            aria-label="Close modal"
+            onClick={onClose}
+            className="text-white hover:text-gray-200 text-2xl font-bold p-2 leading-none cursor-pointer"
+            title="Close"
           >
             &times;
           </button>
         </div>
 
-        {/* Content Area */}
-        <div className="p-4 sm:p-8 overflow-y-auto flex-1 space-y-6">
-          {/* Main Info Card */}
-          <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 shadow-xs space-y-5">
-            <div>
-              <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-1">{L('විෂය / මාතෘකාව', 'Subject', 'பொருள்')}</span>
-              <h4 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{letter.subject}</h4>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-4">
-              <div>
-                <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-0.5">{L('කාණ්ඩය', 'Category', 'வகை')}</span>
-                <span className="text-sm font-bold text-gray-800">{letter.category}</span>
+        <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+          {/* Status Alert Banners */}
+          {isInTransit && (
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 text-xs text-blue-950 space-y-1">
+              <div className="font-extrabold flex items-center gap-1.5 text-blue-900">
+                <span>📨</span> {L('සමාලෝචනයේ පවතී', 'Under Departmental Review', 'மதிப்பாய்வில் உள்ளது')}
               </div>
-              <div>
-                <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-0.5">{L('යොමු කළ දිනය හා වේලාව', 'Date & Time Submitted', 'சமர்ப்பித்த தேதி')}</span>
-                <span className="text-sm font-bold text-gray-800">{letter.dateSubmitted} at {letter.timeSubmitted}</span>
-              </div>
-            </div>
-
-            {/* Status Section */}
-            <div className={`p-4 rounded-xl border ${statusColors[letter.status] || 'border-gray-200 bg-gray-50 text-gray-800'} shadow-3xs`}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider">{L('වත්මන් තත්ත්වය:', 'Current Status:', 'தற்போதைய நிலை:')}</span>
-                <span className="text-xs font-extrabold uppercase px-3 py-1 rounded-full border bg-white shadow-2xs">
-                  {letter.status}
-                </span>
-              </div>
-              {letter.remarks && (
-                <p className="mt-2.5 text-xs leading-relaxed italic font-medium opacity-95 border-t border-black/5 pt-2">
-                  <span className="font-bold not-italic">{L('සටහන්:', 'Remarks:', 'குறிப்புகள்:')}</span> {letter.remarks}
-                </p>
-              )}
-            </div>
-
-            {/* Description Section */}
-            <div>
-              <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-2">{L('සම්පූර්ණ විස්තරය', 'Description Content', 'முழுமையான விவரம்')}</span>
-              <div className="text-sm text-gray-800 bg-[#f9fafb] p-4 rounded-xl border border-gray-200/80 leading-relaxed font-normal whitespace-pre-wrap">
-                {letter.description}
-              </div>
-            </div>
-          </div>
-
-          {/* Timeline Card */}
-          {letter.timeline && letter.timeline.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 shadow-xs">
-              <span className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2.5">
-                {L('ප්‍රගති කාලරේඛාව', 'Correspondence Timeline', 'காலவரிசை')}
-              </span>
-              <div className="space-y-5 relative pl-5 border-l-2 border-red-200 ml-2 pt-1">
-                {letter.timeline.map((step, idx) => (
-                  <div key={idx} className="relative">
-                    {/* Circle Dot */}
-                    <div className="absolute -left-[27px] top-0.5 w-4 h-4 rounded-full bg-white border-2 border-[#8C1538] flex items-center justify-center shadow-2xs">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#8C1538]"></div>
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-bold text-[#8C1538] uppercase tracking-wider">{step.date}</span>
-                      <div className="text-sm font-bold text-gray-900 mt-0.5">{step.status}</div>
-                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">{step.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p className="font-medium text-blue-800">
+                {L(
+                  'අදාළ දෙපාර්තමේන්තු ප්‍රධානී විසින් ඔබගේ ලිපිය පරීක්ෂා කරමින් පවතී.',
+                  'Assigned officer is currently reviewing your correspondence against municipal protocols.',
+                  'அதிகாரபூர்வ ஆய்வில் உள்ளது.'
+                )}
+              </p>
             </div>
           )}
 
-          {/* Footer Actions */}
-          <div className="flex items-center justify-between gap-3 pt-2 border-t border-gray-200/80">
-            <div>
-              {isResolved && (
-                <button
-                  type="button"
-                  onClick={() => alert(`Downloading Letter Response for ${letter.refNo}...`)}
-                  className="rounded-md border border-[#8C1538] text-[#8C1538] hover:bg-red-50/60 px-5 py-2.5 text-sm font-semibold transition-colors cursor-pointer inline-flex items-center gap-2 shadow-2xs"
-                >
-                  <span>📥</span>
-                  <span>{L('නිල ප්‍රතිචාරය බාගන්න', 'Download Response Letter', 'பதிலை பதிவிறக்கம் செய்யவும்')}</span>
-                </button>
-              )}
+          {isReturned && (
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-xs text-red-950 space-y-1">
+              <div className="font-extrabold flex items-center gap-1.5 text-red-900">
+                <span>⚠️</span> {L('ආපසු හරවන ලදී', 'Returned with Remarks', 'திரும்ப அனுப்பப்பட்டது')}
+              </div>
+              <p className="font-medium text-red-800">
+                {letter.remarks || 'Additional verification or official attachments required.'}
+              </p>
             </div>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="rounded-md bg-gray-800 hover:bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors cursor-pointer shadow-xs"
-              >
-                {L('වසා දමන්න', 'Close', 'மூடு')}
-              </button>
+          )}
+
+          {isResolved && (
+            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4 text-xs text-emerald-950 space-y-1">
+              <div className="font-extrabold flex items-center gap-1.5 text-emerald-900">
+                <span>✓</span> {L('නිල ප්‍රතිචාරය නිකුත් කරන ලදී', 'Official Response Issued', 'அதிகாரபூர்வ பதில் வழங்கப்பட்டது')}
+              </div>
+              <p className="font-medium text-emerald-800">
+                {letter.resolutionNotes || 'Official decision signed by council secretary. You can download the response below.'}
+              </p>
+            </div>
+          )}
+
+          {/* Citizen & Letter Metadata Grid */}
+          <div className="bg-stone-50 border border-gray-200 rounded-xl p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            <div>
+              <span className="text-gray-500 font-medium block">{L('යොමු කළ දිනය', 'Submission Date', 'சமர்ப்பித்த தேதி')}:</span>
+              <span className="font-bold text-gray-900">{letter.dateSubmitted || letter.date}</span>
+            </div>
+            <div>
+              <span className="text-gray-500 font-medium block">{L('වේලාව', 'Submission Time', 'நேரம்')}:</span>
+              <span className="font-bold text-[#8C1538]">{letter.timeSubmitted || '10:00 AM'}</span>
+            </div>
+            <div>
+              <span className="text-gray-500 font-medium block">{L('කාණ්ඩය', 'Service Domain', 'வகை')}:</span>
+              <span className="font-bold text-gray-900">{letter.category}</span>
+            </div>
+            <div className="col-span-2 sm:col-span-3">
+              <span className="text-gray-500 font-medium block">{L('විෂය මාතෘකාව', 'Subject Header', 'பொருள்')}:</span>
+              <span className="font-bold text-gray-900">{letter.subject}</span>
+            </div>
+            <div className="col-span-2 sm:col-span-3">
+              <span className="text-gray-500 font-medium block">{L('සම්පූර්ණ විස්තරය', 'Full Body Content', 'விவரம்')}:</span>
+              <p className="text-gray-800 font-medium mt-0.5 leading-relaxed bg-white p-3 rounded-lg border border-gray-150">
+                {letter.description}
+              </p>
             </div>
           </div>
+
+          {/* Processing Timeline */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-extrabold text-gray-700 uppercase tracking-wide mb-3">
+              {L('ලිපි ගමන්මග හා කාලරේඛාව', 'Secretariat Routing & Review Lifecycle', 'காலவரிசை')}
+            </h4>
+            <div className="space-y-3 pl-1">
+              {steps.map((step, index) => (
+                <TimelineStep key={step.title} step={step} isLast={index === steps.length - 1} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="bg-stone-50 border-t border-gray-200 p-4 px-6 flex justify-between items-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="border border-gray-300 hover:border-gray-400 bg-white text-gray-700 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer"
+          >
+            {L('වසා දමන්න', 'Close Dossier', 'மூடு')}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => downloadSlip(letter)}
+            className="bg-[#8C1538] hover:bg-[#73102d] text-white px-5 py-2 rounded-lg text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>{L('නිල ලියවිල්ල බාගන්න', 'Download Official Pass Slip', 'பதிவிறக்கு')}</span>
+          </button>
         </div>
       </div>
     </div>
