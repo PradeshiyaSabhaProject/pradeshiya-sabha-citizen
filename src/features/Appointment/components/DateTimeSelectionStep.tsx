@@ -39,6 +39,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   ];
 
   const handlePrevMonth = () => {
+    // Crossing January moves the calendar into December of the previous year.
     if (viewMonth === 0) {
       setViewMonth(11);
       setViewYear(prev => prev - 1);
@@ -48,6 +49,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   };
 
   const handleNextMonth = () => {
+    // Crossing December moves the calendar into January of the next year.
     if (viewMonth === 11) {
       setViewMonth(0);
       setViewYear(prev => prev + 1);
@@ -57,6 +59,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   };
 
   const handleNextStep = () => {
+    // A booking cannot proceed until both parts of the schedule are selected.
     if (!chosenDateObj || !chosenTimeSlot) {
       alert('Please select both a date and an available time slot.');
       return;
@@ -204,7 +207,8 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
                           rawDate,
                           ...dateDetails
                         });
-                        setChosenTimeSlot(null); // Reset time when date changes
+                        // Time slots belong to a date, so discard a previous date's selection.
+                        setChosenTimeSlot(null);
                       }}
                       className={`aspect-square rounded-lg flex flex-col items-center justify-between p-1.5 border text-xs font-bold transition-all cursor-pointer ${
                         isSelected
@@ -235,6 +239,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
               </span>
             </div>
 
+            {/* Fully booked dates have no selectable slots to display. */}
             {chosenDateObj.status === 'unavailable' ? (
               <div className="bg-red-50 border border-red-200 rounded-lg p-5 text-center text-red-850 text-xs font-bold">
                 🚫 All slots are fully booked for this date. Please choose a different date above.
@@ -243,6 +248,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 {chosenDateObj.slots.map((slot, index) => {
                   const isSelected = chosenTimeSlot?.time === slot.time;
+                  // Disabled slots remain visible to explain availability but cannot be chosen.
                   let slotButtonStyles = 'border-gray-200 bg-white text-gray-750 hover:border-red-800/40 hover:bg-red-50/10 cursor-pointer';
                   if (!slot.available) {
                     slotButtonStyles = 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed line-through';

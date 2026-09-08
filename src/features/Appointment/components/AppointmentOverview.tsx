@@ -115,6 +115,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
           </button>
         </div>
 
+        {/* Keep the empty state visible so citizens always have a clear next action. */}
         {upcomingBookings.length === 0 ? (
           <div className="text-center py-8 border border-dashed border-gray-200 rounded-lg text-gray-400 text-sm">
             No upcoming bookings. Get started by booking an appointment or facility.
@@ -122,6 +123,8 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingBookings.map(b => (
+              // Both appointment and facility records share this card, so choose labels
+              // and accent colors from the booking type rather than duplicating markup.
               <button 
                 key={b.id} 
                 type="button"
@@ -147,6 +150,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
                   </div>
                 </div>
                 <div>
+                  {/* Reserved bookings use an outlined badge; confirmed bookings use a filled badge. */}
                   <span className={`inline-block text-[10px] font-extrabold px-2.5 py-1 rounded-sm uppercase tracking-wider ${
                     b.status === 'CONFIRMED' 
                       ? 'bg-green-100 text-green-700' 

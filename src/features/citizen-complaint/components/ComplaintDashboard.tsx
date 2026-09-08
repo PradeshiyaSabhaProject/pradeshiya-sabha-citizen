@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { CheckCircle2, Clock, FileText } from 'lucide-react';
 import { useLanguage } from '../../../context/LanguageContext';
 
+/**
+ * Displays, filters, paginates, and manages the citizen's complaints.
+ */
 export default function ComplaintDashboard({ onNavigateToForm, complaints = [], onUpdateComplaint }) {
   const { t } = useLanguage();
   
@@ -25,6 +29,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
     desc: ''
   });
 
+  /**
+   * Returns the badge classes for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} CSS classes for the status badge.
+   */
   const getStatusStyle = (status) => {
     switch (status) {
       case 'RESOLVED': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
@@ -34,6 +43,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   };
 
   // Colors for the "Current Status" banner shown inside the details modal
+  /**
+   * Returns the banner classes for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} CSS classes for the status banner.
+   */
   const getStatusBannerStyle = (status) => {
     switch (status) {
       case 'RESOLVED': return 'bg-emerald-50 border-emerald-200 text-emerald-800';
@@ -42,6 +56,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
     }
   };
 
+  /**
+   * Returns the explanatory message for a complaint status.
+   * @param {string} status - Complaint status.
+   * @returns {string} Status message for the details banner.
+   */
   const getStatusBannerMessage = (status) => {
     switch (status) {
       case 'RESOLVED': return 'This issue has been resolved and closed.';
@@ -52,6 +71,11 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
 
   // Builds a simple, read-only progress timeline for the citizen to track their complaint.
   // This reflects the status set by the handling officer - citizens can view it, not edit it.
+  /**
+   * Builds the read-only progress timeline for a complaint.
+   * @param {object} complaint - Complaint whose progress is being displayed.
+   * @returns {Array<object>} Timeline steps with completion state.
+   */
   const getTimelineSteps = (complaint) => {
     const statusOrder = ['PENDING', 'IN PROGRESS', 'RESOLVED'];
     const currentIndex = Math.max(statusOrder.indexOf(complaint.status), 0);
@@ -95,17 +119,29 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredComplaints.slice(indexOfFirstItem, indexOfLastItem);
 
+  /**
+   * Changes the current complaints page when the requested page is valid.
+   * @param {number} pageNumber - Page number to display.
+   */
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
+  /**
+   * Applies a status filter and returns the list to its first page.
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - Status select change event.
+   */
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
     setCurrentPage(1);
   };
 
+  /**
+   * Applies a category filter and returns the list to its first page.
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - Category select change event.
+   */
   const handleCategoryFilterChange = (e) => {
     setCategoryFilter(e.target.value);
     setCurrentPage(1);
@@ -116,12 +152,19 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
   const activeCount = complaints.filter(c => c.status === 'PENDING' || c.status === 'IN PROGRESS').length;
   const resolvedCount = complaints.filter(c => c.status === 'RESOLVED').length;
 
+  /**
+   * Opens the complaint details modal for the selected complaint.
+   * @param {object} complaint - Complaint to display.
+   */
   const handleOpenModal = (complaint) => {
     setSelectedComplaint(complaint);
     setEditForm({ ...complaint });
     setIsEditing(false);
   };
 
+  /**
+   * Saves the edited complaint and closes edit mode and the modal.
+   */
   const handleSaveChanges = () => {
     onUpdateComplaint(editForm);
     setIsEditing(false);
@@ -142,18 +185,27 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
       {/* Stats Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-center">
-          <span className="text-rose-800 font-semibold text-xs uppercase tracking-wider block mb-1">Total Complaints</span>
-          <h3 className="text-3xl font-bold text-gray-800">{String(totalCount).padStart(2, '0')}</h3>
+          <span className="text-gray-500 font-semibold text-xs uppercase tracking-wider block mb-1">Total Complaints</span>
+          <div className="flex items-center justify-center gap-3">
+            <FileText className="w-8 h-8 text-gray-500" aria-hidden="true" />
+            <h3 className="text-3xl font-bold text-gray-800">{String(totalCount).padStart(2, '0')}</h3>
+          </div>
           <span className="text-emerald-500 text-xs mt-1 block">▲ Dynamic tracking enabled</span>
         </div>
         <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-center">
-          <span className="text-blue-800 font-semibold text-xs uppercase tracking-wider block mb-1">Active</span>
-          <h3 className="text-3xl font-bold text-gray-800">{String(activeCount).padStart(2, '0')}</h3>
+          <span className="text-blue-800 font-semibold text-xs uppercase tracking-wider block mb-1">Active Complaints</span>
+          <div className="flex items-center justify-center gap-3">
+            <Clock className="w-8 h-8 text-yellow-500" aria-hidden="true" />
+            <h3 className="text-3xl font-bold text-gray-800">{String(activeCount).padStart(2, '0')}</h3>
+          </div>
           <span className="text-gray-400 text-xs mt-1 block">Currently under review</span>
         </div>
         <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm text-center">
-          <span className="text-emerald-800 font-semibold text-xs uppercase tracking-wider block mb-1">Resolved</span>
-          <h3 className="text-3xl font-bold text-gray-800">{String(resolvedCount).padStart(2, '0')}</h3>
+          <span className="text-emerald-800 font-semibold text-xs uppercase tracking-wider block mb-1">Resolved Complaints</span>
+          <div className="flex items-center justify-center gap-3">
+            <CheckCircle2 className="w-8 h-8 text-green-500" aria-hidden="true" />
+            <h3 className="text-3xl font-bold text-gray-800">{String(resolvedCount).padStart(2, '0')}</h3>
+          </div>
           <span className="text-emerald-500 text-xs mt-1 block">✓ Live resolution rate</span>
         </div>
       </div>
@@ -193,12 +245,56 @@ export default function ComplaintDashboard({ onNavigateToForm, complaints = [], 
             onClick={onNavigateToForm}
             className="bg-[#991b1b] hover:bg-[#7f1d1d] text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm flex items-center gap-2"
           >
-            <span>+</span> {t('complaints.newComplaint', 'New Complaint')}
+            <span>+</span> New Complaint
           </button>
         </div>
 
-        {/* Table View */}
-        <div className="overflow-x-auto">
+        {/* Mobile Card List */}
+        <div className="block md:hidden p-4 space-y-3">
+          {currentItems.map((item) => (
+            <div key={item.id} className="border border-gray-150 rounded-lg overflow-hidden bg-white hover:border-gray-300 transition-colors flex flex-col relative group">
+              <div className="p-5 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-red-50 text-red-800 flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 3v5h5" />
+                  </svg>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-bold text-gray-800 truncate">{item.id}</h3>
+                  <p className="text-xs text-gray-400 mt-0.5 truncate">{item.category}</p>
+                  <div className="flex items-center gap-2 mt-3 text-xs text-gray-500">
+                    <span>{item.date}</span>
+                  </div>
+                </div>
+
+                <div className="shrink-0 flex flex-col items-end gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenModal(item)}
+                    className="text-gray-400 hover:text-red-800 p-1.5 rounded-full hover:bg-gray-50 transition-colors cursor-pointer"
+                    title="View Details"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <span className={`inline-block text-[10px] font-extrabold px-2.5 py-1 rounded-sm uppercase tracking-wider ${getStatusStyle(item.status)}`}>
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+          {currentItems.length === 0 && (
+            <div className="p-8 text-center text-gray-400 text-sm">No complaints found for the selected filter.</div>
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold border-b border-gray-100">

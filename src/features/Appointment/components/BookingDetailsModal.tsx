@@ -8,13 +8,36 @@ interface Step {
   status: 'completed' | 'active' | 'cancelled' | 'upcoming';
 }
 
-const getTimelineSteps = (booking: BookingItem): Step[] => {
-  const isApproved = booking.status === 'APPROVED' || booking.status === 'CONFIRMED' || booking.status === 'RESERVED';
-  const isRescheduled = booking.status === 'RESCHEDULED';
-  const isRejected = booking.status === 'REJECTED';
-  const isCompleted = booking.status === 'COMPLETED';
-  const isCancelled = booking.status === 'CANCELLED';
+const getStep3Details = (isConfirmed: boolean, isCancelled: boolean) => {
+  // The timeline gives terminal booking states priority over the pending state.
+  if (isConfirmed) {
+    return { desc: 'Verification check completed successfully.', status: 'completed' };
+  }
+  if (isCancelled) {
+    return { desc: 'Process halted due to cancellation.', status: 'cancelled' };
+  }
+  return { desc: 'Awaiting final administrative sign-off and slot reservation.', status: 'active' };
+};
 
+const getStep4Details = (booking: any, isConfirmed: boolean, isCancelled: boolean) => {
+  if (isConfirmed) {
+    // Appointment and facility confirmations need different user-facing summaries.
+    const desc = booking.type === 'appointment'
+      ? `Confirmed! Your appointment is scheduled for ${booking.date} at ${booking.time}`
+      : `Reserved! Your facility booking is confirmed for ${booking.date} (${booking.time || 'Full Day'}). Price: ${booking.price || 'Paid'}`;
+    return { desc, status: 'completed' };
+  }
+  if (isCancelled) {
+    return { desc: booking.statusMessage || 'This booking has been cancelled.', status: 'cancelled' };
+  }
+  return { desc: 'Awaiting approval confirmation.', status: 'upcoming' };
+};
+
+const getTimelineSteps = (booking: any, isConfirmed: boolean, isCancelled: boolean): Step[] => {
+  const step3 = getStep3Details(isConfirmed, isCancelled);
+  const step4 = getStep4Details(booking, isConfirmed, isCancelled);
+
+  // Build one shared timeline while varying only the details that depend on booking type.
   return [
     {
       title: '1. Request Intake & Submission',
@@ -111,7 +134,71 @@ interface BookingDetailsModalProps {
   booking: BookingItem | null;
 }
 
-const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({ isOpen, onClose, booking }) => {
+  return (
+    <div className="mb-5 border border-gray-150 rounded-xl overflow-hidden text-xs">
+      <div className="bg-gray-50 px-4 py-2 border-b border-gray-150 font-bold text-gray-700 uppercase tracking-wider">
+        {isCremation ? 'Cremation Details' : 'Reservation Details'}
+      </div>
+      <div className="p-4 space-y-2 bg-white max-h-48 overflow-y-auto">
+        {/* Cremation bookings expose regulated information; other facilities show event details. */}
+        {isCremation ? (
+          <div className="grid grid-cols-2 gap-y-1 gap-x-2">
+            <span className="text-gray-400 font-bold">Applicant Name:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantName}</span>
+            
+            <span className="text-gray-400 font-bold">Applicant NIC:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantNic}</span>
+            
+            <span className="text-gray-400 font-bold">Deceased Name:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deceasedName}</span>
+            
+            <span className="text-gray-400 font-bold">Deceased NIC:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deceasedNic || 'N/A'}</span>
+            
+            <span className="text-gray-400 font-bold">Relationship:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.relationship}</span>
+            
+            <span className="text-gray-400 font-bold">Death Certificate No:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.deathCertificateNo}</span>
+            
+            <span className="text-gray-400 font-bold">Cause of Death:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.causeOfDeath}</span>
+
+            {booking.formDetails.inquestConducted === 'Yes' && (
+              <>
+                <span className="text-gray-400 font-bold">Inquest Verdict:</span>
+                <span className="text-gray-800 font-semibold text-right">{booking.formDetails.inquestVerdict}</span>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-y-1 gap-x-2">
+            <span className="text-gray-400 font-bold">Applicant Name:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantName}</span>
+            
+            <span className="text-gray-400 font-bold">Applicant NIC:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.applicantNic}</span>
+            
+            <span className="text-gray-400 font-bold">Event Purpose:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.bookingPurpose}</span>
+            
+            <span className="text-gray-400 font-bold">Expected Attendance:</span>
+            <span className="text-gray-800 font-semibold text-right">{booking.formDetails.expectedAttendance}</span>
+            
+            {booking.formDetails.equipmentRequired && (
+              <>
+                <span className="text-gray-400 font-bold">Special Request:</span>
+                <span className="text-gray-800 font-semibold text-right">{booking.formDetails.equipmentRequired}</span>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const BookingDetailsModal = ({ isOpen, onClose, booking }: { isOpen: boolean; onClose: () => void; booking: any }) => {
   if (!isOpen || !booking) return null;
 
   const isFacility = booking.type === 'facility';
@@ -293,6 +380,32 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({ isOpen, onClo
             </div>
           )}
         </div>
+
+        {/* Form Details Summary */}
+        <FormDetailsSummary booking={booking} />
+
+        {/* Attached Document (Optional) */}
+        {/* Attachments are optional, so the document row is omitted when none was provided. */}
+        {booking.attachment && (
+          <div className="mb-6 p-3.5 bg-gray-50 border border-gray-200 rounded-lg flex justify-between items-center text-xs">
+            <div className="flex items-center gap-2 text-gray-700 min-w-0">
+              <span className="text-sm">📎</span>
+              <span className="font-semibold truncate max-w-61.25" title={booking.attachment.name}>
+                {booking.attachment.name}
+              </span>
+              <span className="text-[10px] text-gray-400">
+                ({booking.attachment.size ? `${(booking.attachment.size / 1024).toFixed(1)} KB` : '100 KB'})
+              </span>
+            </div>
+            <button 
+              type="button"
+              onClick={() => alert(`Opening attached document: ${booking.attachment.name}`)}
+              className="text-red-800 font-bold hover:underline cursor-pointer shrink-0"
+            >
+              View Document
+            </button>
+          </div>
+        )}
 
         {/* Footer Actions */}
         <div className="bg-stone-50 border-t border-gray-200 p-4 px-6 flex justify-between items-center">

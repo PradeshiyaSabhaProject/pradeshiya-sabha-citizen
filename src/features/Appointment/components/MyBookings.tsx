@@ -39,9 +39,23 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
   const isCancelled = b.status === 'CANCELLED';
   const isNoShow = b.status === 'NO-SHOW';
 
-  const isAppointment = b.type === 'appointment';
-  const isFacility = b.type === 'facility';
-  const documentsCount = b.documents?.length || (b.attachment ? 1 : 0);
+  let iconClass = 'bg-red-50 text-red-800';
+  // Terminal and pending states override the default type-based icon color.
+  if (isCancelled) {
+    iconClass = 'bg-gray-100 text-gray-400';
+  } else if (isPending) {
+    iconClass = 'bg-amber-50 text-amber-600';
+  } else if (b.type === 'appointment') {
+    iconClass = 'bg-blue-50 text-blue-600';
+  }
+
+  let badgeClass = 'bg-gray-200 text-gray-600 font-bold';
+  // Confirmed and reserved records share the successful status treatment.
+  if (isConfirmed || isReserved) {
+    badgeClass = 'bg-green-100 text-green-700 font-bold';
+  } else if (isPending) {
+    badgeClass = 'bg-amber-500 text-white font-bold';
+  }
 
   return (
     <div className="border border-gray-200 rounded-xl overflow-hidden bg-white hover:border-gray-300 transition-all flex flex-col shadow-xs">
@@ -227,19 +241,11 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
         </div>
       )}
 
-      {isNoShow && (
-        <div className="bg-gray-100 border-t border-gray-200 px-5 py-2.5 text-xs text-gray-600">
-          <span className="font-bold">⚠️ Missed Session:</span> Citizen did not attend the scheduled slot. You may request a new booking.
-        </div>
-      )}
-
-      {/* Bottom Action Bar for Approved / Pending / Reserved */}
-      {isApproved && (
-        <div className="bg-emerald-50/50 border-t border-gray-200 px-5 py-2.5 flex justify-between items-center text-xs">
-          <span className="text-emerald-800 font-semibold">
-            {isAppointment 
-              ? (b.counter ? `Report to: ${b.counter}` : 'Confirmed for municipal consultation')
-              : (b.location ? `Venue: ${b.location}` : 'Venue confirmed for event')}
+      {/* Reserved bookings expose price and allow the citizen to cancel the reservation. */}
+      {isReserved && (
+        <div className="bg-gray-50 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
+          <span className="text-gray-500 italic">
+            {b.statusMessage}
           </span>
           <div className="flex items-center gap-4">
             <button
@@ -264,10 +270,11 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
         </div>
       )}
 
+      {/* Pending bookings can still be cancelled while awaiting official approval. */}
       {isPending && (
-        <div className="bg-amber-50/50 border-t border-gray-200 px-5 py-2.5 flex justify-between items-center text-xs">
-          <span className="text-amber-800 font-medium italic">
-            ⏳ Under administrative review by council desk
+        <div className="bg-red-50/30 border-t border-gray-150 px-5 py-3 flex justify-between items-center text-xs">
+          <span className="text-red-700 font-medium italic">
+            Awaiting official approval
           </span>
           <div className="flex items-center gap-4 shrink-0">
             <button
@@ -292,9 +299,10 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
         </div>
       )}
 
+      {/* Cancelled records remain visible for history but have no active actions. */}
       {isCancelled && (
-        <div className="bg-gray-50 border-t border-gray-150 px-5 py-2 text-xs text-gray-400 italic">
-          {b.statusMessage || 'Booking was cancelled by user.'}
+        <div className="bg-gray-50/50 border-t border-gray-150 px-5 py-3 text-xs text-gray-400 italic">
+          {b.statusMessage}
         </div>
       )}
     </div>
@@ -308,15 +316,8 @@ interface MyBookingsProps {
   onOpenDetails: (booking: BookingItem) => void;
 }
 
-const MyBookings: React.FC<MyBookingsProps> = ({
-  bookings,
-  onNewBooking,
-  onCancelBooking,
-  onOpenDetails
-}) => {
-  const [activeSubTab, setActiveSubTab] = useState<'appointments' | 'reservations'>('appointments');
-
-  const filteredBookings = bookings.filter((b) => {
+  const filteredBookings = bookings.filter(b => {
+    // The active tab is the single source of truth for which booking type is shown.
     if (activeSubTab === 'appointments') {
       return b.type === 'appointment';
     } else {
@@ -383,6 +384,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({
         </button>
       </div>
 
+      {/* Keep the empty-state guidance specific to appointments or facility reservations. */}
       {filteredBookings.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-gray-200 rounded-xl text-gray-400 text-xs space-y-2">
           <p>

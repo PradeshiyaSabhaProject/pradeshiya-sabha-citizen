@@ -79,6 +79,7 @@ const ScheduleAppointment = ({
             const handleSelectDept = () => {
               setSelectedDept(dept);
               const associatedOfficials = officials.filter(o => o.departmentId === dept.id);
+              // Preselect the first matching official so the next step is immediately usable.
               if (associatedOfficials.length > 0) {
                 setSelectedOfficial(associatedOfficials[0]);
               } else {
@@ -218,6 +219,7 @@ const ScheduleAppointment = ({
                         <button
                           type="button"
                           onClick={() => {
+                            // Adjacent-month filler dates are displayed for layout but cannot be selected.
                             if (d.currentMonth) setSelectedDate(d.day);
                           }}
                           className={`w-7 h-7 rounded-full flex items-center justify-center font-bold transition-colors ${buttonClass}`}
@@ -245,6 +247,7 @@ const ScheduleAppointment = ({
                 <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
                   {timeSlots.map(slot => {
                     const isSelected = selectedTimeSlot?.id === slot.id;
+                    // Render unavailable slots as informational rows instead of interactive controls.
                     if (slot.available) {
                       return (
                         <button
@@ -350,6 +353,7 @@ const ScheduleAppointment = ({
                   accept=".pdf,.doc,.docx,image/*" 
                   className="sr-only" 
                   onChange={(e) => {
+                    // Keep only the first selected file because the request supports one attachment.
                     if (e.target.files?.[0]) {
                       setAttachedFile(e.target.files[0]);
                     }
