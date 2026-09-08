@@ -11,8 +11,11 @@ let letterRequests = [
     description: 'Request for official approval on the building plan submitted for residential construction at Homagama.',
     remarks: 'Awaiting site inspection from the planning department officer.',
     timeline: [
-      { date: '2026-06-01 10:30 AM', status: 'Submitted', description: 'Letter request submitted by citizen.' },
-      { date: '2026-06-02 09:15 AM', status: 'In review', description: 'Document assigned to Planning Officer for verification.' }
+      { date: '2026-06-01 10:30 AM', status: 'Submitted', description: 'Letter request submitted by citizen via portal.' },
+      { date: '2026-06-01 02:15 PM', status: 'Received', description: 'Letter received by the Chief Secretary\'s Office and entered into the registry.' },
+      { date: '2026-06-02 09:15 AM', status: 'Assigned', description: 'Document assigned to Subject Clerk (Building & Planning Department).' },
+      { date: '2026-06-03 10:45 AM', status: 'Forwarded', description: 'File forwarded to the Technical Officer for field evaluation.' },
+      { date: '2026-06-04 08:30 AM', status: 'In review', description: 'Awaiting site inspection from the planning department officer.' }
     ]
   },
   {
@@ -27,7 +30,9 @@ let letterRequests = [
     remarks: 'Approved. The certificate has been issued and is available for download.',
     timeline: [
       { date: '2026-05-23 11:00 AM', status: 'Submitted', description: 'Letter request submitted by citizen.' },
-      { date: '2026-05-24 02:30 PM', status: 'In review', description: 'Under evaluation by Water & Sanitation Board.' },
+      { date: '2026-05-23 03:00 PM', status: 'Received', description: 'Received by Front Desk and routed to Water & Sanitation Board.' },
+      { date: '2026-05-24 02:30 PM', status: 'In review', description: 'Under evaluation by Water Works Superintendent.' },
+      { date: '2026-05-25 11:15 AM', status: 'Approved', description: 'Final approval granted by the Chairman of the Pradeshiya Sabha.' },
       { date: '2026-05-26 10:00 AM', status: 'Resolved', description: 'Water connection certificate issued.' }
     ]
   },
@@ -43,7 +48,9 @@ let letterRequests = [
     remarks: 'Documents verified. Hard copy has been dispatched to applicant address.',
     timeline: [
       { date: '2026-05-15 02:45 PM', status: 'Submitted', description: 'Letter request submitted by citizen.' },
-      { date: '2026-05-16 11:30 AM', status: 'In review', description: 'Title deed verification in progress.' },
+      { date: '2026-05-16 09:00 AM', status: 'Assigned', description: 'Assigned to the Revenue Inspector for document cross-checking.' },
+      { date: '2026-05-16 11:30 AM', status: 'In review', description: 'Title deed verification in progress against municipal records.' },
+      { date: '2026-05-17 01:20 PM', status: 'Approved', description: 'Validation complete. Secretary signed the confirmation letter.' },
       { date: '2026-05-18 04:00 PM', status: 'In transit', description: 'Certificate printed and dispatched via registered post.' }
     ]
   },
@@ -59,7 +66,8 @@ let letterRequests = [
     remarks: 'Returned: Please attach a valid income declaration statement certified by your Grama Niladhari.',
     timeline: [
       { date: '2026-05-05 08:30 AM', status: 'Submitted', description: 'Letter request submitted by citizen.' },
-      { date: '2026-05-06 10:15 AM', status: 'In review', description: 'Financial verification process.' },
+      { date: '2026-05-06 10:15 AM', status: 'In review', description: 'Financial verification process initiated by the Tax Branch.' },
+      { date: '2026-05-07 09:45 AM', status: 'Pending Info', description: 'Identified missing Grama Niladhari certification for income declaration.' },
       { date: '2026-05-08 03:20 PM', status: 'Returned', description: 'Returned due to insufficient documentation.' }
     ]
   },
@@ -74,7 +82,9 @@ let letterRequests = [
     description: 'Request for property assessment and updated official valuation statement.',
     remarks: 'Awaiting valuer visit to local property area.',
     timeline: [
-      { date: '2026-04-16 09:55 AM', status: 'Submitted', description: 'Letter request submitted by citizen.' }
+      { date: '2026-04-16 09:55 AM', status: 'Submitted', description: 'Letter request submitted by citizen.' },
+      { date: '2026-04-16 02:30 PM', status: 'Received', description: 'Received by Front Desk.' },
+      { date: '2026-04-17 10:00 AM', status: 'Assigned', description: 'Sent to Assessment Department. Awaiting valuer scheduling.' }
     ]
   }
 ];

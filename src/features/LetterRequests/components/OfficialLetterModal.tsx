@@ -14,28 +14,28 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
   if (!isOpen || !letter) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans print:p-0 print:bg-white">
-      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left print:max-h-none print:shadow-none print:border-none print:rounded-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in p-4 sm:p-0 print:p-0 print:bg-white">
+      <div className="w-full max-w-4xl scale-95 sm:scale-100 overflow-hidden rounded-xl bg-white p-5 sm:p-6 shadow-2xl transition-all duration-300 ease-out border border-gray-150 flex flex-col max-h-[90vh] print:max-h-none print:shadow-none print:border-none print:rounded-none print:scale-100">
         {/* Modal Header Banner (Hidden in print) */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-5 flex items-center justify-between gap-4 relative shadow-md shrink-0 print:hidden">
-          <div className="flex items-center gap-3">
-            <div>
-              <h2 className="text-base sm:text-xl font-extrabold tracking-tight leading-tight">
-                {L('නිල ලිපි ආකෘතිය', 'Official Letter Format', 'அதிகாரபூர்வ கடிதம்')}
-              </h2>
-              <p className="text-[11px] sm:text-xs text-white/85 font-medium">
-                {L('හෝමාගම ප්‍රාදේශීය සභාවේ නිල ලේඛන පිටපත', 'Homagama Pradeshiya Sabha Official Record Copy', 'ஹோமகம பிரதேச சபை உத்தியோகபூர்வ ஆவணம்')}
-              </p>
-            </div>
-            <span className="bg-white/15 text-white border border-white/20 px-2.5 py-0.5 rounded-md text-xs font-bold">
-              #{letter.refNo}
+        <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-5 shrink-0 print:hidden">
+          <div>
+            <span className="text-[10px] font-bold text-red-800 uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded">
+              {L('නිල ලිපි ආකෘතිය', 'Official Letter Format', 'அதிகாரபூர்வ கடிதம்')}
             </span>
+            <div className="flex items-center gap-2 mt-1">
+              <h3 className="text-lg font-extrabold text-gray-800">
+                Letter #{letter.refNo}
+              </h3>
+            </div>
+            <p className="text-xs text-gray-500 font-medium mt-1">
+              {L('හෝමාගම ප්‍රාදේශීය සභාවේ නිල ලේඛන පිටපත', 'Homagama Pradeshiya Sabha Official Record', 'ஹோமகம பிரதேச சபை உத்தியோகபூர்வ ஆவணம்')}
+            </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 self-start mt-1">
             <button
               onClick={() => window.print()}
-              className="bg-white/15 hover:bg-white/25 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs border border-white/20"
+              className="bg-gray-150 hover:bg-gray-200 text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs border border-gray-200"
               title="Print Letter"
               type="button"
             >
@@ -47,7 +47,7 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
             <button
               onClick={onClose}
               type="button"
-              className="text-white/80 hover:text-white text-2xl sm:text-3xl font-bold p-1 transition-all cursor-pointer leading-none ml-1"
+              className="text-gray-400 hover:text-gray-600 text-2xl font-bold p-1 leading-none cursor-pointer"
               aria-label="Close modal"
             >
               &times;
@@ -56,7 +56,7 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
         </div>
 
         {/* Letter Content (Printable Area) */}
-        <div className="p-6 sm:p-12 bg-white flex-grow overflow-y-auto print:p-0 print:overflow-visible select-text" id="printable-letter">
+        <div className="p-2 sm:p-6 bg-white flex-grow overflow-y-auto print:p-0 print:overflow-visible select-text border border-gray-100 rounded-lg shadow-sm" id="printable-letter">
           {/* Letterhead */}
           <div className="flex flex-col items-center border-b-2 border-[#8C1538] pb-6 mb-8 text-center">
             <img src={logoImg} alt="Homagama Pradeshiya Sabha Logo" className="h-20 mb-3" />

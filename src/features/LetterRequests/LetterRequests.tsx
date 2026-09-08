@@ -4,6 +4,7 @@ import NewLetterModal from './components/NewLetterModal';
 import LetterDetailsModal from './components/LetterDetailsModal';
 import OfficialLetterModal from './components/OfficialLetterModal';
 import { useLanguage } from '../../context/LanguageContext';
+import pradeshiyaImg from '../../assets/pradeshiyasabha.png';
 
 const LetterRequests = () => {
   const {
@@ -88,16 +89,23 @@ const LetterRequests = () => {
     <div className="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Top Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-6 pb-4 border-b border-gray-200/80">
-          <div className="space-y-1.5 sm:space-y-2 max-w-2xl">
-            <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+        <div 
+          className="relative rounded-xl overflow-hidden bg-cover bg-center shadow-lg mb-6 flex flex-col md:flex-row md:items-end justify-between p-6 h-64"
+          style={{ 
+            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('${pradeshiyaImg}')` 
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
+          
+          <div className="relative z-10 space-y-1.5 sm:space-y-2 max-w-2xl mt-auto">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-wide">
               {L(
                 'පුරවැසි ලිපි හා ඉල්ලීම් පැනලය',
                 'Digital Citizen Letters & Correspondence Portal',
                 'டிஜிட்டல் குடிமக்கள் கடிதங்கள் பலகை'
               )}
             </h1>
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+            <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
               {L(
                 'හෝමාගම ප්‍රාදේශීය සභාවට නිල ලිපි, ඉල්ලීම් සහ විමසීම් මාර්ගගතව යොමු කර ඒවායේ ප්‍රගතිය සහ නිල ප්‍රතිචාර නිරීක්ෂණය කරන්න.',
                 'Submit formal correspondence, requests, and inquiries directly to municipal divisions and track live official responses online.',
@@ -107,13 +115,15 @@ const LetterRequests = () => {
           </div>
 
           {/* Action Button */}
-          <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
+          <div className="relative z-10 flex items-center gap-3 shrink-0 self-start md:self-end mt-4 md:mt-0">
             <button
               type="button"
               onClick={openNewLetterModal}
-              className="px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-xs bg-[#8C1538] hover:bg-[#73102d] text-white"
+              className="px-4 py-2 rounded-sm font-semibold text-sm transition-all duration-150 flex items-center gap-2 cursor-pointer bg-white/95 hover:bg-white text-[#8C1538] border border-white/60 shadow-sm tracking-wide"
             >
-              <span>✍️</span>
+              <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
               <span>{L('නව ලිපියක් යොමු කරන්න', 'Submit New Letter', 'புதிய கடிதத்தை சமர்ப்பிக்கவும்')}</span>
             </button>
           </div>

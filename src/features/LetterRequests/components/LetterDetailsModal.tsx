@@ -14,7 +14,7 @@ const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
 
   const isResolved = letter.status === 'Resolved';
 
-  // Badge colors
+  // Badge colors for status
   const statusColors = {
     'In review': 'border-amber-200 bg-amber-50/80 text-amber-800',
     'Resolved': 'border-green-200 bg-green-50/80 text-green-800',
@@ -23,49 +23,42 @@ const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-1.5 sm:p-6 bg-black/65 backdrop-blur-sm overflow-hidden animate-fadeIn select-none font-sans">
-      <div className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[96vh] sm:max-h-[88vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left">
-        {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-[#8C1538] to-[#5e0d23] text-white px-3 sm:px-8 py-2.5 sm:py-6 flex items-center justify-between gap-4 relative shadow-md shrink-0">
-          <div className="space-y-0.5 sm:space-y-1 min-w-0">
-            <h2 className="text-base sm:text-2xl font-extrabold tracking-tight leading-tight">
-              {L('ඉල්ලුම්පත් විස්තරය', 'Request Details', 'கோரிக்கை விவரங்கள்')} - #{letter.refNo}
-            </h2>
-            <p className="text-[11px] sm:text-sm text-white/90 font-medium truncate sm:whitespace-normal">
-              {L(
-                'ලිපියේ ප්‍රගතිය, කාලරේඛාව සහ නිල ප්‍රතිචාර නිරීක්ෂණය කරන්න',
-                'Track status, correspondence timeline, and official actions',
-                'நிலை, கடிதத் தொடர்பு காலவரிசை மற்றும் அதிகாரபூர்வ நடவடிக்கைகளைக் கண்காணிக்கவும்'
-              )}
-            </p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs animate-fade-in p-4 sm:p-0">
+      <div className="w-full max-w-lg scale-95 sm:scale-100 overflow-hidden rounded-xl bg-white p-5 sm:p-6 shadow-2xl transition-all duration-300 ease-out border border-gray-150 flex flex-col max-h-[90vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-5 shrink-0">
+          <div>
+            <span className="text-[10px] font-bold text-red-800 uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded">
+              {L('ඉල්ලුම්පත් විස්තරය', 'Request Details', 'கோரிக்கை விவரங்கள்')}
+            </span>
+            <h3 className="text-lg font-extrabold text-gray-800 mt-1">Letter #{letter.refNo}</h3>
           </div>
-          <button
-            onClick={onClose}
+          <button 
             type="button"
-            className="text-white/80 hover:text-white text-2xl sm:text-3xl font-bold p-1 transition-all cursor-pointer leading-none"
-            aria-label="Close modal"
+            onClick={onClose} 
+            className="text-gray-400 hover:text-gray-600 text-2xl font-bold p-1 leading-none cursor-pointer"
           >
             &times;
           </button>
         </div>
 
         {/* Content Area */}
-        <div className="p-4 sm:p-8 overflow-y-auto flex-1 space-y-6">
-          {/* Main Info Card */}
-          <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 shadow-xs space-y-5">
+        <div className="overflow-y-auto flex-1 space-y-6 pr-1">
+          {/* Main Info */}
+          <div className="space-y-4">
             <div>
-              <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-1">{L('විෂය / මාතෘකාව', 'Subject', 'பொருள்')}</span>
-              <h4 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{letter.subject}</h4>
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{L('විෂය / මාතෘකාව', 'Subject', 'பொருள்')}</span>
+              <h4 className="text-base font-bold text-gray-900 leading-snug">{letter.subject}</h4>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
               <div>
-                <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-0.5">{L('කාණ්ඩය', 'Category', 'வகை')}</span>
+                <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">{L('කාණ්ඩය', 'Category', 'வகை')}</span>
                 <span className="text-sm font-bold text-gray-800">{letter.category}</span>
               </div>
               <div>
-                <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-0.5">{L('යොමු කළ දිනය හා වේලාව', 'Date & Time Submitted', 'சமர்ப்பித்த தேதி')}</span>
-                <span className="text-sm font-bold text-gray-800">{letter.dateSubmitted} at {letter.timeSubmitted}</span>
+                <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">{L('යොමු කළ දිනය', 'Submitted On', 'சமர்ப்பித்த தேதி')}</span>
+                <span className="text-sm font-bold text-gray-800">{letter.dateSubmitted}</span>
               </div>
             </div>
 
@@ -85,62 +78,107 @@ const LetterDetailsModal = ({ isOpen, onClose, letter }) => {
             </div>
 
             {/* Description Section */}
-            <div>
-              <span className="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-2">{L('සම්පූර්ණ විස්තරය', 'Description Content', 'முழுமையான விவரம்')}</span>
-              <div className="text-sm text-gray-800 bg-[#f9fafb] p-4 rounded-xl border border-gray-200/80 leading-relaxed font-normal whitespace-pre-wrap">
+            <div className="mb-5 border border-gray-150 rounded-xl overflow-hidden text-xs">
+              <div className="bg-gray-50 px-4 py-2 border-b border-gray-150 font-bold text-gray-700 uppercase tracking-wider">
+                {L('සම්පූර්ණ විස්තරය', 'Description Content', 'முழுமையான விவரம்')}
+              </div>
+              <div className="p-4 bg-white text-sm text-gray-800 leading-relaxed font-normal whitespace-pre-wrap max-h-48 overflow-y-auto">
                 {letter.description}
               </div>
             </div>
           </div>
 
-          {/* Timeline Card */}
+          {/* Timeline View */}
           {letter.timeline && letter.timeline.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200/90 p-4 sm:p-6 shadow-xs">
-              <span className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2.5">
-                {L('ප්‍රගති කාලරේඛාව', 'Correspondence Timeline', 'காலவரிசை')}
-              </span>
-              <div className="space-y-5 relative pl-5 border-l-2 border-red-200 ml-2 pt-1">
-                {letter.timeline.map((step, idx) => (
-                  <div key={`${step.status}-${step.date}`} className="relative">
-                    {/* Circle Dot */}
-                    <div className="absolute -left-[27px] top-0.5 w-4 h-4 rounded-full bg-white border-2 border-[#8C1538] flex items-center justify-center shadow-2xs">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#8C1538]"></div>
+            <div className="space-y-1 mb-6">
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2.5">
+                {L('ප්‍රගති කාලරේඛාව', 'Processing Timeline', 'காலவரிசை')}
+              </h4>
+              
+              <div className="space-y-4 py-1 pl-1">
+                {letter.timeline.map((step, index) => {
+                  let iconBg = 'bg-gray-50 border-gray-200 text-gray-400';
+                  let icon = <span className="w-2 h-2 bg-gray-450 rounded-full" />;
+                  let titleColor = 'text-gray-400 font-medium';
+
+                  // Determine status for styling based on step text or simple logic
+                  // Since letter timeline steps usually just have a status string like "Received", "Reviewed", we'll just style them generally completed if past.
+                  // For simplicity, we treat all steps in the array as 'completed' except maybe the last one if it's not resolved.
+                  let isCompleted = true;
+                  if (index === letter.timeline.length - 1 && !isResolved) {
+                    isCompleted = false; // The current active step
+                  }
+
+                  if (isCompleted) {
+                    iconBg = 'bg-green-50 border-green-600 text-green-600';
+                    icon = (
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    );
+                    titleColor = 'text-gray-800 font-bold';
+                  } else {
+                    iconBg = 'bg-amber-50 border-amber-600 text-amber-700 animate-pulse';
+                    icon = (
+                      <svg className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '3s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    );
+                    titleColor = 'text-amber-800 font-extrabold';
+                  }
+
+                  const isLast = index === letter.timeline.length - 1;
+
+                  return (
+                    <div key={`${step.status}-${step.date}`} className="flex gap-4 items-start relative">
+                      {/* Left Column: Bullet and Connector Line */}
+                      <div className="flex flex-col items-center shrink-0">
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 ${iconBg} z-10 bg-white shadow-xs`}>
+                          {icon}
+                        </div>
+                        {!isLast && (
+                          <div className={`w-0.5 h-10 my-0.5 ${isCompleted ? 'bg-green-600' : 'bg-gray-200'}`} />
+                        )}
+                      </div>
+
+                      {/* Right Column: Step Text */}
+                      <div className="pt-0.5 pb-2">
+                        <div className="flex items-center gap-2">
+                          <h4 className={`text-sm ${titleColor}`}>{step.status}</h4>
+                          <span className="text-[10px] font-bold text-gray-400">{step.date}</span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{step.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-[11px] font-bold text-[#8C1538] uppercase tracking-wider">{step.date}</span>
-                      <div className="text-sm font-bold text-gray-900 mt-0.5">{step.status}</div>
-                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">{step.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
+        </div>
 
-          {/* Footer Actions */}
-          <div className="flex items-center justify-between gap-3 pt-2 border-t border-gray-200/80">
-            <div>
-              {isResolved && (
-                <button
-                  type="button"
-                  onClick={() => alert(`Downloading Letter Response for ${letter.refNo}...`)}
-                  className="rounded-md border border-[#8C1538] text-[#8C1538] hover:bg-red-50/60 px-5 py-2.5 text-sm font-semibold transition-colors cursor-pointer inline-flex items-center gap-2 shadow-2xs"
-                >
-                  <span>📥</span>
-                  <span>{L('නිල ප්‍රතිචාරය බාගන්න', 'Download Response Letter', 'பதிலை பதிவிறக்கம் செய்யவும்')}</span>
-                </button>
-              )}
-            </div>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="rounded-md bg-gray-800 hover:bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors cursor-pointer shadow-xs"
-              >
-                {L('වසා දමන්න', 'Close', 'மூடு')}
-              </button>
-            </div>
-          </div>
+        {/* Footer Actions */}
+        <div className="mt-5 flex justify-end gap-3 pt-3 border-t border-gray-100 shrink-0">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md bg-gray-150 hover:bg-gray-250 px-4 py-2 text-xs font-bold text-gray-700 transition-colors cursor-pointer"
+          >
+            {L('වසා දමන්න', 'Close Details', 'மூடு')}
+          </button>
+          
+          {isResolved && (
+            <button
+              type="button"
+              onClick={() => alert(`Downloading Letter Response for ${letter.refNo}...`)}
+              className="rounded-md bg-red-800 hover:bg-red-900 px-4 py-2 text-xs font-extrabold text-white transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              {L('ප්‍රතිචාරය බාගන්න', 'Download Response', 'பதிலை பதிவிறக்கம் செய்யவும்')}
+            </button>
+          )}
         </div>
       </div>
     </div>
