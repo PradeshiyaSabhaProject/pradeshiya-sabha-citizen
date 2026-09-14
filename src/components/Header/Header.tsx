@@ -182,8 +182,9 @@ const Header = () => {
       {/* Bottom Maroon Bar - Hidden on login and registration pages */}
       {!isAuthPage && (
         <div className="bg-[#8C1538] text-white px-2.5 sm:px-6 lg:px-10 py-1.5 sm:py-2.5 shadow-md flex flex-wrap items-center justify-between gap-2 sm:gap-3 relative">
-          {/* Sabha Title & Mobile Menu Button */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 md:flex-initial">
+          {/* Left Side: Mobile Menu / Close Button */}
+          <div className="flex items-center shrink-0 min-w-0 md:flex-1">
+            {/* Mobile Menu Button */}
             <button
               type="button"
               onClick={() => {
@@ -195,19 +196,54 @@ const Header = () => {
             >
               {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
-
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6 ml-auto mr-2 lg:mr-4 text-sm font-medium">
-            <Link to="/" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname === '/' ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.dashboard', 'Dashboard')}</Link>
-            <Link to="/services" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/services') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.services', 'Services')}</Link>
-            <Link to="/applications" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/applications') || location.pathname === '/my-applications' ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.applications', 'Applications')}</Link>
-            <Link to="/payments" className={`transition-colors cursor-pointer pb-0.5 ${location.pathname.startsWith('/payments') ? 'text-white font-bold border-b-2 border-white' : 'text-white/80 hover:text-white'}`}>{t('nav.payments', 'Payments')}</Link>
+          {/* Middle: Desktop Navigation Links (Dashboard to Payments) centered with standard spacing */}
+          <nav className="hidden md:flex items-center justify-center gap-7 lg:gap-10 text-base font-medium shrink-0">
+            <Link
+              to="/"
+              className={`transition-colors cursor-pointer py-1 px-1 border-b-2 ${
+                location.pathname === '/'
+                  ? 'text-white font-bold border-white'
+                  : 'text-white/85 hover:text-white border-transparent hover:border-white/40'
+              }`}
+            >
+              {t('nav.dashboard', 'Dashboard')}
+            </Link>
+            <Link
+              to="/services"
+              className={`transition-colors cursor-pointer py-1 px-1 border-b-2 ${
+                location.pathname.startsWith('/services')
+                  ? 'text-white font-bold border-white'
+                  : 'text-white/85 hover:text-white border-transparent hover:border-white/40'
+              }`}
+            >
+              {t('nav.services', 'Services')}
+            </Link>
+            <Link
+              to="/applications"
+              className={`transition-colors cursor-pointer py-1 px-1 border-b-2 ${
+                location.pathname.startsWith('/applications') || location.pathname === '/my-applications'
+                  ? 'text-white font-bold border-white'
+                  : 'text-white/85 hover:text-white border-transparent hover:border-white/40'
+              }`}
+            >
+              {t('nav.applications', 'Applications')}
+            </Link>
+            <Link
+              to="/payments"
+              className={`transition-colors cursor-pointer py-1 px-1 border-b-2 ${
+                location.pathname.startsWith('/payments')
+                  ? 'text-white font-bold border-white'
+                  : 'text-white/85 hover:text-white border-transparent hover:border-white/40'
+              }`}
+            >
+              {t('nav.payments', 'Payments')}
+            </Link>
           </nav>
 
-          {/* Admin & Action Icons */}
-          <div className="flex items-center gap-1 sm:gap-3 md:gap-4 shrink-0">
+          {/* Right Side: Citizen Badge, Help Icon, Person Profile Icon */}
+          <div className="flex items-center justify-end gap-1.5 sm:gap-3 md:gap-4 shrink-0 md:flex-1">
             {/* Vertical Separator */}
             <div className="hidden sm:block h-5 w-px bg-white/30"></div>
 
@@ -276,7 +312,7 @@ const Header = () => {
 
           {/* Mobile Navigation Drawer / Dropdown */}
           {mobileMenuOpen && (
-            <div className="md:hidden w-full pt-3 pb-4 mt-2 border-t border-white/20 flex flex-col gap-1.5 animate-fade-in z-40">
+            <div className="md:hidden w-full basis-full pt-3 pb-4 mt-2 border-t border-white/20 flex flex-col gap-1.5 animate-fade-in z-40">
               <div className="flex items-center justify-between px-2 mb-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">
                   {t('common.menu', 'Navigation Menu')}
@@ -289,7 +325,7 @@ const Header = () => {
               <Link
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname === '/'
+                className={`px-3.5 py-3 rounded-xl font-medium text-base transition-all flex items-center justify-between ${location.pathname === '/'
                     ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
@@ -300,7 +336,7 @@ const Header = () => {
               <Link
                 to="/services"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/services')
+                className={`px-3.5 py-3 rounded-xl font-medium text-base transition-all flex items-center justify-between ${location.pathname.startsWith('/services')
                     ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
@@ -311,7 +347,7 @@ const Header = () => {
               <Link
                 to="/applications"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/applications') || location.pathname === '/my-applications'
+                className={`px-3.5 py-3 rounded-xl font-medium text-base transition-all flex items-center justify-between ${location.pathname.startsWith('/applications') || location.pathname === '/my-applications'
                     ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
@@ -322,7 +358,7 @@ const Header = () => {
               <Link
                 to="/payments"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname.startsWith('/payments')
+                className={`px-3.5 py-3 rounded-xl font-medium text-base transition-all flex items-center justify-between ${location.pathname.startsWith('/payments')
                     ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
@@ -333,7 +369,7 @@ const Header = () => {
               <Link
                 to="/profile"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between ${location.pathname === '/profile'
+                className={`px-3.5 py-3 rounded-xl font-medium text-base transition-all flex items-center justify-between ${location.pathname === '/profile'
                     ? 'bg-white text-[#8C1538] font-bold shadow-md scale-[1.01]'
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
