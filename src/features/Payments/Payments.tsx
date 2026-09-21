@@ -45,13 +45,26 @@ const CheckCircleIcon = () => (
   </svg>
 );
 
+const AssessmentIcon = () => (
+  <svg className="w-6 h-6 text-[#8C1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+  </svg>
+);
+
 const Payments = () => {
   // Navigation & Interactive States
-  const [activeCategory, setActiveCategory] = useState(null); // null = default view, 'utility' or 'miscellaneous'
+  const [activeCategory, setActiveCategory] = useState(null); // null = default view, 'utility', 'miscellaneous', or 'assessment'
   const [selectedSubService, setSelectedSubService] = useState(null);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
+
+  // Assessment Rates & Taxes States
+  const [assessmentTab, setAssessmentTab] = useState('register'); // 'register', 'quarterly', 'history'
+  const [searchProperty, setSearchProperty] = useState('');
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [selectedQuarter, setSelectedQuarter] = useState('Q1');
+  const [assessmentHistorySearch, setAssessmentHistorySearch] = useState('');
 
   // Form states for Step 2
   const [accountNumber, setAccountNumber] = useState('');
@@ -155,6 +168,97 @@ const Payments = () => {
     }
   ];
 
+  // Assessment Rates & Taxes Sample Data
+  const propertyAssessmentData = [
+    {
+      id: 'ASM-2024-001',
+      ward: 'Ward 01',
+      propertyOwner: 'Mr. K. A. Silva',
+      annualValue: 'LKR 450,000',
+      percentageRate: '2.5%',
+      status: 'Active',
+      address: '123 Main Street, Homagama'
+    },
+    {
+      id: 'ASM-2024-002',
+      ward: 'Ward 02',
+      propertyOwner: 'Mrs. P. Fernando',
+      annualValue: 'LKR 650,000',
+      percentageRate: '2.5%',
+      status: 'Active',
+      address: '456 High Road, Homagama'
+    },
+    {
+      id: 'ASM-2024-003',
+      ward: 'Ward 01',
+      propertyOwner: 'Business Trading (Pvt) Ltd',
+      annualValue: 'LKR 1,200,000',
+      percentageRate: '3.0%',
+      status: 'Active',
+      address: '789 Commercial Plaza, Homagama'
+    },
+    {
+      id: 'ASM-2024-004',
+      ward: 'Ward 03',
+      propertyOwner: 'Mr. A. Jayasuriya',
+      annualValue: 'LKR 350,000',
+      percentageRate: '2.5%',
+      status: 'Active',
+      address: '321 Riverside Avenue, Homagama'
+    },
+    {
+      id: 'ASM-2024-005',
+      ward: 'Ward 02',
+      propertyOwner: 'Ms. R. Dissanayake',
+      annualValue: 'LKR 520,000',
+      percentageRate: '2.5%',
+      status: 'Active',
+      address: '654 Green Lane, Homagama'
+    }
+  ];
+
+  const quarterlyRatesData = [
+    { quarter: 'Q1', period: 'Jan - Mar', dueDate: '2026-03-31', status: 'Paid', rate: 2.5 },
+    { quarter: 'Q2', period: 'Apr - Jun', dueDate: '2026-06-30', status: 'Pending', rate: 2.5 },
+    { quarter: 'Q3', period: 'Jul - Sep', dueDate: '2026-09-30', status: 'Upcoming', rate: 2.5 },
+    { quarter: 'Q4', period: 'Oct - Dec', dueDate: '2026-12-31', status: 'Upcoming', rate: 2.5 }
+  ];
+
+  const assessmentPaymentHistory = [
+    {
+      id: 'ASS-PAY-2026-001',
+      assessmentNo: 'ASM-2024-001',
+      quarter: 'Q1 2026',
+      dueDate: '2026-03-31',
+      paidDate: '2026-03-15',
+      baseAmount: 'LKR 11,250',
+      discount: '-LKR 1,125 (10% Early Payment)',
+      finalAmount: 'LKR 10,125',
+      status: 'Paid'
+    },
+    {
+      id: 'ASS-PAY-2026-002',
+      assessmentNo: 'ASM-2024-002',
+      quarter: 'Q1 2026',
+      dueDate: '2026-03-31',
+      paidDate: '2026-04-15',
+      baseAmount: 'LKR 16,250',
+      surcharge: '+LKR 1,625 (10% Late Payment)',
+      finalAmount: 'LKR 17,875',
+      status: 'Paid'
+    },
+    {
+      id: 'ASS-PAY-2026-003',
+      assessmentNo: 'ASM-2024-001',
+      quarter: 'Q2 2026',
+      dueDate: '2026-06-30',
+      paidDate: null,
+      baseAmount: 'LKR 11,250',
+      finalAmount: 'LKR 11,250',
+      status: 'Pending'
+    }
+  ];
+
   const handleSelectSubService = (service) => {
     setSelectedSubService(service);
     setPaymentAmount(service.defaultAmount);
@@ -189,6 +293,35 @@ const Payments = () => {
     t.service.toLowerCase().includes(historySearch.toLowerCase()) ||
     t.accountNo.toLowerCase().includes(historySearch.toLowerCase()) ||
     t.id.toLowerCase().includes(historySearch.toLowerCase())
+  );
+
+  // Assessment Rates & Taxes Helper Functions
+  const filteredProperties = propertyAssessmentData.filter(p =>
+    p.id.toLowerCase().includes(searchProperty.toLowerCase()) ||
+    p.propertyOwner.toLowerCase().includes(searchProperty.toLowerCase()) ||
+    p.ward.toLowerCase().includes(searchProperty.toLowerCase()) ||
+    p.address.toLowerCase().includes(searchProperty.toLowerCase())
+  );
+
+  const calculateQuarterlyAmount = (property, quarter, isPaid = false, isLate = false) => {
+    const annualValueNum = parseInt(property.annualValue.replace(/[^0-9]/g, ''));
+    const rate = parseFloat(property.percentageRate) / 100;
+    const baseAmount = (annualValueNum * rate) / 4;
+    
+    if (isPaid) {
+      if (isLate) {
+        return baseAmount * 1.1; // 10% surcharge
+      } else {
+        return baseAmount * 0.9; // 10% early payment discount
+      }
+    }
+    return baseAmount;
+  };
+
+  const filteredAssessmentHistory = assessmentPaymentHistory.filter(h =>
+    h.assessmentNo.toLowerCase().includes(assessmentHistorySearch.toLowerCase()) ||
+    h.quarter.toLowerCase().includes(assessmentHistorySearch.toLowerCase()) ||
+    h.id.toLowerCase().includes(assessmentHistorySearch.toLowerCase())
   );
 
   return (
@@ -237,8 +370,8 @@ const Payments = () => {
             </p>
           </div>
 
-          {/* Payment Categories Grid - 2 Large Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Payment Categories Grid - 3 Large Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Utility Card */}
             <div
               onClick={() => {
@@ -290,6 +423,31 @@ const Payments = () => {
                 <ArrowRightIcon />
               </div>
             </div>
+
+            {/* Assessment Rates & Taxes Card */}
+            <div
+              onClick={() => {
+                setActiveCategory('assessment');
+                setAssessmentTab('register');
+              }}
+              className="bg-white rounded-2xl border border-gray-200/80 p-8 sm:p-10 shadow-xs hover:shadow-md hover:border-[#8C1538]/40 transition-all duration-300 flex flex-col justify-between min-h-[250px] group cursor-pointer"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#8C1538]/10 text-[#8C1538] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200">
+                  <AssessmentIcon />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2.5 group-hover:text-[#8C1538] transition-colors">
+                  Assessment Rates & Taxes
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
+                  View properties, manage quarterly assessments, and track payment history.
+                </p>
+              </div>
+              <div className="inline-flex items-center gap-2 text-[#8C1538] font-semibold text-sm group-hover:translate-x-1.5 transition-transform duration-200">
+                <span>Select</span>
+                <ArrowRightIcon />
+              </div>
+            </div>
           </div>
 
           {/* Bottom Row - History Banner + Help Card */}
@@ -330,7 +488,7 @@ const Payments = () => {
       )}
 
       {/* STEP 2: INTERACTIVE SUB-SERVICE SELECTION & PAYMENT FORM */}
-      {activeCategory && (
+      {activeCategory && activeCategory !== 'assessment' && (
         <div className="animate-fadeIn">
           {/* Back button and Section header */}
           <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
@@ -489,6 +647,265 @@ const Payments = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ASSESSMENT RATES & TAXES SECTION */}
+      {activeCategory === 'assessment' && (
+        <div className="animate-fadeIn">
+          {/* Back button and Section header */}
+          <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
+            <div>
+              <button
+                onClick={() => { setActiveCategory(null); setAssessmentTab('register'); }}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#8C1538] hover:text-[#6a102a] mb-2 cursor-pointer transition-colors"
+              >
+                <span>← Back to Payment Categories</span>
+              </button>
+              <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+                Assessment Rates & Taxes
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base mt-1">
+                Manage your property assessments, view quarterly rates, and track payment history.
+              </p>
+            </div>
+          </div>
+
+          {/* Assessment Tabs */}
+          <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200">
+            {[
+              { id: 'register', label: 'Property Register', icon: '📋' },
+              { id: 'quarterly', label: 'Quarterly Rates', icon: '📅' },
+              { id: 'history', label: 'Payment History', icon: '📊' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setAssessmentTab(tab.id)}
+                className={`px-4 py-3 text-sm font-semibold transition-all cursor-pointer border-b-2 ${
+                  assessmentTab === tab.id
+                    ? 'border-[#8C1538] text-[#8C1538]'
+                    : 'border-transparent text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span className="mr-2">{tab.icon}</span>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* TAB 1: PROPERTY ASSESSMENT REGISTER */}
+          {assessmentTab === 'register' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+                <div className="mb-6">
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-3">
+                    Search Properties
+                  </label>
+                  <input
+                    type="text"
+                    value={searchProperty}
+                    onChange={(e) => setSearchProperty(e.target.value)}
+                    placeholder="Search by Assessment No, Owner, Ward, or Address..."
+                    className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538] focus:bg-white transition-all"
+                  />
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-200 bg-gray-50">
+                        <th className="px-4 py-3 text-left font-bold text-gray-900">Assessment No</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-900">Ward</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-900">Property Owner</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-900">Annual Value</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-900">Rate %</th>
+                        <th className="px-4 py-3 text-center font-bold text-gray-900">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {filteredProperties.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="px-4 py-8 text-center text-gray-500">
+                            No properties found matching your search.
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredProperties.map((property) => (
+                          <tr key={property.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-4 py-3 font-bold text-[#8C1538]">{property.id}</td>
+                            <td className="px-4 py-3 text-gray-700">{property.ward}</td>
+                            <td className="px-4 py-3 text-gray-700">{property.propertyOwner}</td>
+                            <td className="px-4 py-3 text-gray-900 font-semibold">{property.annualValue}</td>
+                            <td className="px-4 py-3 text-gray-900 font-semibold">{property.percentageRate}</td>
+                            <td className="px-4 py-3 text-center">
+                              <button
+                                onClick={() => setSelectedProperty(property)}
+                                className="text-xs font-bold text-[#8C1538] hover:underline px-3 py-1.5 rounded-lg bg-[#8C1538]/5 cursor-pointer transition-colors"
+                              >
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: QUARTERLY RATE GENERATION */}
+          {assessmentTab === 'quarterly' && selectedProperty && (
+            <div className="space-y-6">
+              <div className="bg-[#FEF3F3] border border-[#F5D0CE] rounded-2xl p-6 sm:p-8">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Selected Property</h3>
+                <p className="text-sm text-gray-700">
+                  <strong>{selectedProperty.propertyOwner}</strong> • {selectedProperty.address} • {selectedProperty.id}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {quarterlyRatesData.map((quarter) => {
+                  const amount = calculateQuarterlyAmount(selectedProperty, quarter.quarter);
+                  const isPaid = quarter.status === 'Paid';
+                  const isLate = isPaid && new Date(quarter.dueDate) < new Date('2026-03-15');
+                  const finalAmount = isPaid ? calculateQuarterlyAmount(selectedProperty, quarter.quarter, true, isLate) : amount;
+
+                  return (
+                    <div
+                      key={quarter.quarter}
+                      className={`p-6 rounded-xl border-2 transition-all ${
+                        selectedQuarter === quarter.quarter
+                          ? 'border-[#8C1538] bg-[#8C1538]/5'
+                          : 'border-gray-200 bg-white'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <h4 className="font-bold text-lg text-gray-900">{quarter.quarter}</h4>
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                          quarter.status === 'Paid'
+                            ? 'bg-green-100 text-green-700'
+                            : quarter.status === 'Pending'
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {quarter.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600 mb-3">{quarter.period}</p>
+                      <div className="space-y-2 mb-4 pb-4 border-b border-gray-200">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Base Amount</span>
+                          <span className="font-semibold text-gray-900">LKR {amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                        {isPaid && (
+                          <div className={`flex justify-between text-sm ${isLate ? 'text-red-600' : 'text-green-600'}`}>
+                            <span>{isLate ? 'Late Surcharge (+10%)' : 'Early Payment (-10%)'}</span>
+                            <span className="font-semibold">
+                              {isLate ? '+' : '-'}LKR {Math.abs(finalAmount - amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex justify-between text-sm font-bold text-gray-900 pt-2">
+                          <span>Total</span>
+                          <span className="text-[#8C1538]">LKR {finalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500">Due: {quarter.dueDate}</p>
+                      {quarter.status !== 'Paid' && (
+                        <button
+                          onClick={() => setSelectedQuarter(quarter.quarter)}
+                          className="w-full mt-4 bg-[#8C1538] hover:bg-[#73102d] text-white font-bold py-2.5 rounded-lg text-sm transition-all cursor-pointer"
+                        >
+                          Pay Now
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2 FALLBACK: Select Property First */}
+          {assessmentTab === 'quarterly' && !selectedProperty && (
+            <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+              <div className="text-4xl mb-3">📋</div>
+              <h3 className="text-lg font-bold text-gray-800 mb-1">Select a Property First</h3>
+              <p className="text-sm text-gray-500">Please view a property from the Property Register tab to see its quarterly rates.</p>
+              <button
+                onClick={() => setAssessmentTab('register')}
+                className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
+              >
+                Go to Property Register
+              </button>
+            </div>
+          )}
+
+          {/* TAB 3: PAYMENT HISTORY LEDGER */}
+          {assessmentTab === 'history' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+                <div className="mb-6">
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-3">
+                    Search Payment History
+                  </label>
+                  <input
+                    type="text"
+                    value={assessmentHistorySearch}
+                    onChange={(e) => setAssessmentHistorySearch(e.target.value)}
+                    placeholder="Search by Receipt No, Assessment No, or Quarter..."
+                    className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#8C1538] focus:bg-white transition-all"
+                  />
+                </div>
+
+                {filteredAssessmentHistory.length === 0 ? (
+                  <div className="text-center py-10 text-gray-500 text-sm">
+                    No payment history found.
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {filteredAssessmentHistory.map((payment) => (
+                      <div
+                        key={payment.id}
+                        className="border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-colors"
+                      >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase mb-1">Receipt</p>
+                            <p className="text-sm font-bold text-gray-900">{payment.id}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase mb-1">Property & Quarter</p>
+                            <p className="text-sm font-semibold text-gray-900">{payment.assessmentNo}</p>
+                            <p className="text-xs text-gray-600">{payment.quarter}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase mb-1">Amount Details</p>
+                            <p className="text-xs text-gray-600">Base: {payment.baseAmount}</p>
+                            {payment.discount && <p className="text-xs text-green-600 font-semibold">{payment.discount}</p>}
+                            {payment.surcharge && <p className="text-xs text-red-600 font-semibold">{payment.surcharge}</p>}
+                          </div>
+                          <div className="flex flex-col items-end justify-between">
+                            <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                              payment.status === 'Paid'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {payment.status}
+                            </span>
+                            <span className="text-lg font-bold text-[#8C1538] mt-2">{payment.finalAmount}</span>
+                            {payment.paidDate && <span className="text-xs text-gray-500">Paid: {payment.paidDate}</span>}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
