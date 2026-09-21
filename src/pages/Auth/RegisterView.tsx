@@ -154,84 +154,84 @@ const RegisterView = ({ onCancel }) => {
           </div>
 
           <div>
-            <label htmlFor="reg-name" className="block text-sm font-medium text-gray-700">
-              <span>Full Name (as per NIC)</span>
-              <input
-                id="reg-name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter your full legal name"
-                required
-                className="mt-1.5 block w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all font-normal"
-              />
+            <label htmlFor="reg-name" className="block text-sm font-medium text-gray-700 mb-1.5">
+              Full Name (as per NIC)
             </label>
+            <input
+              id="reg-name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter your full legal name"
+              required
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all"
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="reg-nic" className="block text-sm font-medium text-gray-700">
-                <span>National Identity Card (NIC)</span>
-                <input
-                  id="reg-nic"
-                  type="text"
-                  name="nic"
-                  value={formData.nic}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 199012345678"
-                  required
-                  className="mt-1.5 block w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all font-normal"
-                />
+              <label htmlFor="reg-nic" className="block text-sm font-medium text-gray-700 mb-1.5">
+                National Identity Card (NIC)
               </label>
+              <input
+                id="reg-nic"
+                type="text"
+                name="nic"
+                value={formData.nic}
+                onChange={handleInputChange}
+                placeholder="e.g., 199012345678"
+                required
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all"
+              />
             </div>
             <div>
-              <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700">
-                <span>Phone Number</span>
-                <input
-                  id="reg-phone"
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 071 234 5678"
-                  required
-                  className="mt-1.5 block w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all font-normal"
-                />
+              <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+                Phone Number
               </label>
+              <input
+                id="reg-phone"
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="e.g., 071 234 5678"
+                required
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all"
+              />
             </div>
           </div>
 
           <div>
-            <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700">
-              <span>Email Address</span>
-              <input
-                id="reg-email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="example@domain.com"
-                required
-                className="mt-1.5 block w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all font-normal"
-              />
+            <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700 mb-1.5">
+              Email Address
             </label>
+            <input
+              id="reg-email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="example@domain.com"
+              required
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all"
+            />
           </div>
 
           <div>
-            <label htmlFor="reg-address" className="block text-sm font-medium text-gray-700">
-              <span>Home Address</span>
-              <textarea
-                id="reg-address"
-                name="address"
-                rows={3}
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="Street name, City, Postal Code"
-                required
-                className="mt-1.5 block w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all resize-none font-normal"
-              />
+            <label htmlFor="reg-address" className="block text-sm font-medium text-gray-700 mb-1.5">
+              Home Address
             </label>
+            <textarea
+              id="reg-address"
+              name="address"
+              rows={3}
+              value={formData.address}
+              onChange={handleInputChange}
+              placeholder="Street name, City, Postal Code"
+              required
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:border-[#8C1538] focus:ring-1 focus:ring-[#8C1538] outline-none transition-all resize-none"
+            />
           </div>
 
           <label htmlFor="confirmAccurate" className="flex items-start gap-3 pt-2 cursor-pointer select-none">
@@ -295,7 +295,7 @@ const RegisterView = ({ onCancel }) => {
             <div className="flex justify-center gap-2 sm:gap-3 mb-6">
               {OTP_SLOTS.map((slotKey, idx) => (
                 <input
-                  key={slotKey}
+                  key={`otp-input-${idx}`}
                   id={`reg-otp-${idx}`}
                   type="text"
                   inputMode="numeric"

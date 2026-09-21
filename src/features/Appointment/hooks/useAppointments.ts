@@ -61,12 +61,18 @@ export const useAppointments = () => {
     loadData();
   }, []);
 
-  // Update active tab if navigation state updates
+  // Update active tab if navigation state or URL updates
   useEffect(() => {
-    if (location.state?.tab) {
+    const searchParams = new URLSearchParams(location.search);
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['overview', 'bookings', 'schedule', 'facility'].includes(tabParam)) {
+      setActiveTab(tabParam as any);
+    } else if (location.pathname === '/facility-booking' || location.pathname === '/reservations') {
+      setActiveTab('facility');
+    } else if (location.state?.tab) {
       setActiveTab(location.state.tab);
     }
-  }, [location.state]);
+  }, [location.state, location.search, location.pathname]);
 
   // Filter officials by selected department
   const filteredOfficials = selectedDept 
@@ -140,14 +146,15 @@ export const useAppointments = () => {
     setLoading(true);
     try {
       const newBookingObj = {
-        type: 'appointment',
+        type: 'appointment' as const,
         officialName: selectedOfficial.name,
         role: selectedOfficial.role,
+        counter: selectedOfficial.counter || 'Counter 01 - Citizen Reception & Helpdesk',
         office: selectedOfficial.role === 'Administrative Secretary' ? 'Admin Sec Room 102' : 'Planning Dept Room 104',
         date: `Oct ${selectedDate}, 2026`,
         time: selectedTimeSlot.time,
         avatar: selectedOfficial.avatar,
-        attachment: attachedFile ? { name: attachedFile.name, size: attachedFile.size } : null
+        documents: attachedFile ? [{ name: attachedFile.name, size: typeof attachedFile.size === 'number' ? `${(attachedFile.size / 1024).toFixed(0)} KB` : attachedFile.size }] : []
       };
       const created = await appointmentService.createBooking(newBookingObj);
       setBookingsList(prev => [created, ...prev]);

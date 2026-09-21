@@ -33,29 +33,22 @@ const getAvailabilityForDay = (year: number, month: number, day: number) => {
   
   // Mondays (1), Wednesdays (3), Fridays (5) are partially booked (Limited Slots)
   if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) {
-    let slots = [];
-    if (day % 3 === 0) {
-      slots = [
+    const slots = day % 3 === 0 ? [
         { time: '08:30 AM - 10:30 AM', available: true },
         { time: '10:30 AM - 12:30 PM', available: false },
         { time: '01:30 PM - 03:30 PM', available: true },
         { time: '03:30 PM - 05:30 PM', available: false }
-      ];
-    } else if (day % 3 === 1) {
-      slots = [
+      ] : day % 3 === 1 ? [
         { time: '08:30 AM - 10:30 AM', available: false },
         { time: '10:30 AM - 12:30 PM', available: true },
         { time: '01:30 PM - 03:30 PM', available: true },
         { time: '03:30 PM - 05:30 PM', available: true }
-      ];
-    } else {
-      slots = [
+      ] : [
         { time: '08:30 AM - 10:30 AM', available: true },
         { time: '10:30 AM - 12:30 PM', available: true },
         { time: '01:30 PM - 03:30 PM', available: false },
         { time: '03:30 PM - 05:30 PM', available: false }
       ];
-    }
     return {
       status: 'partially',
       statusLabel: 'Limited Slots',

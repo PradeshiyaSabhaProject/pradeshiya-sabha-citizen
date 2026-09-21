@@ -1,7 +1,6 @@
-import { AuthProvider } from './context/AuthContext'
-import { LanguageProvider } from './context/LanguageContext'
-import AppRoutes from './routes/AppRoutes'
-import './App.css'
+import { AuthProvider } from './context/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
         <AppRoutes />
       </LanguageProvider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App;

@@ -171,10 +171,9 @@ const Appointment = () => {
             onClearFilters={handleClearFilters}
             facilities={filteredFacilities}
             onReserve={async (fac, bookingDetails) => {
-              // Create the new facility booking object
               let location = 'Main Ground';
               if (fac.title === 'Central Town Hall') {
-                location = 'South Wing, Level 1';
+                location = 'South Wing, Level 1, Homagama';
               } else if (fac.title === 'Homagama Crematorium') {
                 location = 'Homagama Cremation Ground';
               } else if (fac.title === 'Water Bowser Rental') {
@@ -190,18 +189,66 @@ const Appointment = () => {
                 avatar = '🏢';
               }
 
+              const isCremation = fac.category === 'Crematoriums';
+              const rentalFee = fac.rentalFee || 25000;
+              const securityDeposit = fac.securityDeposit !== undefined ? fac.securityDeposit : 10000;
+              const totalTariff = rentalFee + securityDeposit;
+
+              const citizenApplicantName = bookingDetails.formDetails?.applicantName || 'Citizen Applicant';
+              const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
+              const citizenApplicantPhone = bookingDetails.formDetails?.applicantPhone || '0771234567';
+
+              const eventTitle = isCremation
+                ? `Funeral & Cremation Service (Late ${bookingDetails.formDetails?.deceasedName || 'Person'})`
+                : (bookingDetails.formDetails?.bookingPurpose || `${fac.title} Community Reservation`);
+
+              const eventType = isCremation
+                ? 'Cremation Service'
+                : (fac.category === 'Sports Grounds' ? 'Sports Tournament' : 'Community / Cultural Event');
+
+              const documentsList = bookingDetails.attachment
+                ? [{
+                    name: bookingDetails.attachment.name,
+                    size: typeof bookingDetails.attachment.size === 'number'
+                      ? `${(bookingDetails.attachment.size / 1024).toFixed(0)} KB`
+                      : bookingDetails.attachment.size
+                  }]
+                : [{ name: 'Applicant_NIC_Copy.pdf', size: '320 KB' }];
+
               const newBookingObj = {
-                type: 'facility',
+                type: 'facility' as const,
                 facilityName: fac.title,
                 location,
+                citizenName: citizenApplicantName,
+                citizenNic: citizenApplicantNic,
+                nicNumber: citizenApplicantNic,
+                citizenPhone: citizenApplicantPhone,
+                phone: citizenApplicantPhone,
+                eventTitle,
+                eventType,
+                rentalFee,
+                securityDeposit,
+                totalTariff,
+                paymentStatus: 'PAID' as const,
                 date: bookingDetails.date,
                 time: bookingDetails.time,
-                status: 'PENDING',
-                statusMessage: fac.category === 'Crematoriums' 
-                  ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails.deathCertificateNo} is underway.`
+                status: 'PENDING' as const,
+                statusMessage: isCremation 
+                  ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails?.deathCertificateNo || 'provided'} is underway.`
                   : `Booking request received. Verification of rental purpose is underway.`,
-                price: `${fac.basePrice} (Awaiting Approval)`,
+                price: `Rs. ${totalTariff.toLocaleString()} Total (Paid)`,
                 avatar,
+                documents: documentsList,
+                remarks: [
+                  {
+                    id: `rem-${Date.now()}`,
+                    author: 'Citizen Intake Portal',
+                    text: 'Online booking intake submitted with payment confirmation.',
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    action: 'NOTE' as const
+                  }
+                ],
                 formDetails: bookingDetails.formDetails,
                 attachment: bookingDetails.attachment
               };
