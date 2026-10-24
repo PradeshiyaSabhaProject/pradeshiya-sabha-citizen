@@ -176,13 +176,21 @@ const Appointment = () => {
                 location = 'South Wing, Level 1, Homagama';
               } else if (fac.title === 'Homagama Crematorium') {
                 location = 'Homagama Cremation Ground';
-              } else if (fac.title === 'Water Bowser Rental') {
+              } else if (fac.category === 'Funeral Parlours') {
+                location = 'Avamangala Uthsawa Shala, Homagama';
+              } else if (fac.category === 'Gully Bowser') {
+                location = 'Municipal Public Health & Sanitation Division';
+              } else if (fac.title.includes('Water Bowser')) {
                 location = 'Water Supply Dept';
               }
 
               let avatar = '⚽';
               if (fac.category === 'Crematoriums') {
                 avatar = '🔥';
+              } else if (fac.category === 'Funeral Parlours') {
+                avatar = '🕊️';
+              } else if (fac.category === 'Gully Bowser') {
+                avatar = '🚛';
               } else if (fac.category === 'Vehicles & Machinery') {
                 avatar = '🚚';
               } else if (fac.title === 'Central Town Hall') {
@@ -190,9 +198,14 @@ const Appointment = () => {
               }
 
               const isCremation = fac.category === 'Crematoriums';
+              const isFuneralParlour = fac.category === 'Funeral Parlours';
+              const isGullyBowser = fac.category === 'Gully Bowser';
               const rentalFee = fac.rentalFee || 25000;
               const securityDeposit = fac.securityDeposit !== undefined ? fac.securityDeposit : 10000;
-              const totalTariff = rentalFee + securityDeposit;
+              const totalTariff = isGullyBowser
+                ? (bookingDetails.formDetails?.calculatedGullyFee || rentalFee)
+                : rentalFee + securityDeposit;
+              const paymentStatus = isCremation || isGullyBowser ? 'PENDING' as const : 'PAID' as const;
 
               const citizenApplicantName = bookingDetails.formDetails?.applicantName || 'Citizen Applicant';
               const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
@@ -204,7 +217,11 @@ const Appointment = () => {
 
               const eventType = isCremation
                 ? 'Cremation Service'
-                : (fac.category === 'Sports Grounds' ? 'Sports Tournament' : 'Community / Cultural Event');
+                : isFuneralParlour
+                  ? 'Funeral Parlour Reservation'
+                  : isGullyBowser
+                    ? 'Gully Bowser Service'
+                    : (fac.category === 'Sports Grounds' ? 'Sports Tournament' : 'Community / Cultural Event');
 
               const documentsList = bookingDetails.attachment
                 ? [{
@@ -229,14 +246,20 @@ const Appointment = () => {
                 rentalFee,
                 securityDeposit,
                 totalTariff,
-                paymentStatus: 'PAID' as const,
+                paymentStatus,
                 date: bookingDetails.date,
                 time: bookingDetails.time,
                 status: 'PENDING' as const,
-                statusMessage: isCremation 
-                  ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails?.deathCertificateNo || 'provided'} is underway.`
-                  : `Booking request received. Verification of rental purpose is underway.`,
-                price: `Rs. ${totalTariff.toLocaleString()} Total (Paid)`,
+                statusMessage: isCremation
+                  ? `Provisional crematorium reservation received. Bring the original documents and complete payment in person within 24 hours for confirmation.`
+                  : isFuneralParlour
+                    ? `Funeral parlour booking received. The reservation is confirmed after payment; any cancellation refund will be processed manually.`
+                    : isGullyBowser
+                      ? `Gully bowser request received. Staff will verify the route, load count and distance-based fare before dispatch.`
+                      : `Booking request received. Verification of rental purpose is underway.`,
+                price: isCremation || isGullyBowser
+                  ? `Rs. ${totalTariff.toLocaleString()} Total (Payment pending verification)`
+                  : `Rs. ${totalTariff.toLocaleString()} Total (Paid)`,
                 avatar,
                 documents: documentsList,
                 remarks: [

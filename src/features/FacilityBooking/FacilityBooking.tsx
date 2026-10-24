@@ -78,6 +78,10 @@ const FacilityBooking: React.FC = () => {
       location = 'Homagama Municipal Cemetery Grounds';
     } else if (fac.title === 'Water Bowser Rental (6000L)') {
       location = 'Water Supply & Engineering Yard';
+    } else if (fac.title === 'Homagama Funeral Parlour') {
+      location = 'Homagama Municipal Funeral Parlour Complex';
+    } else if (fac.title === 'Municipal Gully Bowser Service') {
+      location = 'Health & Environment Department, Municipal Yard';
     }
 
     let avatar = '🏛️';
@@ -87,9 +91,14 @@ const FacilityBooking: React.FC = () => {
       avatar = '🚚';
     } else if (fac.category === 'Sports Grounds') {
       avatar = '⚽';
+    } else if (fac.category === 'Funeral Parlours') {
+      avatar = '⚱️';
+    } else if (fac.category === 'Gully Bowser') {
+      avatar = '🚛';
     }
 
-    const isCremation = fac.category === 'Crematoriums';
+    const isCremation = fac.category === 'Crematoriums' || fac.category === 'Funeral Parlours';
+    const isGullyBowser = fac.category === 'Gully Bowser';
     const rentalFee = fac.rentalFee || 25000;
     const securityDeposit = fac.securityDeposit !== undefined ? fac.securityDeposit : 10000;
     const totalTariff = rentalFee + securityDeposit;
@@ -98,12 +107,15 @@ const FacilityBooking: React.FC = () => {
     const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
     const citizenApplicantPhone = bookingDetails.formDetails?.applicantPhone || '0771234567';
 
-    const eventTitle = isCremation
+    const eventTitle = isGullyBowser
+      ? (bookingDetails.formDetails?.bookingPurpose || 'Municipal Gully Bowser Service Request')
+      : isCremation
       ? `Funeral & Cremation Service (Late ${bookingDetails.formDetails?.deceasedName || 'Person'})`
       : (bookingDetails.formDetails?.bookingPurpose || `${fac.title} Community Reservation`);
 
     const eventType = isCremation
-      ? 'Cremation Service'
+      ? (fac.category === 'Funeral Parlours' ? 'Funeral Parlour Service' : 'Cremation Service')
+      : isGullyBowser ? 'Gully Bowser Service'
       : (fac.category === 'Sports Grounds' ? 'Sports Tournament' : 'Community Event');
 
     const documentsList = bookingDetails.attachment

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface FormStepProps {
   selectedFacility: any;
@@ -129,9 +129,16 @@ export const FormStep: React.FC<FormStepProps> = ({
   setErrors,
 }) => {
   const isCremation = selectedFacility?.category === 'Crematoriums';
+  const isFuneralParlour = selectedFacility?.category === 'Funeral Parlours';
+  const isGullyBowser = selectedFacility?.category === 'Gully Bowser';
+  const [gullyLoads, setGullyLoads] = useState('1');
+  const [distanceKm, setDistanceKm] = useState('1');
+  const [optionalServices, setOptionalServices] = useState<string[]>([]);
+  const distanceRate = 150;
+  const calculatedGullyFee = (Number(gullyLoads) || 0) * (selectedFacility?.rentalFee || 6000) + (Number(distanceKm) || 0) * distanceRate;
 
   const handleMockUpload = () => {
-    const filename = isCremation ? 'death_certificate_signed.pdf' : 'permit_request_form.pdf';
+    const filename = isCremation ? 'death_certificate_signed.pdf' : isGullyBowser ? 'property_tax_receipt_copy.pdf' : 'applicant_nic_and_booking_documents.pdf';
     setUploadedFileName(filename);
     setUploadedFileSize(148500); // ~145 KB
   };
@@ -163,6 +170,9 @@ export const FormStep: React.FC<FormStepProps> = ({
       validateCremationDetails(newErrors);
     } else if (!bookingPurpose.trim()) {
       newErrors.bookingPurpose = 'Purpose of booking is required';
+    }
+    if (isGullyBowser && !equipmentRequired.trim()) {
+      newErrors.equipmentRequired = 'Access road instructions are required';
     }
 
     if (!uploadedFileName) {
@@ -213,7 +223,14 @@ export const FormStep: React.FC<FormStepProps> = ({
       applicantGrama,
       bookingPurpose,
       expectedAttendance,
-      equipmentRequired
+      equipmentRequired,
+      optionalServices,
+      ...(isGullyBowser ? {
+        gullyLoads: Number(gullyLoads),
+        distanceKm: Number(distanceKm),
+        distanceRate,
+        calculatedGullyFee
+      } : {})
     };
 
     const bookingPayload = {
@@ -237,7 +254,7 @@ export const FormStep: React.FC<FormStepProps> = ({
             Step 2 of 2: Information Form
           </span>
           <h2 className="text-xl font-bold mt-2">
-            {isCremation ? 'Application for Cremation (English Digital Version)' : 'Facility Reservation Request Form'}
+            {isCremation ? 'Application for Cremation (English Digital Version)' : isFuneralParlour ? 'Application for Funeral Parlour Reservation' : isGullyBowser ? 'Application for Municipal Gully Bowser Service' : 'Facility Reservation Request Form'}
           </h2>
         </div>
         <button 
@@ -724,7 +741,120 @@ export const FormStep: React.FC<FormStepProps> = ({
             </div>
           </>
         ) : (
-          /* GENERAL FACILITY FORM (IF NOT CREMATORIUM) */
+          /* GENERAL FACILITY FORM or GULLY BOWSER FORM */
+          isGullyBowser ? (
+          <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
+            <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
+              Part B: Location & Service Requirements (ස්ථානයේ තොරතුරු සහ ලෝඩ් ගණන)
+            </h3>
+            
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label 
+                  htmlFor="booking-purpose"
+                  className="block text-xs font-bold text-gray-700 mb-1"
+                >
+                  6. Address of Septic Tank / Wastewater Pit Location (ගලි ටැංකිය පිහිටි ලිපිනය) <span className="text-red-800">*</span>
+                </label>
+                <input 
+                  id="booking-purpose"
+                  type="text"
+                  value={bookingPurpose}
+                  onChange={(e) => setBookingPurpose(e.target.value)}
+                  placeholder="e.g. No. 88, Station Road, Homagama (Backyard Pit)"
+                  className={`w-full px-3 py-2 border rounded-lg text-xs focus:outline-none focus:ring-1 ${
+                    errors.bookingPurpose 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500 bg-red-50/10' 
+                      : 'border-gray-300 focus:ring-red-800 focus:border-red-800'
+                  }`}
+                />
+                {errors.bookingPurpose && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.bookingPurpose}</p>}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label 
+                    htmlFor="expected-attendance"
+                    className="block text-xs font-bold text-gray-700 mb-1"
+                  >
+                    7. Premises Category (ස්ථානයේ ස්වභාවය)
+                  </label>
+                  <select 
+                    id="expected-attendance"
+                    value={expectedAttendance}
+                    onChange={(e) => setExpectedAttendance(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800 bg-white"
+                  >
+                    <option value="Residential">Residential (නේවාසික)</option>
+                    <option value="Commercial">Commercial (ව්‍යාපාරික)</option>
+                    <option value="Industrial">Industrial (කර්මාන්ත)</option>
+                    <option value="Government">Government Institution (රාජ්‍ය ආයතනයක්)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label 
+                    htmlFor="gully-loads"
+                    className="block text-xs font-bold text-gray-700 mb-1"
+                  >
+                    8. Number of Gully Bowser Loads (ලෝඩ් ගණන) <span className="text-red-800">*</span>
+                  </label>
+                  <input 
+                    id="gully-loads"
+                    type="number"
+                    min="1"
+                    value={gullyLoads}
+                    onChange={(e) => setGullyLoads(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="distance-km" className="block text-xs font-bold text-gray-700 mb-1">
+                    9. Estimated Distance (km) <span className="text-red-800">*</span>
+                  </label>
+                  <input
+                    id="distance-km"
+                    type="number"
+                    min="1"
+                    value={distanceKm}
+                    onChange={(e) => setDistanceKm(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800"
+                  />
+                </div>
+                <div className="rounded-lg border border-red-100 bg-red-50/40 px-3 py-2">
+                  <span className="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Estimated service charge</span>
+                  <span className="text-sm font-extrabold text-red-800">Rs. {calculatedGullyFee.toLocaleString()}</span>
+                  <span className="block text-[10px] text-gray-500">Load fare + Rs. {distanceRate} per km</span>
+                </div>
+              </div>
+
+              <div>
+                <label 
+                  htmlFor="equipment-required"
+                  className="block text-xs font-bold text-gray-700 mb-1"
+                >
+                  10. Access Road Description / Route Instructions (ප්‍රවේශ මාර්ග විස්තරය) <span className="text-red-800">*</span>
+                </label>
+                <textarea 
+                  id="equipment-required"
+                  value={equipmentRequired}
+                  onChange={(e) => setEquipmentRequired(e.target.value)}
+                  rows={3}
+                  placeholder="e.g. Turn left near Homagama Railway Station lane; 12ft wide carpet road accessible for bowser truck."
+                  className={`w-full px-3 py-2 border rounded-lg text-xs focus:outline-none focus:ring-1 ${
+                    errors.equipmentRequired 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500 bg-red-50/10' 
+                      : 'border-gray-300 focus:ring-red-800 focus:border-red-800'
+                  }`}
+                />
+                {errors.equipmentRequired && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.equipmentRequired}</p>}
+              </div>
+            </div>
+          </div>
+          ) : (
           <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
             <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
               Part B: Event & Reservation Information
@@ -752,6 +882,30 @@ export const FormStep: React.FC<FormStepProps> = ({
                 />
                 {errors.bookingPurpose && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.bookingPurpose}</p>}
               </div>
+
+              {isFuneralParlour && (
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="text-xs font-extrabold text-gray-700 mb-3">Optional facilities / services</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
+                    {['Air-conditioned hall', 'Viewing room', 'Additional chairs and tables', 'Sound system'].map((service) => (
+                      <label key={service} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={optionalServices.includes(service)}
+                          onChange={(e) => setOptionalServices((current) => e.target.checked
+                            ? [...current, service]
+                            : current.filter((item) => item !== service))}
+                          className="h-4 w-4 rounded border-gray-300 text-red-800 focus:ring-red-800"
+                        />
+                        {service}
+                      </label>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-[10px] font-semibold text-gray-500">
+                    Booking is confirmed after payment. Cancellation refunds are processed manually according to the applicable legal schedule.
+                  </p>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -789,18 +943,19 @@ export const FormStep: React.FC<FormStepProps> = ({
               </div>
             </div>
           </div>
+          )
         )}
 
         {/* PART E: DOCUMENT ATTACHMENT & DECLARATION */}
         <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
           <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
-            {isCremation ? 'Part E: Attachments & Sign-off' : 'Part C: Attachments & Sign-off'}
+            {isCremation ? 'Part E: Attachments & Sign-off' : isGullyBowser ? 'Part C: Attachments & Declaration' : 'Part C: Attachments & Sign-off'}
           </h3>
 
           {/* Document Uploader */}
           <div className="space-y-2">
             <span className="block text-xs font-bold text-gray-700">
-              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
+              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : isGullyBowser ? 'Attach Assessment Tax Receipt / NIC Copy (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
             </span>
 
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 flex flex-col items-center justify-center text-center">
@@ -847,7 +1002,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               <span className="text-[11px] font-bold text-gray-600 leading-normal">
                 {isCremation 
                   ? 'I hereby certify that all information provided above regarding the deceased and the applicant is true and correct to the best of my knowledge. I have attached the official death certificate/disposal permit. (ඉහත සඳහන් කර ඇති තොරතුරු සියල්ල නිවැරදි හා සත්‍ය බව සහතික කරමි. අදාළ සහතිකය අමුණා ඇත.)'
-                  : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
+                  : isGullyBowser ? 'I declare that the details provided are accurate and agree to pay the standard Homagama Pradeshiya Sabha tariff for the gully bowser service. (ඉහත සඳහන් තොරතුරු සත්‍ය හා නිවැරදි බවත්, ප්‍රාදේශීය සභාවේ නියමිත ගලි බවුසර ගාස්තු ගෙවීමට එකඟ වන බවත් ප්‍රකාශ කරමි.)' : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
                 }
               </span>
             </label>
@@ -871,7 +1026,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           onClick={handleSubmitBooking}
           className="bg-red-850 hover:bg-red-900 text-white px-7 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
         >
-          <span>Confirm & Reserve Facility</span>
+          <span>{isGullyBowser ? 'Submit Gully Bowser Application' : 'Confirm & Reserve Facility'}</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>

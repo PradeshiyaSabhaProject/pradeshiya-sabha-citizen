@@ -307,7 +307,7 @@ const ReserveFacility = ({
         <div>
           <h4 className="text-xs font-bold text-gray-700 mb-3">Category</h4>
           <div className="space-y-2.5">
-            {['Event Halls', 'Sports Grounds', 'Community Centers', 'Public Parks', 'Crematoriums', 'Vehicles & Machinery'].map((cat) => {
+            {['Event Halls', 'Sports Grounds', 'Community Centers', 'Public Parks', 'Crematoriums', 'Funeral Parlours', 'Gully Bowser', 'Vehicles & Machinery'].map((cat) => {
               const checked = categories.includes(cat);
               return (
                 <label key={cat} className="flex items-center gap-2.5 cursor-pointer text-xs text-gray-600 hover:text-gray-800 select-none">
