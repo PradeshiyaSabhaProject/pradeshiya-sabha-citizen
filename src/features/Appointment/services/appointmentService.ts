@@ -50,6 +50,7 @@ export interface BookingItem {
   time: string;
   status: AppointmentStatus;
   statusMessage?: string;
+  confirmationDeadline?: string;
   rescheduledReason?: string;
   rejectionReason?: string;
   resolutionNotes?: string;
@@ -645,7 +646,25 @@ const facilities: MunicipalFacility[] = [
 
 export const appointmentService = {
   getBookings: async (): Promise<BookingItem[]> => {
-    return new Promise((resolve) => setTimeout(() => resolve([...bookings]), 250));
+    return new Promise((resolve) => setTimeout(() => {
+      const now = Date.now();
+      bookings = bookings.map((booking) => {
+        if (
+          booking.confirmationDeadline &&
+          booking.status === 'PENDING' &&
+          new Date(booking.confirmationDeadline).getTime() <= now
+        ) {
+          return {
+            ...booking,
+            status: 'CANCELLED',
+            statusMessage: 'Automatically cancelled because the Pradeshiya Sabha office confirmation deadline passed. The date and time slot are available again.',
+            paymentStatus: 'REFUNDED'
+          };
+        }
+        return booking;
+      });
+      resolve([...bookings]);
+    }, 250));
   },
 
   getDepartments: async (): Promise<any[]> => {
@@ -690,7 +709,8 @@ export const appointmentService = {
       date: newBooking.date || 'Oct 05, 2026',
       time: newBooking.time || '09:30 AM - 10:00 AM',
       status: 'PENDING',
-      statusMessage: 'Application submitted online. Officer review and counter allocation underway.',
+      statusMessage: newBooking.statusMessage || 'Application submitted online. Officer review and counter allocation underway.',
+      confirmationDeadline: newBooking.confirmationDeadline,
       avatar: newBooking.avatar || (isAppointment ? '👤' : '🏛️'),
       documents: newBooking.documents || [],
       remarks: [

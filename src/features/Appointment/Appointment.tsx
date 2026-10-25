@@ -206,6 +206,9 @@ const Appointment = () => {
                 ? (bookingDetails.formDetails?.calculatedGullyFee || rentalFee)
                 : rentalFee + securityDeposit;
               const paymentStatus = isCremation || isGullyBowser ? 'PENDING' as const : 'PAID' as const;
+              const confirmationDeadline = isCremation
+                ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+                : undefined;
 
               const citizenApplicantName = bookingDetails.formDetails?.applicantName || 'Citizen Applicant';
               const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
@@ -250,8 +253,9 @@ const Appointment = () => {
                 date: bookingDetails.date,
                 time: bookingDetails.time,
                 status: 'PENDING' as const,
+                confirmationDeadline,
                 statusMessage: isCremation
-                  ? `Provisional crematorium reservation received. Bring the original documents and complete payment in person within 24 hours for confirmation.`
+                  ? `Pending Confirmation: visit the Pradeshiya Sabha office with the required documents and complete payment within 24 hours. Otherwise, this booking will be automatically cancelled and the slot released.`
                   : isFuneralParlour
                     ? `Funeral parlour booking received. The reservation is confirmed after payment; any cancellation refund will be processed manually.`
                     : isGullyBowser

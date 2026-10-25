@@ -131,7 +131,9 @@ const TimelineStep = ({ step, isLast }: { step: Step; isLast: boolean }) => {
 };
 
 const FormDetailsSummary = ({ booking }: { booking: any }) => {
-  const isCremation = booking.facilityType === 'crematorium' || booking.serviceName?.toLowerCase().includes('crematorium');
+  const isCremation = booking.facilityType === 'crematorium'
+    || booking.serviceName?.toLowerCase().includes('crematorium')
+    || booking.facilityName?.toLowerCase().includes('crematorium');
   if (!booking.formDetails) return null;
 
   return (
@@ -270,6 +272,27 @@ const BookingDetailsModal = ({ isOpen, onClose, booking }: { isOpen: boolean; on
               <p className="font-medium text-purple-800">
                 {booking.resolutionNotes || 'Session completed and archived in municipal council ledger.'}
               </p>
+            </div>
+          )}
+
+          {isFacility && booking.facilityName === 'Homagama Crematorium' && booking.status === 'PENDING' && (
+            <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 text-xs text-amber-950 space-y-1">
+              <div className="font-extrabold text-amber-900">Pending Confirmation - visit the Pradeshiya Sabha office</div>
+              <p className="font-medium text-amber-800">
+                Submit the required documents and certificates and complete payment within 24 hours of this online booking. The reservation is not confirmed until staff verify both.
+              </p>
+              {booking.confirmationDeadline && (
+                <p className="font-bold text-amber-900">
+                  Confirmation deadline: {new Date(booking.confirmationDeadline).toLocaleString()}
+                </p>
+              )}
+            </div>
+          )}
+
+          {isFacility && booking.facilityName === 'Homagama Crematorium' && booking.status === 'CANCELLED' && booking.statusMessage?.startsWith('Automatically cancelled') && (
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-xs text-red-950 space-y-1">
+              <div className="font-extrabold text-red-900">Automatically Cancelled</div>
+              <p className="font-medium text-red-800">{booking.statusMessage}</p>
             </div>
           )}
 

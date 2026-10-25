@@ -249,7 +249,7 @@ export const FormStep: React.FC<FormStepProps> = ({
 
     const bookingPayload = {
       date: chosenDateObj.dateStr,
-      time: chosenTimeSlot.time,
+      time: chosenTimeSlot?.time || 'Date reservation',
       formDetails,
       attachment: uploadedFileName ? { name: uploadedFileName, size: uploadedFileSize } : null
     };
@@ -287,9 +287,18 @@ export const FormStep: React.FC<FormStepProps> = ({
         </div>
         <div className="flex gap-4">
           <span>📅 Date: {chosenDateObj.dateStr}</span>
-          <span>🕒 Time: {chosenTimeSlot.time}</span>
+          <span>🕒 Time: {chosenTimeSlot?.time || 'Date reservation'}</span>
         </div>
       </div>
+
+      {isCremation && (
+        <div className="mx-6 mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" role="alert">
+          <p className="font-extrabold">Pending Confirmation - action required within 24 hours</p>
+          <p className="mt-1 leading-relaxed">
+            After submitting this online booking, take the required original documents and certificates to the Pradeshiya Sabha office and complete payment within 24 hours. Your reservation is not confirmed until staff verify the documents and payment.
+          </p>
+        </div>
+      )}
 
       <div className="p-6 space-y-6">
         {/* SECTION A: APPLICANT DETAILS (COMMON) */}
@@ -718,7 +727,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               </h3>
               
               <p className="text-[11px] text-gray-400 font-bold leading-normal uppercase">
-                Please list the required cremation dates/times in order of preference:
+                Please list the required cremation dates in order of preference:
               </p>
 
               <div className="space-y-3.5">
@@ -726,7 +735,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                   <span className="text-xs font-bold text-red-855 bg-red-50 rounded-full w-6 h-6 flex items-center justify-center border border-red-200">I</span>
                   <div className="text-xs">
                     <div className="font-extrabold text-gray-800">1st Preference (Primary Booking):</div>
-                    <div className="text-gray-500 font-bold mt-0.5">{chosenDateObj.dateStr} at {chosenTimeSlot.time}</div>
+                    <div className="text-gray-500 font-bold mt-0.5">{chosenDateObj.dateStr}</div>
                   </div>
                 </div>
 

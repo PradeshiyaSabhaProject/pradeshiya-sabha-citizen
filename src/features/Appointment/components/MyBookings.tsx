@@ -30,6 +30,17 @@ const getStatusBadgeStyle = (status: AppointmentStatus | string) => {
   }
 };
 
+const getStatusLabel = (booking: BookingItem) => {
+  if (booking.facilityName === 'Homagama Crematorium') {
+    if (booking.status === 'PENDING') return 'Pending Confirmation';
+    if (booking.status === 'CONFIRMED' || booking.status === 'APPROVED') return 'Confirmed';
+    if (booking.status === 'CANCELLED' && booking.statusMessage?.startsWith('Automatically cancelled')) {
+      return 'Automatically Cancelled';
+    }
+  }
+  return booking.status;
+};
+
 const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBooking }) => {
   const isApproved = b.status === 'APPROVED' || b.status === 'CONFIRMED' || b.status === 'RESERVED';
   const isConfirmed = b.status === 'CONFIRMED' || b.status === 'APPROVED';
@@ -92,7 +103,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
             </span>
           )}
           <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase tracking-wider border ${getStatusBadgeStyle(b.status)}`}>
-            {b.status}
+            {getStatusLabel(b)}
           </span>
         </div>
       </div>
