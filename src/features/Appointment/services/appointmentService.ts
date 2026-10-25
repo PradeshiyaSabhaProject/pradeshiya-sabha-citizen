@@ -67,6 +67,12 @@ export interface BookingItem {
   rentalFee?: number;
   securityDeposit?: number;
   totalTariff?: number;
+  fixedServiceFee?: number;
+  oneWayDistanceKm?: number;
+  totalTransportationDistanceKm?: number;
+  transportationCost?: number;
+  transportationRatePerKm?: number;
+  paymentMethod?: string;
   paymentStatus?: PaymentStatus;
   specialRequirements?: string;
   price?: string;
@@ -434,6 +440,7 @@ let bookings: BookingItem[] = [
     rentalFee: 4500,
     securityDeposit: 0,
     totalTariff: 4500,
+    fixedServiceFee: 4500,
     paymentStatus: 'PAID',
     specialRequirements: '6000L clean potable drinking water delivery at 07:00 AM to Meegoda Temple grounds',
     citizenName: 'Ven. Dhammananda Thero',
@@ -704,6 +711,12 @@ export const appointmentService = {
       rentalFee: newBooking.rentalFee,
       securityDeposit: newBooking.securityDeposit,
       totalTariff: newBooking.totalTariff,
+      fixedServiceFee: newBooking.fixedServiceFee,
+      oneWayDistanceKm: newBooking.oneWayDistanceKm,
+      totalTransportationDistanceKm: newBooking.totalTransportationDistanceKm,
+      transportationCost: newBooking.transportationCost,
+      transportationRatePerKm: newBooking.transportationRatePerKm,
+      paymentMethod: newBooking.paymentMethod,
       paymentStatus: newBooking.paymentStatus || 'PAID',
       specialRequirements: newBooking.specialRequirements,
       price: newBooking.price,

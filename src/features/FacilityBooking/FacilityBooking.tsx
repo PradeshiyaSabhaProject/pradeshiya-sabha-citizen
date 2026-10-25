@@ -99,9 +99,16 @@ const FacilityBooking: React.FC = () => {
 
     const isCremation = fac.category === 'Crematoriums' || fac.category === 'Funeral Parlours';
     const isGullyBowser = fac.category === 'Gully Bowser';
+    const isBowser = isGullyBowser || fac.title.toLowerCase().includes('water bowser');
     const rentalFee = fac.rentalFee || 25000;
     const securityDeposit = fac.securityDeposit !== undefined ? fac.securityDeposit : 10000;
-    const totalTariff = rentalFee + securityDeposit;
+    const fixedServiceFee = isBowser
+      ? (bookingDetails.formDetails?.fixedServiceFee ?? rentalFee)
+      : rentalFee;
+    const transportationCost = bookingDetails.formDetails?.transportationCost || 0;
+    const totalTariff = isBowser
+      ? fixedServiceFee + transportationCost
+      : rentalFee + securityDeposit;
 
     const citizenApplicantName = bookingDetails.formDetails?.applicantName || 'Citizen Applicant';
     const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
@@ -141,6 +148,12 @@ const FacilityBooking: React.FC = () => {
       rentalFee,
       securityDeposit,
       totalTariff,
+      fixedServiceFee: isBowser ? fixedServiceFee : undefined,
+      oneWayDistanceKm: bookingDetails.formDetails?.oneWayDistanceKm,
+      totalTransportationDistanceKm: bookingDetails.formDetails?.totalTransportationDistanceKm,
+      transportationCost: isBowser ? transportationCost : undefined,
+      transportationRatePerKm: bookingDetails.formDetails?.transportationRatePerKm,
+      paymentMethod: bookingDetails.formDetails?.paymentMethod,
       paymentStatus: 'PAID',
       date: bookingDetails.date,
       time: bookingDetails.time,
@@ -325,7 +338,7 @@ const FacilityBooking: React.FC = () => {
                         <h3 className="text-base font-bold text-gray-900 truncate">{b.facilityName}</h3>
                         {b.rentalFee !== undefined && (
                           <span className="text-[11px] font-bold text-[#8C1538] bg-red-50 px-2 py-0.5 rounded border border-red-100 shrink-0">
-                            Rs. {(b.rentalFee + (b.securityDeposit || 0)).toLocaleString()} Total
+                            Rs. {(b.totalTariff ?? (b.rentalFee || 0) + (b.securityDeposit || 0)).toLocaleString()} Total
                           </span>
                         )}
                       </div>

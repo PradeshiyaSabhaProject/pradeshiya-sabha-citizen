@@ -131,11 +131,18 @@ export const FormStep: React.FC<FormStepProps> = ({
   const isCremation = selectedFacility?.category === 'Crematoriums';
   const isFuneralParlour = selectedFacility?.category === 'Funeral Parlours';
   const isGullyBowser = selectedFacility?.category === 'Gully Bowser';
+  const isWaterBowser = selectedFacility?.title?.toLowerCase().includes('water bowser');
+  const isBowser = isGullyBowser || isWaterBowser;
   const [gullyLoads, setGullyLoads] = useState('1');
   const [distanceKm, setDistanceKm] = useState('1');
+  const [paymentMethod, setPaymentMethod] = useState('Online payment');
   const [optionalServices, setOptionalServices] = useState<string[]>([]);
   const distanceRate = 150;
-  const calculatedGullyFee = (Number(gullyLoads) || 0) * (selectedFacility?.rentalFee || 6000) + (Number(distanceKm) || 0) * distanceRate;
+  const fixedServiceFee = selectedFacility?.rentalFee || 0;
+  const oneWayDistanceKm = Math.max(Number(distanceKm) || 0, 0);
+  const totalTransportationDistanceKm = oneWayDistanceKm * 2;
+  const transportationCost = totalTransportationDistanceKm * distanceRate;
+  const totalBookingFee = fixedServiceFee + transportationCost;
 
   const handleMockUpload = () => {
     const filename = isCremation ? 'death_certificate_signed.pdf' : isGullyBowser ? 'property_tax_receipt_copy.pdf' : 'applicant_nic_and_booking_documents.pdf';
@@ -171,8 +178,11 @@ export const FormStep: React.FC<FormStepProps> = ({
     } else if (!bookingPurpose.trim()) {
       newErrors.bookingPurpose = 'Purpose of booking is required';
     }
-    if (isGullyBowser && !equipmentRequired.trim()) {
+    if (isBowser && !equipmentRequired.trim()) {
       newErrors.equipmentRequired = 'Access road instructions are required';
+    }
+    if (isBowser && oneWayDistanceKm <= 0) {
+      newErrors.distanceKm = 'Enter a distance greater than zero';
     }
 
     if (!uploadedFileName) {
@@ -225,11 +235,15 @@ export const FormStep: React.FC<FormStepProps> = ({
       expectedAttendance,
       equipmentRequired,
       optionalServices,
-      ...(isGullyBowser ? {
+      ...(isBowser ? {
         gullyLoads: Number(gullyLoads),
-        distanceKm: Number(distanceKm),
-        distanceRate,
-        calculatedGullyFee
+        oneWayDistanceKm,
+        totalTransportationDistanceKm,
+        transportationRatePerKm: distanceRate,
+        transportationCost,
+        fixedServiceFee,
+        totalBookingFee,
+        paymentMethod
       } : {})
     };
 
@@ -254,7 +268,7 @@ export const FormStep: React.FC<FormStepProps> = ({
             Step 2 of 2: Information Form
           </span>
           <h2 className="text-xl font-bold mt-2">
-            {isCremation ? 'Application for Cremation (English Digital Version)' : isFuneralParlour ? 'Application for Funeral Parlour Reservation' : isGullyBowser ? 'Application for Municipal Gully Bowser Service' : 'Facility Reservation Request Form'}
+            {isCremation ? 'Application for Cremation (English Digital Version)' : isFuneralParlour ? 'Application for Funeral Parlour Reservation'             : isBowser ? `Online ${isWaterBowser ? 'Water' : 'Gully'} Bowser Booking` : 'Facility Reservation Request Form'}
           </h2>
         </div>
         <button 
@@ -742,10 +756,10 @@ export const FormStep: React.FC<FormStepProps> = ({
           </>
         ) : (
           /* GENERAL FACILITY FORM or GULLY BOWSER FORM */
-          isGullyBowser ? (
+          isBowser ? (
           <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
             <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
-              Part B: Location & Service Requirements (ස්ථානයේ තොරතුරු සහ ලෝඩ් ගණන)
+              Part B: {isWaterBowser ? 'Delivery Location & Service Requirements' : 'Location & Service Requirements (ස්ථානයේ තොරතුරු සහ ලෝඩ් ගණන)'}
             </h3>
             
             <div className="grid grid-cols-1 gap-4">
@@ -754,7 +768,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                   htmlFor="booking-purpose"
                   className="block text-xs font-bold text-gray-700 mb-1"
                 >
-                  6. Address of Septic Tank / Wastewater Pit Location (ගලි ටැංකිය පිහිටි ලිපිනය) <span className="text-red-800">*</span>
+                  6.                   {isWaterBowser ? 'Customer Delivery Location' : 'Address of Septic Tank / Wastewater Pit Location (ගලි ටැංකිය පිහිටි ලිපිනය)'} <span className="text-red-800">*</span>
                 </label>
                 <input 
                   id="booking-purpose"
@@ -777,7 +791,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                     htmlFor="expected-attendance"
                     className="block text-xs font-bold text-gray-700 mb-1"
                   >
-                    7. Premises Category (ස්ථානයේ ස්වභාවය)
+                    {isWaterBowser ? '7. Service Type' : '7. Premises Category (ස්ථානයේ ස්වභාවය)'}
                   </label>
                   <select 
                     id="expected-attendance"
@@ -785,10 +799,19 @@ export const FormStep: React.FC<FormStepProps> = ({
                     onChange={(e) => setExpectedAttendance(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800 bg-white"
                   >
-                    <option value="Residential">Residential (නේවාසික)</option>
-                    <option value="Commercial">Commercial (ව්‍යාපාරික)</option>
-                    <option value="Industrial">Industrial (කර්මාන්ත)</option>
-                    <option value="Government">Government Institution (රාජ්‍ය ආයතනයක්)</option>
+                    {isWaterBowser ? (
+                      <>
+                        <option value="Potable water delivery">Potable water delivery</option>
+                        <option value="Emergency water supply">Emergency water supply</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="Residential">Residential (නේවාසික)</option>
+                        <option value="Commercial">Commercial (ව්‍යාපාරික)</option>
+                        <option value="Industrial">Industrial (කර්මාන්ත)</option>
+                        <option value="Government">Government Institution (රාජ්‍ය ආයතනයක්)</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
@@ -797,7 +820,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                     htmlFor="gully-loads"
                     className="block text-xs font-bold text-gray-700 mb-1"
                   >
-                    8. Number of Gully Bowser Loads (ලෝඩ් ගණන) <span className="text-red-800">*</span>
+                    {isWaterBowser ? '8. Number of Bowser Trips' : '8. Number of Gully Bowser Loads (ලෝඩ් ගණන)'} <span className="text-red-800">*</span>
                   </label>
                   <input 
                     id="gully-loads"
@@ -813,7 +836,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="distance-km" className="block text-xs font-bold text-gray-700 mb-1">
-                    9. Estimated Distance (km) <span className="text-red-800">*</span>
+                    9. One-way Distance from Depot (km) <span className="text-red-800">*</span>
                   </label>
                   <input
                     id="distance-km"
@@ -823,11 +846,13 @@ export const FormStep: React.FC<FormStepProps> = ({
                     onChange={(e) => setDistanceKm(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800"
                   />
+                  {errors.distanceKm && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.distanceKm}</p>}
                 </div>
                 <div className="rounded-lg border border-red-100 bg-red-50/40 px-3 py-2">
-                  <span className="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Estimated service charge</span>
-                  <span className="text-sm font-extrabold text-red-800">Rs. {calculatedGullyFee.toLocaleString()}</span>
-                  <span className="block text-[10px] text-gray-500">Load fare + Rs. {distanceRate} per km</span>
+                  <span className="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Fee breakdown</span>
+                  <span className="block text-[11px] text-gray-600">Fixed service fee: Rs. {fixedServiceFee.toLocaleString()}</span>
+                  <span className="block text-[11px] text-gray-600">Round trip: {totalTransportationDistanceKm} km × Rs. {distanceRate}</span>
+                  <span className="block text-sm font-extrabold text-red-800 mt-1">Total: Rs. {totalBookingFee.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -949,13 +974,46 @@ export const FormStep: React.FC<FormStepProps> = ({
         {/* PART E: DOCUMENT ATTACHMENT & DECLARATION */}
         <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
           <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
-            {isCremation ? 'Part E: Attachments & Sign-off' : isGullyBowser ? 'Part C: Attachments & Declaration' : 'Part C: Attachments & Sign-off'}
+            {isCremation ? 'Part E: Attachments & Sign-off' : isBowser ? 'Part C: Payment, Attachments & Declaration' : 'Part C: Attachments & Sign-off'}
           </h3>
+
+          {isBowser && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 space-y-3">
+              <div>
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">Booking fee summary</h4>
+                <p className="text-[11px] text-emerald-800 mt-1">
+                  Total fee = fixed service fee + (depot-to-customer distance + customer-to-depot distance) × cost per kilometre.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
+                <span>Fixed service fee</span><strong className="text-right">Rs. {fixedServiceFee.toLocaleString()}</strong>
+                <span>Transportation distance</span><strong className="text-right">{totalTransportationDistanceKm} km</strong>
+                <span>Transportation cost</span><strong className="text-right">Rs. {transportationCost.toLocaleString()}</strong>
+                <span className="font-extrabold text-gray-900 border-t border-emerald-200 pt-2">Total booking fee</span>
+                <strong className="text-right text-base text-red-800 border-t border-emerald-200 pt-2">Rs. {totalBookingFee.toLocaleString()}</strong>
+              </div>
+              <div className="border-t border-emerald-200 pt-3">
+                <span className="block text-xs font-bold text-gray-700 mb-2">Payment method</span>
+                <label className="flex items-center gap-2 text-xs font-semibold text-gray-700">
+                  <input
+                    type="radio"
+                    name="bowser-payment-method"
+                    value="Online payment"
+                    checked={paymentMethod === 'Online payment'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-4 h-4 text-red-800 focus:ring-red-800"
+                  />
+                  Pay online now
+                </label>
+                <p className="text-[10px] text-gray-500 mt-1">You will be redirected to the secure payment page after confirming this booking.</p>
+              </div>
+            </div>
+          )}
 
           {/* Document Uploader */}
           <div className="space-y-2">
             <span className="block text-xs font-bold text-gray-700">
-              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : isGullyBowser ? 'Attach Assessment Tax Receipt / NIC Copy (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
+              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : isBowser ? 'Attach NIC / Supporting Permission Letter (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
             </span>
 
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 flex flex-col items-center justify-center text-center">
@@ -1002,7 +1060,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               <span className="text-[11px] font-bold text-gray-600 leading-normal">
                 {isCremation 
                   ? 'I hereby certify that all information provided above regarding the deceased and the applicant is true and correct to the best of my knowledge. I have attached the official death certificate/disposal permit. (ඉහත සඳහන් කර ඇති තොරතුරු සියල්ල නිවැරදි හා සත්‍ය බව සහතික කරමි. අදාළ සහතිකය අමුණා ඇත.)'
-                  : isGullyBowser ? 'I declare that the details provided are accurate and agree to pay the standard Homagama Pradeshiya Sabha tariff for the gully bowser service. (ඉහත සඳහන් තොරතුරු සත්‍ය හා නිවැරදි බවත්, ප්‍රාදේශීය සභාවේ නියමිත ගලි බවුසර ගාස්තු ගෙවීමට එකඟ වන බවත් ප්‍රකාශ කරමි.)' : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
+                  : isBowser ? 'I declare that the details provided are accurate and agree to pay the calculated fixed service fee and round-trip transportation cost for this bowser service.' : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
                 }
               </span>
             </label>
@@ -1026,7 +1084,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           onClick={handleSubmitBooking}
           className="bg-red-850 hover:bg-red-900 text-white px-7 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
         >
-          <span>{isGullyBowser ? 'Submit Gully Bowser Application' : 'Confirm & Reserve Facility'}</span>
+          <span>{isBowser ? 'Confirm Booking & Pay Online' : 'Confirm & Reserve Facility'}</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
