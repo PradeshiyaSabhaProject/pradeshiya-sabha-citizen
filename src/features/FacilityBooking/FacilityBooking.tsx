@@ -134,6 +134,7 @@ const FacilityBooking: React.FC = () => {
         }]
       : [{ name: 'Applicant_NIC_Copy.pdf', size: '320 KB' }];
 
+    const isPaidFuneralParlour = fac.category === 'Funeral Parlours' && bookingDetails.formDetails?.paymentCompleted;
     const newBookingObj: Partial<BookingItem> = {
       type: 'facility',
       facilityName: fac.title,
@@ -154,14 +155,18 @@ const FacilityBooking: React.FC = () => {
       transportationCost: isBowser ? transportationCost : undefined,
       transportationRatePerKm: bookingDetails.formDetails?.transportationRatePerKm,
       paymentMethod: bookingDetails.formDetails?.paymentMethod,
-      paymentStatus: 'PAID',
+      paymentStatus: isPaidFuneralParlour ? 'PAID' : 'PENDING',
       date: bookingDetails.date,
       time: bookingDetails.time,
-      status: 'PENDING',
+      status: isPaidFuneralParlour ? 'CONFIRMED' : 'PENDING',
       statusMessage: isCremation
         ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails?.deathCertificateNo || 'provided'} is underway.`
+        : isPaidFuneralParlour
+        ? 'Online payment successful. Booking confirmed. If cancelled, any eligible refund will be processed manually by Pradeshiya Sabha staff.'
         : `Booking request received for ${fac.title}. Verification of rental purpose is underway.`,
-      price: `Rs. ${totalTariff.toLocaleString()} Total (Paid)`,
+      price      : isPaidFuneralParlour
+      ? `Rs. ${totalTariff.toLocaleString()} Total (Paid online)`
+      : `Rs. ${totalTariff.toLocaleString()} Total (Payment pending)`,
       avatar,
       documents: documentsList,
       remarks: [
@@ -390,7 +395,10 @@ const FacilityBooking: React.FC = () => {
                         </svg>
                         <span>Download Pass Slip</span>
                       </button>
-                      {b.status === 'PENDING' && (
+                      {(b.status === 'PENDING' || (
+                        b.facilityName === 'Avamangala Uthsawa Shala'
+                        && (b.status === 'CONFIRMED' || b.status === 'APPROVED' || b.status === 'RESERVED')
+                      )) && (
                         <>
                           <span className="text-gray-300">|</span>
                           <button
@@ -398,7 +406,7 @@ const FacilityBooking: React.FC = () => {
                             onClick={() => handleCancelBooking(b.id)}
                             className="text-red-600 font-medium hover:underline cursor-pointer"
                           >
-                            Cancel
+                            Cancel booking
                           </button>
                         </>
                       )}

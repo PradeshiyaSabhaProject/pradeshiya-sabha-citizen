@@ -51,10 +51,12 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
   const isCompleted = b.status === 'COMPLETED';
   const isCancelled = b.status === 'CANCELLED';
   const isNoShow = b.status === 'NO-SHOW';
-
   const isAppointment = b.type === 'appointment';
   const isFacility = b.type === 'facility';
   const documentsCount = (b.documents?.length || 0) + (b.attachment ? 1 : 0);
+  const isCancelableFuneralParlour = isFacility
+    && b.facilityName === 'Avamangala Uthsawa Shala'
+    && (isConfirmed || isReserved || isPending);
 
   let iconClass = 'bg-red-50 text-red-800';
   // Terminal and pending states override the default type-based icon color.
@@ -313,6 +315,21 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
               <span>Cancel</span>
             </button>
           </div>
+        </div>
+      )}
+
+      {isCancelableFuneralParlour && !isPending && (
+        <div className="bg-blue-50/60 border-t border-blue-200 px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <span className="text-blue-900 font-medium">
+            Paid online. Cancellation releases this slot; eligible refunds are handled manually by Pradeshiya Sabha staff.
+          </span>
+          <button
+            type="button"
+            onClick={() => onCancelBooking(b.id)}
+            className="text-red-700 font-bold hover:underline cursor-pointer shrink-0"
+          >
+            Cancel booking
+          </button>
         </div>
       )}
 

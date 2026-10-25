@@ -205,7 +205,9 @@ const Appointment = () => {
               const totalTariff = isGullyBowser
                 ? (bookingDetails.formDetails?.calculatedGullyFee || rentalFee)
                 : rentalFee + securityDeposit;
-              const paymentStatus = isCremation || isGullyBowser ? 'PENDING' as const : 'PAID' as const;
+              const paymentStatus = isCremation || isGullyBowser
+                ? 'PENDING' as const
+                : 'PAID' as const;
               const confirmationDeadline = isCremation
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
                 : undefined;
@@ -252,12 +254,14 @@ const Appointment = () => {
                 paymentStatus,
                 date: bookingDetails.date,
                 time: bookingDetails.time,
-                status: 'PENDING' as const,
+                status: isFuneralParlour && bookingDetails.formDetails?.paymentCompleted
+                  ? 'CONFIRMED' as const
+                  : 'PENDING' as const,
                 confirmationDeadline,
                 statusMessage: isCremation
                   ? `Pending Confirmation: visit the Pradeshiya Sabha office with the required documents and complete payment within 24 hours. Otherwise, this booking will be automatically cancelled and the slot released.`
                   : isFuneralParlour
-                    ? `Funeral parlour booking received. The reservation is confirmed after payment; any cancellation refund will be processed manually.`
+                    ? `Online payment successful. Booking confirmed. If cancelled, any eligible refund will be processed manually by Pradeshiya Sabha staff.`
                     : isGullyBowser
                       ? `Gully bowser request received. Staff will verify the route, load count and distance-based fare before dispatch.`
                       : `Booking request received. Verification of rental purpose is underway.`,
@@ -270,7 +274,9 @@ const Appointment = () => {
                   {
                     id: `rem-${Date.now()}`,
                     author: 'Citizen Intake Portal',
-                    text: 'Online booking intake submitted with payment confirmation.',
+                    text: isFuneralParlour && bookingDetails.formDetails?.paymentCompleted
+                      ? 'Online booking and payment completed successfully; reservation confirmed.'
+                      : 'Online booking intake submitted with payment confirmation.',
                     date: new Date().toISOString().split('T')[0],
                     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     action: 'NOTE' as const

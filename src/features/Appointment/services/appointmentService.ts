@@ -749,7 +749,13 @@ export const appointmentService = {
   },
 
   cancelBooking: async (id: number | string): Promise<boolean> => {
-    bookings = bookings.map((b) => (b.id === id ? { ...b, status: 'CANCELLED' as const } : b));
+    bookings = bookings.map((b) => (b.id === id ? {
+      ...b,
+      status: 'CANCELLED' as const,
+      statusMessage: b.facilityName && b.facilityName === 'Avamangala Uthsawa Shala'
+        ? 'Booking cancelled. Any eligible refund will be processed manually by Pradeshiya Sabha staff; no automatic refund was issued.'
+        : b.statusMessage || 'Booking cancelled by citizen.'
+    } : b));
     return true;
   },
 };

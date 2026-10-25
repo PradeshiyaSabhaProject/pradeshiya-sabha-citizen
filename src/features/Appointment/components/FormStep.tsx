@@ -136,6 +136,10 @@ export const FormStep: React.FC<FormStepProps> = ({
   const [gullyLoads, setGullyLoads] = useState('1');
   const [distanceKm, setDistanceKm] = useState('1');
   const [paymentMethod, setPaymentMethod] = useState('Online payment');
+  const [cardholderName, setCardholderName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [securityCode, setSecurityCode] = useState('');
   const [optionalServices, setOptionalServices] = useState<string[]>([]);
   const distanceRate = 150;
   const fixedServiceFee = selectedFacility?.rentalFee || 0;
@@ -183,6 +187,12 @@ export const FormStep: React.FC<FormStepProps> = ({
     }
     if (isBowser && oneWayDistanceKm <= 0) {
       newErrors.distanceKm = 'Enter a distance greater than zero';
+    }
+    if (isFuneralParlour) {
+      if (!cardholderName.trim()) newErrors.cardholderName = 'Cardholder name is required';
+      if (!/^\d{16}$/.test(cardNumber.replace(/\s/g, ''))) newErrors.cardNumber = 'Enter a valid 16-digit card number';
+      if (!/^\d{2}\/\d{2}$/.test(expiryDate)) newErrors.expiryDate = 'Use MM/YY format';
+      if (!/^\d{3,4}$/.test(securityCode)) newErrors.securityCode = 'Enter a valid security code';
     }
 
     if (!uploadedFileName) {
@@ -235,6 +245,11 @@ export const FormStep: React.FC<FormStepProps> = ({
       expectedAttendance,
       equipmentRequired,
       optionalServices,
+      ...(isFuneralParlour ? {
+        paymentMethod: 'Online payment',
+        paymentReference: `PAY-${Date.now()}`,
+        paymentCompleted: true
+      } : {}),
       ...(isBowser ? {
         gullyLoads: Number(gullyLoads),
         oneWayDistanceKm,
@@ -935,9 +950,9 @@ export const FormStep: React.FC<FormStepProps> = ({
                       </label>
                     ))}
                   </div>
-                  <p className="mt-3 text-[10px] font-semibold text-gray-500">
-                    Booking is confirmed after payment. Cancellation refunds are processed manually according to the applicable legal schedule.
-                  </p>
+                          <p className="mt-3 text-[10px] font-semibold text-gray-500">
+                            Pay online to confirm this reservation. If you cancel, Pradeshiya Sabha staff will process any eligible refund manually.
+                          </p>
                 </div>
               )}
 
@@ -978,6 +993,39 @@ export const FormStep: React.FC<FormStepProps> = ({
             </div>
           </div>
           )
+        )}
+
+        {isFuneralParlour && (
+          <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4 space-y-3">
+            <div>
+              <h4 className="text-xs font-extrabold uppercase tracking-wider text-blue-950">Secure online payment</h4>
+              <p className="text-[11px] text-blue-900 mt-1">
+                Payment is required before the funeral parlour reservation is confirmed. Card details are used only for this payment and are not stored.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="md:col-span-2">
+                <label htmlFor="cardholder-name" className="block text-xs font-bold text-gray-700 mb-1">Cardholder name *</label>
+                <input id="cardholder-name" value={cardholderName} onChange={(e) => setCardholderName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-name" />
+                {errors.cardholderName && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.cardholderName}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="card-number" className="block text-xs font-bold text-gray-700 mb-1">Card number *</label>
+                <input id="card-number" inputMode="numeric" maxLength={19} value={cardNumber} onChange={(e) => setCardNumber(e.target.value.replace(/[^\d\s]/g, '').slice(0, 19))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-number" placeholder="1234 5678 9012 3456" />
+                {errors.cardNumber && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.cardNumber}</p>}
+              </div>
+              <div>
+                <label htmlFor="expiry-date" className="block text-xs font-bold text-gray-700 mb-1">Expiry (MM/YY) *</label>
+                <input id="expiry-date" inputMode="numeric" maxLength={5} value={expiryDate} onChange={(e) => setExpiryDate(e.target.value.replace(/[^\d/]/g, '').slice(0, 5))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-exp" placeholder="MM/YY" />
+                {errors.expiryDate && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.expiryDate}</p>}
+              </div>
+              <div>
+                <label htmlFor="security-code" className="block text-xs font-bold text-gray-700 mb-1">Security code *</label>
+                <input id="security-code" type="password" inputMode="numeric" maxLength={4} value={securityCode} onChange={(e) => setSecurityCode(e.target.value.replace(/\D/g, '').slice(0, 4))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-csc" />
+                {errors.securityCode && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.securityCode}</p>}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* PART E: DOCUMENT ATTACHMENT & DECLARATION */}
@@ -1093,7 +1141,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           onClick={handleSubmitBooking}
           className="bg-red-850 hover:bg-red-900 text-white px-7 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
         >
-          <span>{isBowser ? 'Confirm Booking & Pay Online' : 'Confirm & Reserve Facility'}</span>
+          <span>{isBowser || isFuneralParlour ? 'Pay Online & Confirm Booking' : 'Confirm & Reserve Facility'}</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
