@@ -626,7 +626,7 @@ const facilities: MunicipalFacility[] = [
     rentalFee: 20000,
     securityDeposit: 10000,
     capacity: 200,
-    image: 'https://images.unsplash.com/photo-1515169067868-5387ec356754?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&h=300&fit=crop',
     amenities: ['Funeral Hall', 'Viewing Room', 'Chairs & Tables', 'Parking', 'Optional Cooling'],
   },
   {
