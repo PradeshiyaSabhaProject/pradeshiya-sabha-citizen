@@ -78,6 +78,10 @@ const FacilityBooking: React.FC = () => {
       location = 'Homagama Municipal Cemetery Grounds';
     } else if (fac.title === 'Water Bowser Rental (6000L)') {
       location = 'Water Supply & Engineering Yard';
+    } else if (fac.title === 'Homagama Funeral Parlour') {
+      location = 'Homagama Municipal Funeral Parlour Complex';
+    } else if (fac.title === 'Municipal Gully Bowser Service') {
+      location = 'Health & Environment Department, Municipal Yard';
     }
 
     let avatar = '🏛️';
@@ -87,23 +91,38 @@ const FacilityBooking: React.FC = () => {
       avatar = '🚚';
     } else if (fac.category === 'Sports Grounds') {
       avatar = '⚽';
+    } else if (fac.category === 'Funeral Parlours') {
+      avatar = '⚱️';
+    } else if (fac.category === 'Gully Bowser') {
+      avatar = '🚛';
     }
 
-    const isCremation = fac.category === 'Crematoriums';
+    const isCremation = fac.category === 'Crematoriums' || fac.category === 'Funeral Parlours';
+    const isGullyBowser = fac.category === 'Gully Bowser';
+    const isBowser = isGullyBowser || fac.title.toLowerCase().includes('water bowser');
     const rentalFee = fac.rentalFee || 25000;
     const securityDeposit = fac.securityDeposit !== undefined ? fac.securityDeposit : 10000;
-    const totalTariff = rentalFee + securityDeposit;
+    const fixedServiceFee = isBowser
+      ? (bookingDetails.formDetails?.fixedServiceFee ?? rentalFee)
+      : rentalFee;
+    const transportationCost = bookingDetails.formDetails?.transportationCost || 0;
+    const totalTariff = isBowser
+      ? fixedServiceFee + transportationCost
+      : rentalFee + securityDeposit;
 
     const citizenApplicantName = bookingDetails.formDetails?.applicantName || 'Citizen Applicant';
     const citizenApplicantNic = bookingDetails.formDetails?.applicantNic || '199012345678';
     const citizenApplicantPhone = bookingDetails.formDetails?.applicantPhone || '0771234567';
 
-    const eventTitle = isCremation
+    const eventTitle = isGullyBowser
+      ? (bookingDetails.formDetails?.bookingPurpose || 'Municipal Gully Bowser Service Request')
+      : isCremation
       ? `Funeral & Cremation Service (Late ${bookingDetails.formDetails?.deceasedName || 'Person'})`
       : (bookingDetails.formDetails?.bookingPurpose || `${fac.title} Community Reservation`);
 
     const eventType = isCremation
-      ? 'Cremation Service'
+      ? (fac.category === 'Funeral Parlours' ? 'Funeral Parlour Service' : 'Cremation Service')
+      : isGullyBowser ? 'Gully Bowser Service'
       : (fac.category === 'Sports Grounds' ? 'Sports Tournament' : 'Community Event');
 
     const documentsList = bookingDetails.attachment
@@ -115,6 +134,7 @@ const FacilityBooking: React.FC = () => {
         }]
       : [{ name: 'Applicant_NIC_Copy.pdf', size: '320 KB' }];
 
+    const isPaidFuneralParlour = fac.category === 'Funeral Parlours' && bookingDetails.formDetails?.paymentCompleted;
     const newBookingObj: Partial<BookingItem> = {
       type: 'facility',
       facilityName: fac.title,
@@ -129,14 +149,24 @@ const FacilityBooking: React.FC = () => {
       rentalFee,
       securityDeposit,
       totalTariff,
-      paymentStatus: 'PAID',
+      fixedServiceFee: isBowser ? fixedServiceFee : undefined,
+      oneWayDistanceKm: bookingDetails.formDetails?.oneWayDistanceKm,
+      totalTransportationDistanceKm: bookingDetails.formDetails?.totalTransportationDistanceKm,
+      transportationCost: isBowser ? transportationCost : undefined,
+      transportationRatePerKm: bookingDetails.formDetails?.transportationRatePerKm,
+      paymentMethod: bookingDetails.formDetails?.paymentMethod,
+      paymentStatus: isPaidFuneralParlour ? 'PAID' : 'PENDING',
       date: bookingDetails.date,
       time: bookingDetails.time,
-      status: 'PENDING',
+      status: isPaidFuneralParlour ? 'CONFIRMED' : 'PENDING',
       statusMessage: isCremation
         ? `Funeral Cremation request received. Verification of death certificate ${bookingDetails.formDetails?.deathCertificateNo || 'provided'} is underway.`
+        : isPaidFuneralParlour
+        ? 'Online payment successful. Booking confirmed. If cancelled, any eligible refund will be processed manually by Pradeshiya Sabha staff.'
         : `Booking request received for ${fac.title}. Verification of rental purpose is underway.`,
-      price: `Rs. ${totalTariff.toLocaleString()} Total (Paid)`,
+      price      : isPaidFuneralParlour
+      ? `Rs. ${totalTariff.toLocaleString()} Total (Paid online)`
+      : `Rs. ${totalTariff.toLocaleString()} Total (Payment pending)`,
       avatar,
       documents: documentsList,
       remarks: [
@@ -313,7 +343,7 @@ const FacilityBooking: React.FC = () => {
                         <h3 className="text-base font-bold text-gray-900 truncate">{b.facilityName}</h3>
                         {b.rentalFee !== undefined && (
                           <span className="text-[11px] font-bold text-[#8C1538] bg-red-50 px-2 py-0.5 rounded border border-red-100 shrink-0">
-                            Rs. {(b.rentalFee + (b.securityDeposit || 0)).toLocaleString()} Total
+                            Rs. {(b.totalTariff ?? (b.rentalFee || 0) + (b.securityDeposit || 0)).toLocaleString()} Total
                           </span>
                         )}
                       </div>
@@ -365,7 +395,10 @@ const FacilityBooking: React.FC = () => {
                         </svg>
                         <span>Download Pass Slip</span>
                       </button>
-                      {b.status === 'PENDING' && (
+                      {(b.status === 'PENDING' || (
+                        b.facilityName === 'Avamangala Uthsawa Shala'
+                        && (b.status === 'CONFIRMED' || b.status === 'APPROVED' || b.status === 'RESERVED')
+                      )) && (
                         <>
                           <span className="text-gray-300">|</span>
                           <button
@@ -373,7 +406,7 @@ const FacilityBooking: React.FC = () => {
                             onClick={() => handleCancelBooking(b.id)}
                             className="text-red-600 font-medium hover:underline cursor-pointer"
                           >
-                            Cancel
+                            Cancel booking
                           </button>
                         </>
                       )}

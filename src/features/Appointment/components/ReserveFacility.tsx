@@ -33,29 +33,22 @@ const getAvailabilityForDay = (year: number, month: number, day: number) => {
   
   // Mondays (1), Wednesdays (3), Fridays (5) are partially booked (Limited Slots)
   if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) {
-    let slots = [];
-    if (day % 3 === 0) {
-      slots = [
+    const slots = day % 3 === 0 ? [
         { time: '08:30 AM - 10:30 AM', available: true },
         { time: '10:30 AM - 12:30 PM', available: false },
         { time: '01:30 PM - 03:30 PM', available: true },
         { time: '03:30 PM - 05:30 PM', available: false }
-      ];
-    } else if (day % 3 === 1) {
-      slots = [
+      ] : day % 3 === 1 ? [
         { time: '08:30 AM - 10:30 AM', available: false },
         { time: '10:30 AM - 12:30 PM', available: true },
         { time: '01:30 PM - 03:30 PM', available: true },
         { time: '03:30 PM - 05:30 PM', available: true }
-      ];
-    } else {
-      slots = [
+      ] : [
         { time: '08:30 AM - 10:30 AM', available: true },
         { time: '10:30 AM - 12:30 PM', available: true },
         { time: '01:30 PM - 03:30 PM', available: false },
         { time: '03:30 PM - 05:30 PM', available: false }
       ];
-    }
     return {
       status: 'partially',
       statusLabel: 'Limited Slots',
@@ -284,7 +277,7 @@ const ReserveFacility = ({
   // RENDER: DEFAULT VIEW - FACILITIES GRID
   // ----------------------------------------------------
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto font-sans">
       
       {/* Left Sidebar Filter Panel */}
       <div className="lg:col-span-3 bg-white border border-gray-150 rounded-xl p-5 shadow-xs h-fit space-y-6">
@@ -314,7 +307,7 @@ const ReserveFacility = ({
         <div>
           <h4 className="text-xs font-bold text-gray-700 mb-3">Category</h4>
           <div className="space-y-2.5">
-            {['Event Halls', 'Sports Grounds', 'Community Centers', 'Public Parks', 'Crematoriums', 'Vehicles & Machinery'].map((cat) => {
+            {['Event Halls', 'Sports Grounds', 'Community Centers', 'Public Parks', 'Crematoriums', 'Funeral Parlours', 'Gully Bowser', 'Vehicles & Machinery'].map((cat) => {
               const checked = categories.includes(cat);
               return (
                 <label key={cat} className="flex items-center gap-2.5 cursor-pointer text-xs text-gray-600 hover:text-gray-800 select-none">
@@ -347,7 +340,7 @@ const ReserveFacility = ({
         {/* Title and Sort Bar */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 font-serif">Reserve Community Facilities</h2>
+            <h2 className="text-2xl font-bold text-gray-800">Reserve Community Facilities</h2>
             <p className="text-xs text-gray-500 mt-1">
               Book venues for your next event, sports match, or community gathering.
             </p>
@@ -384,7 +377,7 @@ const ReserveFacility = ({
               {/* Card Body */}
               <div className="p-4 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-gray-800 mb-2 font-serif">{fac.title}</h3>
+                  <h3 className="text-sm font-bold text-gray-800 mb-2">{fac.title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed line-clamp-3 mb-4">
                     {fac.subtitle}
                   </p>

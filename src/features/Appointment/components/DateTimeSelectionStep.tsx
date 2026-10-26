@@ -31,6 +31,7 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   getFirstDayOfMonth,
   getAvailabilityForDay,
 }) => {
+  const isCrematorium = selectedFacility.category === 'Crematoriums';
   const daysInMonth = getDaysInMonth(viewYear, viewMonth);
   const firstDay = getFirstDayOfMonth(viewYear, viewMonth);
   const monthNames = [
@@ -59,23 +60,22 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
   };
 
   const handleNextStep = () => {
-    // A booking cannot proceed until both parts of the schedule are selected.
-    if (!chosenDateObj || !chosenTimeSlot) {
-      alert('Please select both a date and an available time slot.');
+    if (!chosenDateObj || (!isCrematorium && !chosenTimeSlot)) {
+      alert(isCrematorium ? 'Please select a date.' : 'Please select both a date and an available time slot.');
       return;
     }
     setWizardStep('form');
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden font-sans">
       {/* Header */}
       <div className="bg-red-850 p-6 text-white flex justify-between items-center">
         <div>
           <span className="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
             Step 1 of 2: Booking Schedule
           </span>
-          <h2 className="text-xl font-bold mt-2 font-serif">Select Date & Time</h2>
+          <h2 className="text-xl font-bold mt-2">Select Date & Time</h2>
         </div>
         <button 
           type="button"
@@ -102,12 +102,21 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
               Starting at {selectedFacility.basePrice}
             </span>
           </div>
-          <h3 className="text-lg font-bold text-gray-800 mt-1 font-serif">{selectedFacility.title}</h3>
+          <h3 className="text-lg font-bold text-gray-800 mt-1">{selectedFacility.title}</h3>
           <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
             {selectedFacility.subtitle}
           </p>
         </div>
       </div>
+
+      {selectedFacility.category === 'Crematoriums' && (
+        <div className="mx-6 mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" role="alert">
+          <p className="font-extrabold">Important: confirm this booking within 24 hours</p>
+          <p className="mt-1 leading-relaxed">
+            This online booking is only a pending reservation. Visit the Pradeshiya Sabha office with the required documents and certificates, and complete payment within 24 hours. If you do not confirm it in time, the booking will be automatically cancelled and the slot will be released for other users.
+          </p>
+        </div>
+      )}
 
       <div className="p-6 space-y-8">
         {/* Calendar Picker Section */}
@@ -227,8 +236,8 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
           </div>
         </div>
 
-        {/* Time Slots Selector */}
-        {chosenDateObj && (
+        {/* Time slots do not apply to crematorium reservations; they are date-only bookings. */}
+        {chosenDateObj && !isCrematorium && (
           <div>
             <div className="flex justify-between items-center mb-3">
               <h4 className="text-sm font-bold text-gray-700 flex items-center gap-2">
@@ -280,14 +289,20 @@ export const DateTimeSelectionStep: React.FC<DateTimeSelectionStepProps> = ({
       {/* Footer Navigation */}
       <div className="bg-gray-50 border-t border-gray-150 p-5 flex justify-between items-center">
         <span className="text-xs text-gray-500 font-bold">
-          {chosenTimeSlot ? `Selected: ${chosenDateObj.dateStr} at ${chosenTimeSlot.time}` : 'Please select date and time slot.'}
+          {chosenDateObj
+            ? isCrematorium
+              ? `Selected crematorium date: ${chosenDateObj.dateStr}`
+              : chosenTimeSlot
+                ? `Selected: ${chosenDateObj.dateStr} at ${chosenTimeSlot.time}`
+                : 'Please select date and time slot.'
+            : 'Please select a date.'}
         </span>
         <button
           type="button"
           onClick={handleNextStep}
-          disabled={!chosenDateObj || !chosenTimeSlot}
+          disabled={!chosenDateObj || (!isCrematorium && !chosenTimeSlot)}
           className={`px-6 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5 ${
-            chosenDateObj && chosenTimeSlot
+            chosenDateObj && (isCrematorium || chosenTimeSlot)
               ? 'bg-red-850 hover:bg-red-900 text-white'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}

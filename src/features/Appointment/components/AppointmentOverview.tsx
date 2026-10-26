@@ -8,7 +8,7 @@ const AppointmentOverview = ({ onNavigate, bookings }) => {
   const upcomingBookings = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'RESERVED');
 
   return ( 
-    <div className="space-y-8">
+    <div className="space-y-8 font-sans">
       {/* Hero Banner */}
       <div 
         className="relative h-64 rounded-xl overflow-hidden bg-cover bg-center shadow-lg"

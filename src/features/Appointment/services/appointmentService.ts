@@ -50,6 +50,7 @@ export interface BookingItem {
   time: string;
   status: AppointmentStatus;
   statusMessage?: string;
+  confirmationDeadline?: string;
   rescheduledReason?: string;
   rejectionReason?: string;
   resolutionNotes?: string;
@@ -67,6 +68,12 @@ export interface BookingItem {
   rentalFee?: number;
   securityDeposit?: number;
   totalTariff?: number;
+  fixedServiceFee?: number;
+  oneWayDistanceKm?: number;
+  totalTransportationDistanceKm?: number;
+  transportationCost?: number;
+  transportationRatePerKm?: number;
+  paymentMethod?: string;
   paymentStatus?: PaymentStatus;
   specialRequirements?: string;
   price?: string;
@@ -434,6 +441,7 @@ let bookings: BookingItem[] = [
     rentalFee: 4500,
     securityDeposit: 0,
     totalTariff: 4500,
+    fixedServiceFee: 4500,
     paymentStatus: 'PAID',
     specialRequirements: '6000L clean potable drinking water delivery at 07:00 AM to Meegoda Temple grounds',
     citizenName: 'Ven. Dhammananda Thero',
@@ -566,7 +574,7 @@ const facilities: MunicipalFacility[] = [
     rentalFee: 25000,
     securityDeposit: 10000,
     capacity: 500,
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=500&h=300&fit=crop',
     amenities: ['Central Air Conditioning', 'State of the Art Audio/Visual', '500 Tiered Seats', 'VIP Lounges', 'Standby Generator'],
   },
   {
@@ -579,7 +587,7 @@ const facilities: MunicipalFacility[] = [
     rentalFee: 15000,
     securityDeposit: 5000,
     capacity: 2000,
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=500&h=300&fit=crop',
     amenities: ['Turf Pitch', 'Floodlighting', 'Pavilion Seating', 'Dressing Rooms'],
   },
   {
@@ -592,12 +600,12 @@ const facilities: MunicipalFacility[] = [
     rentalFee: 5000,
     securityDeposit: 0,
     capacity: 150,
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=500&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519491050282-cf00c82424b4?w=500&h=300&fit=crop',
     amenities: ['Ceremony Hall', 'LP Gas Furnaces', 'Chairs & Sound Setup', 'Waiting Lounge'],
   },
   {
     id: 'fac-4',
-    title: 'Water Bowser Rental (6000L)',
+    title: 'Municipal Water Bowser (6000L)',
     category: 'Vehicles & Machinery',
     subtitle: 'Municipal potable water delivery service for community functions or domestic shortage.',
     pricing: 'Rs. 4,500 / Trip',
@@ -608,11 +616,55 @@ const facilities: MunicipalFacility[] = [
     image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500&h=300&fit=crop',
     amenities: ['6000L Potable Tank', 'High Pressure Pump Hose', 'Municipal Driver Included'],
   },
+  {
+    id: 'fac-5',
+    title: 'Avamangala Uthsawa Shala',
+    category: 'Funeral Parlours',
+    subtitle: 'Funeral hall facility with air-conditioned and non-air-conditioned booking options.',
+    pricing: 'Rs. 20,000 / Day',
+    basePrice: 'Rs. 20,000',
+    rentalFee: 20000,
+    securityDeposit: 10000,
+    capacity: 200,
+    image: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&h=300&fit=crop',
+    amenities: ['Funeral Hall', 'Viewing Room', 'Chairs & Tables', 'Parking', 'Optional Cooling'],
+  },
+  {
+    id: 'fac-6',
+    title: 'Gully Bowser Service (6000L)',
+    category: 'Gully Bowser',
+    subtitle: 'Scheduled septic-tank and wastewater pit cleaning with municipal vehicle and operator.',
+    pricing: 'Rs. 6,000 / Load + distance',
+    basePrice: 'Rs. 6,000 / Load',
+    rentalFee: 6000,
+    securityDeposit: 0,
+    capacity: 1,
+    image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&h=300&fit=crop',
+    amenities: ['6000L Tank', 'Suction Pump & Hose', 'Municipal Operator', 'Distance-Based Fare'],
+  },
 ];
 
 export const appointmentService = {
   getBookings: async (): Promise<BookingItem[]> => {
-    return new Promise((resolve) => setTimeout(() => resolve([...bookings]), 250));
+    return new Promise((resolve) => setTimeout(() => {
+      const now = Date.now();
+      bookings = bookings.map((booking) => {
+        if (
+          booking.confirmationDeadline &&
+          booking.status === 'PENDING' &&
+          new Date(booking.confirmationDeadline).getTime() <= now
+        ) {
+          return {
+            ...booking,
+            status: 'CANCELLED',
+            statusMessage: 'Automatically cancelled because the Pradeshiya Sabha office confirmation deadline passed. The date and time slot are available again.',
+            paymentStatus: 'REFUNDED'
+          };
+        }
+        return booking;
+      });
+      resolve([...bookings]);
+    }, 250));
   },
 
   getDepartments: async (): Promise<any[]> => {
@@ -657,7 +709,8 @@ export const appointmentService = {
       date: newBooking.date || 'Oct 05, 2026',
       time: newBooking.time || '09:30 AM - 10:00 AM',
       status: 'PENDING',
-      statusMessage: 'Application submitted online. Officer review and counter allocation underway.',
+      statusMessage: newBooking.statusMessage || 'Application submitted online. Officer review and counter allocation underway.',
+      confirmationDeadline: newBooking.confirmationDeadline,
       avatar: newBooking.avatar || (isAppointment ? '👤' : '🏛️'),
       documents: newBooking.documents || [],
       remarks: [
@@ -678,6 +731,12 @@ export const appointmentService = {
       rentalFee: newBooking.rentalFee,
       securityDeposit: newBooking.securityDeposit,
       totalTariff: newBooking.totalTariff,
+      fixedServiceFee: newBooking.fixedServiceFee,
+      oneWayDistanceKm: newBooking.oneWayDistanceKm,
+      totalTransportationDistanceKm: newBooking.totalTransportationDistanceKm,
+      transportationCost: newBooking.transportationCost,
+      transportationRatePerKm: newBooking.transportationRatePerKm,
+      paymentMethod: newBooking.paymentMethod,
       paymentStatus: newBooking.paymentStatus || 'PAID',
       specialRequirements: newBooking.specialRequirements,
       price: newBooking.price,
@@ -690,7 +749,13 @@ export const appointmentService = {
   },
 
   cancelBooking: async (id: number | string): Promise<boolean> => {
-    bookings = bookings.map((b) => (b.id === id ? { ...b, status: 'CANCELLED' as const } : b));
+    bookings = bookings.map((b) => (b.id === id ? {
+      ...b,
+      status: 'CANCELLED' as const,
+      statusMessage: b.facilityName && b.facilityName === 'Avamangala Uthsawa Shala'
+        ? 'Booking cancelled. Any eligible refund will be processed manually by Pradeshiya Sabha staff; no automatic refund was issued.'
+        : b.statusMessage || 'Booking cancelled by citizen.'
+    } : b));
     return true;
   },
 };

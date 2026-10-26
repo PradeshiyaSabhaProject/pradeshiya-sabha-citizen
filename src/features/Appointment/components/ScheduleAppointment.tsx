@@ -58,7 +58,7 @@ const ScheduleAppointment = ({
 }) => {
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
+    <div className="space-y-8 max-w-6xl mx-auto font-sans">
       <h2 className="text-2xl font-bold text-gray-800 border-b border-gray-150 pb-3">
         Schedule an Appointment
       </h2>

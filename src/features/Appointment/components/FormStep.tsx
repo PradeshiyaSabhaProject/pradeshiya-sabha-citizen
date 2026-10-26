@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface FormStepProps {
   selectedFacility: any;
@@ -129,9 +129,27 @@ export const FormStep: React.FC<FormStepProps> = ({
   setErrors,
 }) => {
   const isCremation = selectedFacility?.category === 'Crematoriums';
+  const isFuneralParlour = selectedFacility?.category === 'Funeral Parlours';
+  const isGullyBowser = selectedFacility?.category === 'Gully Bowser';
+  const isWaterBowser = selectedFacility?.title?.toLowerCase().includes('water bowser');
+  const isBowser = isGullyBowser || isWaterBowser;
+  const [gullyLoads, setGullyLoads] = useState('1');
+  const [distanceKm, setDistanceKm] = useState('1');
+  const [paymentMethod, setPaymentMethod] = useState('Online payment');
+  const [cardholderName, setCardholderName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [securityCode, setSecurityCode] = useState('');
+  const [optionalServices, setOptionalServices] = useState<string[]>([]);
+  const distanceRate = 150;
+  const fixedServiceFee = selectedFacility?.rentalFee || 0;
+  const oneWayDistanceKm = Math.max(Number(distanceKm) || 0, 0);
+  const totalTransportationDistanceKm = oneWayDistanceKm * 2;
+  const transportationCost = totalTransportationDistanceKm * distanceRate;
+  const totalBookingFee = fixedServiceFee + transportationCost;
 
   const handleMockUpload = () => {
-    const filename = isCremation ? 'death_certificate_signed.pdf' : 'permit_request_form.pdf';
+    const filename = isCremation ? 'death_certificate_signed.pdf' : isGullyBowser ? 'property_tax_receipt_copy.pdf' : 'applicant_nic_and_booking_documents.pdf';
     setUploadedFileName(filename);
     setUploadedFileSize(148500); // ~145 KB
   };
@@ -163,6 +181,18 @@ export const FormStep: React.FC<FormStepProps> = ({
       validateCremationDetails(newErrors);
     } else if (!bookingPurpose.trim()) {
       newErrors.bookingPurpose = 'Purpose of booking is required';
+    }
+    if (isBowser && !equipmentRequired.trim()) {
+      newErrors.equipmentRequired = 'Access road instructions are required';
+    }
+    if (isBowser && oneWayDistanceKm <= 0) {
+      newErrors.distanceKm = 'Enter a distance greater than zero';
+    }
+    if (isFuneralParlour) {
+      if (!cardholderName.trim()) newErrors.cardholderName = 'Cardholder name is required';
+      if (!/^\d{16}$/.test(cardNumber.replace(/\s/g, ''))) newErrors.cardNumber = 'Enter a valid 16-digit card number';
+      if (!/^\d{2}\/\d{2}$/.test(expiryDate)) newErrors.expiryDate = 'Use MM/YY format';
+      if (!/^\d{3,4}$/.test(securityCode)) newErrors.securityCode = 'Enter a valid security code';
     }
 
     if (!uploadedFileName) {
@@ -213,12 +243,28 @@ export const FormStep: React.FC<FormStepProps> = ({
       applicantGrama,
       bookingPurpose,
       expectedAttendance,
-      equipmentRequired
+      equipmentRequired,
+      optionalServices,
+      ...(isFuneralParlour ? {
+        paymentMethod: 'Online payment',
+        paymentReference: `PAY-${Date.now()}`,
+        paymentCompleted: true
+      } : {}),
+      ...(isBowser ? {
+        gullyLoads: Number(gullyLoads),
+        oneWayDistanceKm,
+        totalTransportationDistanceKm,
+        transportationRatePerKm: distanceRate,
+        transportationCost,
+        fixedServiceFee,
+        totalBookingFee,
+        paymentMethod
+      } : {})
     };
 
     const bookingPayload = {
       date: chosenDateObj.dateStr,
-      time: chosenTimeSlot.time,
+      time: chosenTimeSlot?.time || 'Date reservation',
       formDetails,
       attachment: uploadedFileName ? { name: uploadedFileName, size: uploadedFileSize } : null
     };
@@ -229,15 +275,15 @@ export const FormStep: React.FC<FormStepProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white border border-gray-150 rounded-xl shadow-xs overflow-hidden font-sans">
       {/* Header */}
       <div className="bg-red-850 p-6 text-white flex justify-between items-center">
         <div>
           <span className="text-[10px] bg-white/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
             Step 2 of 2: Information Form
           </span>
-          <h2 className="text-xl font-bold mt-2 font-serif">
-            {isCremation ? 'Application for Cremation (English Digital Version)' : 'Facility Reservation Request Form'}
+          <h2 className="text-xl font-bold mt-2">
+            {isCremation ? 'Application for Cremation (English Digital Version)' : isFuneralParlour ? 'Application for Funeral Parlour Reservation'             : isBowser ? `Online ${isWaterBowser ? 'Water' : 'Gully'} Bowser Booking` : 'Facility Reservation Request Form'}
           </h2>
         </div>
         <button 
@@ -256,9 +302,18 @@ export const FormStep: React.FC<FormStepProps> = ({
         </div>
         <div className="flex gap-4">
           <span>📅 Date: {chosenDateObj.dateStr}</span>
-          <span>🕒 Time: {chosenTimeSlot.time}</span>
+          <span>🕒 Time: {chosenTimeSlot?.time || 'Date reservation'}</span>
         </div>
       </div>
+
+      {isCremation && (
+        <div className="mx-6 mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" role="alert">
+          <p className="font-extrabold">Pending Confirmation - action required within 24 hours</p>
+          <p className="mt-1 leading-relaxed">
+            After submitting this online booking, take the required original documents and certificates to the Pradeshiya Sabha office and complete payment within 24 hours. Your reservation is not confirmed until staff verify the documents and payment.
+          </p>
+        </div>
+      )}
 
       <div className="p-6 space-y-6">
         {/* SECTION A: APPLICANT DETAILS (COMMON) */}
@@ -687,7 +742,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               </h3>
               
               <p className="text-[11px] text-gray-400 font-bold leading-normal uppercase">
-                Please list the required cremation dates/times in order of preference:
+                Please list the required cremation dates in order of preference:
               </p>
 
               <div className="space-y-3.5">
@@ -695,7 +750,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                   <span className="text-xs font-bold text-red-855 bg-red-50 rounded-full w-6 h-6 flex items-center justify-center border border-red-200">I</span>
                   <div className="text-xs">
                     <div className="font-extrabold text-gray-800">1st Preference (Primary Booking):</div>
-                    <div className="text-gray-500 font-bold mt-0.5">{chosenDateObj.dateStr} at {chosenTimeSlot.time}</div>
+                    <div className="text-gray-500 font-bold mt-0.5">{chosenDateObj.dateStr}</div>
                   </div>
                 </div>
 
@@ -724,7 +779,131 @@ export const FormStep: React.FC<FormStepProps> = ({
             </div>
           </>
         ) : (
-          /* GENERAL FACILITY FORM (IF NOT CREMATORIUM) */
+          /* GENERAL FACILITY FORM or GULLY BOWSER FORM */
+          isBowser ? (
+          <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
+            <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
+              Part B: {isWaterBowser ? 'Delivery Location & Service Requirements' : 'Location & Service Requirements (ස්ථානයේ තොරතුරු සහ ලෝඩ් ගණන)'}
+            </h3>
+            
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label 
+                  htmlFor="booking-purpose"
+                  className="block text-xs font-bold text-gray-700 mb-1"
+                >
+                  6.                   {isWaterBowser ? 'Customer Delivery Location' : 'Address of Septic Tank / Wastewater Pit Location (ගලි ටැංකිය පිහිටි ලිපිනය)'} <span className="text-red-800">*</span>
+                </label>
+                <input 
+                  id="booking-purpose"
+                  type="text"
+                  value={bookingPurpose}
+                  onChange={(e) => setBookingPurpose(e.target.value)}
+                  placeholder="e.g. No. 88, Station Road, Homagama (Backyard Pit)"
+                  className={`w-full px-3 py-2 border rounded-lg text-xs focus:outline-none focus:ring-1 ${
+                    errors.bookingPurpose 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500 bg-red-50/10' 
+                      : 'border-gray-300 focus:ring-red-800 focus:border-red-800'
+                  }`}
+                />
+                {errors.bookingPurpose && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.bookingPurpose}</p>}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label 
+                    htmlFor="expected-attendance"
+                    className="block text-xs font-bold text-gray-700 mb-1"
+                  >
+                    {isWaterBowser ? '7. Service Type' : '7. Premises Category (ස්ථානයේ ස්වභාවය)'}
+                  </label>
+                  <select 
+                    id="expected-attendance"
+                    value={expectedAttendance}
+                    onChange={(e) => setExpectedAttendance(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800 bg-white"
+                  >
+                    {isWaterBowser ? (
+                      <>
+                        <option value="Potable water delivery">Potable water delivery</option>
+                        <option value="Emergency water supply">Emergency water supply</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="Residential">Residential (නේවාසික)</option>
+                        <option value="Commercial">Commercial (ව්‍යාපාරික)</option>
+                        <option value="Industrial">Industrial (කර්මාන්ත)</option>
+                        <option value="Government">Government Institution (රාජ්‍ය ආයතනයක්)</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+
+                <div>
+                  <label 
+                    htmlFor="gully-loads"
+                    className="block text-xs font-bold text-gray-700 mb-1"
+                  >
+                    {isWaterBowser ? '8. Number of Bowser Trips' : '8. Number of Gully Bowser Loads (ලෝඩ් ගණන)'} <span className="text-red-800">*</span>
+                  </label>
+                  <input 
+                    id="gully-loads"
+                    type="number"
+                    min="1"
+                    value={gullyLoads}
+                    onChange={(e) => setGullyLoads(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="distance-km" className="block text-xs font-bold text-gray-700 mb-1">
+                    9. One-way Distance from Depot (km) <span className="text-red-800">*</span>
+                  </label>
+                  <input
+                    id="distance-km"
+                    type="number"
+                    min="1"
+                    value={distanceKm}
+                    onChange={(e) => setDistanceKm(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-1 focus:ring-red-800 focus:border-red-800"
+                  />
+                  {errors.distanceKm && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.distanceKm}</p>}
+                </div>
+                <div className="rounded-lg border border-red-100 bg-red-50/40 px-3 py-2">
+                  <span className="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Fee breakdown</span>
+                  <span className="block text-[11px] text-gray-600">Fixed service fee: Rs. {fixedServiceFee.toLocaleString()}</span>
+                  <span className="block text-[11px] text-gray-600">Round trip: {totalTransportationDistanceKm} km × Rs. {distanceRate}</span>
+                  <span className="block text-sm font-extrabold text-red-800 mt-1">Total: Rs. {totalBookingFee.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div>
+                <label 
+                  htmlFor="equipment-required"
+                  className="block text-xs font-bold text-gray-700 mb-1"
+                >
+                  10. Access Road Description / Route Instructions (ප්‍රවේශ මාර්ග විස්තරය) <span className="text-red-800">*</span>
+                </label>
+                <textarea 
+                  id="equipment-required"
+                  value={equipmentRequired}
+                  onChange={(e) => setEquipmentRequired(e.target.value)}
+                  rows={3}
+                  placeholder="e.g. Turn left near Homagama Railway Station lane; 12ft wide carpet road accessible for bowser truck."
+                  className={`w-full px-3 py-2 border rounded-lg text-xs focus:outline-none focus:ring-1 ${
+                    errors.equipmentRequired 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500 bg-red-50/10' 
+                      : 'border-gray-300 focus:ring-red-800 focus:border-red-800'
+                  }`}
+                />
+                {errors.equipmentRequired && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.equipmentRequired}</p>}
+              </div>
+            </div>
+          </div>
+          ) : (
           <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
             <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
               Part B: Event & Reservation Information
@@ -752,6 +931,30 @@ export const FormStep: React.FC<FormStepProps> = ({
                 />
                 {errors.bookingPurpose && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.bookingPurpose}</p>}
               </div>
+
+              {isFuneralParlour && (
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="text-xs font-extrabold text-gray-700 mb-3">Optional facilities / services</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
+                    {['Air-conditioned hall', 'Viewing room', 'Additional chairs and tables', 'Sound system'].map((service) => (
+                      <label key={service} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={optionalServices.includes(service)}
+                          onChange={(e) => setOptionalServices((current) => e.target.checked
+                            ? [...current, service]
+                            : current.filter((item) => item !== service))}
+                          className="h-4 w-4 rounded border-gray-300 text-red-800 focus:ring-red-800"
+                        />
+                        {service}
+                      </label>
+                    ))}
+                  </div>
+                          <p className="mt-3 text-[10px] font-semibold text-gray-500">
+                            Pay online to confirm this reservation. If you cancel, Pradeshiya Sabha staff will process any eligible refund manually.
+                          </p>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -789,18 +992,85 @@ export const FormStep: React.FC<FormStepProps> = ({
               </div>
             </div>
           </div>
+          )
+        )}
+
+        {isFuneralParlour && (
+          <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-4 space-y-3">
+            <div>
+              <h4 className="text-xs font-extrabold uppercase tracking-wider text-blue-950">Secure online payment</h4>
+              <p className="text-[11px] text-blue-900 mt-1">
+                Payment is required before the funeral parlour reservation is confirmed. Card details are used only for this payment and are not stored.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="md:col-span-2">
+                <label htmlFor="cardholder-name" className="block text-xs font-bold text-gray-700 mb-1">Cardholder name *</label>
+                <input id="cardholder-name" value={cardholderName} onChange={(e) => setCardholderName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-name" />
+                {errors.cardholderName && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.cardholderName}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="card-number" className="block text-xs font-bold text-gray-700 mb-1">Card number *</label>
+                <input id="card-number" inputMode="numeric" maxLength={19} value={cardNumber} onChange={(e) => setCardNumber(e.target.value.replace(/[^\d\s]/g, '').slice(0, 19))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-number" placeholder="1234 5678 9012 3456" />
+                {errors.cardNumber && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.cardNumber}</p>}
+              </div>
+              <div>
+                <label htmlFor="expiry-date" className="block text-xs font-bold text-gray-700 mb-1">Expiry (MM/YY) *</label>
+                <input id="expiry-date" inputMode="numeric" maxLength={5} value={expiryDate} onChange={(e) => setExpiryDate(e.target.value.replace(/[^\d/]/g, '').slice(0, 5))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-exp" placeholder="MM/YY" />
+                {errors.expiryDate && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.expiryDate}</p>}
+              </div>
+              <div>
+                <label htmlFor="security-code" className="block text-xs font-bold text-gray-700 mb-1">Security code *</label>
+                <input id="security-code" type="password" inputMode="numeric" maxLength={4} value={securityCode} onChange={(e) => setSecurityCode(e.target.value.replace(/\D/g, '').slice(0, 4))} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" autoComplete="cc-csc" />
+                {errors.securityCode && <p className="text-[10px] text-red-600 mt-1 font-bold">{errors.securityCode}</p>}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* PART E: DOCUMENT ATTACHMENT & DECLARATION */}
         <div className="border border-gray-150 rounded-xl p-5 bg-white space-y-4">
           <h3 className="text-xs font-extrabold text-red-800 uppercase tracking-widest border-b border-gray-100 pb-2 mb-3">
-            {isCremation ? 'Part E: Attachments & Sign-off' : 'Part C: Attachments & Sign-off'}
+            {isCremation ? 'Part E: Attachments & Sign-off' : isBowser ? 'Part C: Payment, Attachments & Declaration' : 'Part C: Attachments & Sign-off'}
           </h3>
+
+          {isBowser && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 space-y-3">
+              <div>
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">Booking fee summary</h4>
+                <p className="text-[11px] text-emerald-800 mt-1">
+                  Total fee = fixed service fee + (depot-to-customer distance + customer-to-depot distance) × cost per kilometre.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
+                <span>Fixed service fee</span><strong className="text-right">Rs. {fixedServiceFee.toLocaleString()}</strong>
+                <span>Transportation distance</span><strong className="text-right">{totalTransportationDistanceKm} km</strong>
+                <span>Transportation cost</span><strong className="text-right">Rs. {transportationCost.toLocaleString()}</strong>
+                <span className="font-extrabold text-gray-900 border-t border-emerald-200 pt-2">Total booking fee</span>
+                <strong className="text-right text-base text-red-800 border-t border-emerald-200 pt-2">Rs. {totalBookingFee.toLocaleString()}</strong>
+              </div>
+              <div className="border-t border-emerald-200 pt-3">
+                <span className="block text-xs font-bold text-gray-700 mb-2">Payment method</span>
+                <label className="flex items-center gap-2 text-xs font-semibold text-gray-700">
+                  <input
+                    type="radio"
+                    name="bowser-payment-method"
+                    value="Online payment"
+                    checked={paymentMethod === 'Online payment'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-4 h-4 text-red-800 focus:ring-red-800"
+                  />
+                  Pay online now
+                </label>
+                <p className="text-[10px] text-gray-500 mt-1">You will be redirected to the secure payment page after confirming this booking.</p>
+              </div>
+            </div>
+          )}
 
           {/* Document Uploader */}
           <div className="space-y-2">
             <span className="block text-xs font-bold text-gray-700">
-              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
+              {isCremation ? 'Attach Death Certificate / Disposal Permit (PDF/Image)' : isBowser ? 'Attach NIC / Supporting Permission Letter (PDF/Image)' : 'Attach National Identity Card (NIC) / Supporting Permission Letter'} <span className="text-red-800">*</span>
             </span>
 
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 flex flex-col items-center justify-center text-center">
@@ -847,7 +1117,7 @@ export const FormStep: React.FC<FormStepProps> = ({
               <span className="text-[11px] font-bold text-gray-600 leading-normal">
                 {isCremation 
                   ? 'I hereby certify that all information provided above regarding the deceased and the applicant is true and correct to the best of my knowledge. I have attached the official death certificate/disposal permit. (ඉහත සඳහන් කර ඇති තොරතුරු සියල්ල නිවැරදි හා සත්‍ය බව සහතික කරමි. අදාළ සහතිකය අමුණා ඇත.)'
-                  : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
+                  : isBowser ? 'I declare that the details provided are accurate and agree to pay the calculated fixed service fee and round-trip transportation cost for this bowser service.' : 'I certify that the information provided is correct, and I agree to adhere to the rules and guidelines governing the reservation of facilities under the Pradeshiya Sabha.'
                 }
               </span>
             </label>
@@ -871,7 +1141,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           onClick={handleSubmitBooking}
           className="bg-red-850 hover:bg-red-900 text-white px-7 py-2.5 rounded-lg text-xs font-extrabold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
         >
-          <span>Confirm & Reserve Facility</span>
+          <span>{isBowser || isFuneralParlour ? 'Pay Online & Confirm Booking' : 'Confirm & Reserve Facility'}</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>

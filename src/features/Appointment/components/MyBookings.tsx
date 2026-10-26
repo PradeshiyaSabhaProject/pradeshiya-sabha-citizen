@@ -30,6 +30,17 @@ const getStatusBadgeStyle = (status: AppointmentStatus | string) => {
   }
 };
 
+const getStatusLabel = (booking: BookingItem) => {
+  if (booking.facilityName === 'Homagama Crematorium') {
+    if (booking.status === 'PENDING') return 'Pending Confirmation';
+    if (booking.status === 'CONFIRMED' || booking.status === 'APPROVED') return 'Confirmed';
+    if (booking.status === 'CANCELLED' && booking.statusMessage?.startsWith('Automatically cancelled')) {
+      return 'Automatically Cancelled';
+    }
+  }
+  return booking.status;
+};
+
 const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBooking }) => {
   const isApproved = b.status === 'APPROVED' || b.status === 'CONFIRMED' || b.status === 'RESERVED';
   const isConfirmed = b.status === 'CONFIRMED' || b.status === 'APPROVED';
@@ -40,10 +51,12 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
   const isCompleted = b.status === 'COMPLETED';
   const isCancelled = b.status === 'CANCELLED';
   const isNoShow = b.status === 'NO-SHOW';
-
   const isAppointment = b.type === 'appointment';
   const isFacility = b.type === 'facility';
   const documentsCount = (b.documents?.length || 0) + (b.attachment ? 1 : 0);
+  const isCancelableFuneralParlour = isFacility
+    && b.facilityName === 'Avamangala Uthsawa Shala'
+    && (isConfirmed || isReserved || isPending);
 
   let iconClass = 'bg-red-50 text-red-800';
   // Terminal and pending states override the default type-based icon color.
@@ -92,7 +105,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
             </span>
           )}
           <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase tracking-wider border ${getStatusBadgeStyle(b.status)}`}>
-            {b.status}
+            {getStatusLabel(b)}
           </span>
         </div>
       </div>
@@ -305,6 +318,21 @@ const BookingCard: React.FC<BookingCardProps> = ({ b, onOpenDetails, onCancelBoo
         </div>
       )}
 
+      {isCancelableFuneralParlour && !isPending && (
+        <div className="bg-blue-50/60 border-t border-blue-200 px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <span className="text-blue-900 font-medium">
+            Paid online. Cancellation releases this slot; eligible refunds are handled manually by Pradeshiya Sabha staff.
+          </span>
+          <button
+            type="button"
+            onClick={() => onCancelBooking(b.id)}
+            className="text-red-700 font-bold hover:underline cursor-pointer shrink-0"
+          >
+            Cancel booking
+          </button>
+        </div>
+      )}
+
       {/* Cancelled records remain visible for history but have no active actions. */}
       {isCancelled && (
         <div className="bg-gray-50/50 border-t border-gray-150 px-5 py-3 text-xs text-gray-400 italic">
@@ -338,7 +366,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings, onNewBooking, onCance
   const facilitiesCount = bookings.filter((b) => b.type === 'facility').length;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm max-w-4xl mx-auto">
+    <div className="bg-white border border-gray-150 rounded-xl p-6 shadow-xs max-w-4xl mx-auto font-sans">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-150">
         <div>
