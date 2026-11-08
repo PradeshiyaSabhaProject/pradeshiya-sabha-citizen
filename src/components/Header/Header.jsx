@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logoImg from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const FacebookIcon = () => (
   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -155,10 +155,14 @@ const Header = () => {
             <div className="hidden sm:block h-5 w-px bg-white/30"></div>
 
             {/* Verified Badge */}
-            <div className="bg-white text-gray-900 px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1.5 shadow-xs select-none">
+            <Link
+              to="/profile"
+              className="bg-white hover:bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-xs md:text-sm font-semibold flex items-center gap-1.5 shadow-xs select-none transition-colors cursor-pointer"
+              title="Click to view citizen profile"
+            >
               <ShieldCheckIcon />
               <span>{user?.role === 'admin' ? 'Verified Admin' : 'Verified Citizen'}</span>
-            </div>
+            </Link>
 
             {/* Help Button */}
             <button 
@@ -181,25 +185,43 @@ const Header = () => {
               </button>
 
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-3 px-4 text-gray-800 z-50 animate-fadeIn">
-                  <div className="pb-2 border-b border-gray-100">
-                    <div className="font-bold text-sm text-gray-900">{user?.name || 'Verified Citizen'}</div>
-                    <div className="text-xs text-gray-500">NIC: {user?.nic || '199012345678'}</div>
-                    <div className="text-xs text-[#8C1538] font-medium mt-0.5">{user?.phone}</div>
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowMenu(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-xl border border-gray-100 py-3 px-4 text-gray-800 z-50 animate-fadeIn">
+                    <div className="pb-2.5 border-b border-gray-100">
+                      <div className="font-bold text-sm text-gray-900">{user?.name || 'Verified Citizen'}</div>
+                      <div className="text-xs text-gray-500 font-mono">NIC: {user?.nic || '199012345678'}</div>
+                      <div className="text-xs text-[#8C1538] font-medium mt-0.5">{user?.phone || '+94 71 234 5678'}</div>
+                    </div>
+                    <div className="pt-2.5 pb-1.5">
+                      <Link
+                        to="/profile"
+                        onClick={() => setShowMenu(false)}
+                        className="w-full bg-[#8C1538] hover:bg-[#73102d] text-white py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all cursor-pointer text-center"
+                      >
+                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>View My Profile</span>
+                      </Link>
+                    </div>
+                    <div className="pt-1 border-t border-gray-100">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowMenu(false);
+                          logout();
+                        }}
+                        className="w-full text-left text-xs font-semibold text-red-600 hover:bg-red-50 py-1.5 px-2 rounded-md transition-colors cursor-pointer"
+                      >
+                        Sign Out / Switch Account
+                      </button>
+                    </div>
                   </div>
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowMenu(false);
-                        logout();
-                      }}
-                      className="w-full text-left text-xs font-semibold text-red-600 hover:bg-red-50 py-1.5 px-2 rounded-md transition-colors cursor-pointer"
-                    >
-                      Sign Out / Switch Account
-                    </button>
-                  </div>
-                </div>
+                </>
               )}
             </div>
           </div>

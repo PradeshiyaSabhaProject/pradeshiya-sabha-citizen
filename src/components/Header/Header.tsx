@@ -282,17 +282,24 @@ const Header = () => {
                     className="fixed inset-0 z-40"
                     onClick={() => setProfileMenuOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 animate-fadeIn text-gray-800">
-                    <div className="px-4 py-2.5 border-b border-gray-50 mb-1">
-                      <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'Citizen'}</p>
-                      <p className="text-xs text-gray-500 truncate mt-0.5">{user?.email || 'citizen@example.com'}</p>
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50 animate-fadeIn text-gray-800">
+                    <div className="px-3 py-2.5 bg-gray-50 rounded-lg mb-2">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">
+                          {user?.role === 'admin' ? 'Admin Portal' : 'Verified Citizen'}
+                        </span>
+                      </div>
+                      <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'Verified Citizen'}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email || 'citizen@homagamaps.lk'}</p>
                     </div>
                     <Link
                       to="/profile"
                       onClick={() => setProfileMenuOpen(false)}
-                      className="block px-4 py-2 text-sm font-medium hover:bg-gray-50 hover:text-[#8C1538] transition-colors"
+                      className="w-full bg-[#8C1538] hover:bg-[#73102d] text-white py-2 px-3 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer mb-1"
                     >
-                      {t('nav.profile', 'Profile')}
+                      <UserCircleIcon />
+                      <span>View My Profile</span>
                     </Link>
                     <button
                       type="button"
@@ -300,9 +307,10 @@ const Header = () => {
                         setProfileMenuOpen(false);
                         logout();
                       }}
-                      className="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-md transition-colors cursor-pointer flex items-center justify-between"
                     >
-                      {t('nav.logout', 'Log out')}
+                      <span>{t('nav.logout', 'Log out')}</span>
+                      <span>→</span>
                     </button>
                   </div>
                 </>
@@ -374,7 +382,7 @@ const Header = () => {
                     : 'bg-white/10 text-white hover:bg-white/20 active:scale-[0.99]'
                   }`}
               >
-                <span>{t('nav.profile', 'Profile & Account Settings')}</span>
+                <span>{t('nav.viewProfile', 'View My Profile')}</span>
                 {location.pathname === '/profile' && <span className="w-2 h-2 rounded-full bg-[#8C1538]"></span>}
               </Link>
 
