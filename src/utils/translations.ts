@@ -718,7 +718,7 @@ export const translations = {
     'payments.utilityDesc': 'தண்ணீர் கட்டணங்கள், மதிப்பீட்டு விகிதங்கள் மற்றும் பிற பயன்பாட்டு பில்களை செலுத்துங்கள்.',
     'payments.miscTitle': 'இதர கொடுப்பனவுகள்',
     'payments.miscDesc': 'சான்றிதழ்கள், அனுமதிகள், அபராதங்கள் மற்றும் பிற கட்டணங்களை செலுத்துங்கள்.',
-    'payments.select': '	தேர்ந்தெடுக்க',
+    'payments.select': 'தேர்ந்தெடுக்க',
     'payments.historyBannerTitle': 'உங்கள் பரிவர்த்தனைகளின் வரலாறு தேவையா?',
     'payments.historyBannerDesc': 'உங்கள் குடிமக்கள் கணக்கிலிருந்து நேரடியாக டிஜிட்டல் ரசீதுகள் மற்றும் கொடுப்பனவு வரலாற்றை அணுகவும்.',
     'payments.viewHistoryBtn': 'வரலாற்றைப்<br />பார்க்கவும்',
