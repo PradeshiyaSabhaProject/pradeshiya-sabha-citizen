@@ -40,7 +40,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.subject.trim() || !formData.description.trim()) {
-      alert(L('කරුණාකර සියලුම අවශ්‍ය තොරතුරු පුරවන්න.', 'Please fill in all required fields.', 'தயவுசெய்து அனைத்து தேவையான புலங்களையும் நிரப்பவும்.'));
+      alert(L('කරුණාකර සියලුම අවශ්‍ය තොරතුරු පුරවන්න.', 'Please fill in all required fields.', 'தயவுசெய்து தேவையான அனைத்து புலங்களையும் நிரப்பவும்.'));
       return;
     }
 
@@ -58,13 +58,13 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-gray-150">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-              {L('නව නිල ලිපියක් හෝ ඉල්ලීමක් යොමු කිරීම', 'Submit Official Correspondence & Letter Request', 'புதிய அதிகாரபூர்வ கடிதம் சமர்ப்பிக்க')}
+              {L('නව නිල ලිපියක් හෝ ඉල්ලීමක් යොමු කිරීම', 'Submit Official Correspondence & Letter Request', 'அதிகாரப்பூர்வ கடிதம் மற்றும் கோரிக்கையைச் சமர்ப்பிக்கவும்')}
             </h2>
             <p className="text-xs text-gray-500 mt-1">
               {L(
                 'හෝමාගම ප්‍රාදේශීය සභාවේ අදාළ අංශ හෝ නිලධාරීන් වෙත ඔබගේ නිල ලිපිය හෝ ඉල්ලීම ඍජුවම යොමු කරන්න.',
                 'Submit formal letters and requests directly to the municipal secretariat and departmental officers.',
-                'ஹோமகம பிரதேச சபையின் உரிய பிரிவுக்கு உங்கள் கடிதத்தை சமர்ப்பிக்கவும்.'
+                'ஹோமாகம பிரதேச சபையின் உரிய பிரிவுக்கு உங்கள் கடிதத்தை சமர்ப்பிக்கவும்.'
               )}
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
             onClick={onBackToDashboard}
             className="text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors self-start sm:self-auto cursor-pointer"
           >
-            ← {L('ආපසු ලිපි වෙත', 'Back to Letter Requests', 'கடிதங்களுக்குத் திரும்பு')}
+            ← {L('ආපසු ලිපි වෙත', 'Back to Letter Requests', 'கடிதங்களுக்குத் திரும்பவும்')}
           </button>
         </div>
 
@@ -83,7 +83,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
             {/* Sender / Citizen Information */}
             <div className="bg-stone-50/70 border border-gray-200 rounded-xl p-5 space-y-4">
               <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-                <span>👤</span> {L('පුරවැසි තොරතුරු', 'Sender / Citizen Identification', 'அனுப்புனர் தகவல்')}
+                <span>👤</span> {L('පුරවැසි තොරතුරු', 'Sender / Citizen Identification', 'அனுப்புநர் / குடிமக்கள் அடையாளத் தகவல்')}
               </h3>
 
               <div className="space-y-3 text-xs">
@@ -97,7 +97,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
                     value={formData.fullName}
                     onChange={handleChange}
                     className="w-full bg-white border border-gray-200 rounded-lg p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#8C1538]"
-                    placeholder={L('ඔබගේ සම්පූර්ණ නම', 'Enter your full legal name', 'உங்கள் முழுப் பெயர்')}
+                    placeholder={L('ඔබගේ සම්පූර්ණ නම', 'Enter your full legal name', 'உங்கள் சட்டப்பூர்வப் முழுப் பெயர்')}
                     required
                   />
                 </div>
@@ -143,7 +143,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
               <div className="space-y-3 text-xs">
                 <div>
                   <label htmlFor="category" className="block font-semibold text-gray-700 mb-1">
-                    {L('අදාළ දෙපාර්තමේන්තුව / කාණ්ඩය', 'Department / Subject Category', 'பிரிவு / வகை')} <span className="text-red-500">*</span>
+                    {L('අදාළ දෙපාර්තමේන්තුව / කාණ්ඩය', 'Department / Subject Category', 'துறை / பொருள் வகை')} <span className="text-red-500">*</span>
                   </label>
                   <select
                     id="category"
@@ -164,7 +164,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
 
                 <div>
                   <label htmlFor="recipient" className="block font-semibold text-gray-700 mb-1">
-                    {L('ලිපිය යොමු කරන නිලධාරියා (To:)', 'Addressed To (Official Designation)', 'பெறுநர்')} <span className="text-red-500">*</span>
+                    {L('ලිපිය යොමු කරන නිලධාරියා (To:)', 'Addressed To (Official Designation)', 'பெறுநர் (அதிகாரியின் பதவி)')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="recipient"
@@ -179,7 +179,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
 
                 <div>
                   <label htmlFor="urgency" className="block font-semibold text-gray-700 mb-1">
-                    {L('ප්‍රමුඛතාව / හදිසිභාවය', 'Urgency Level', 'அவசர நிலை')}
+                    {L('ප්‍රමුඛතාව / හදිසිභාවය', 'Urgency Level', 'shifted	அவசர நிலை / முன்னுரிமை')}
                   </label>
                   <select
                     id="urgency"
@@ -188,9 +188,9 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
                     onChange={handleChange}
                     className="w-full bg-white border border-gray-200 rounded-lg p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#8C1538] cursor-pointer"
                   >
-                    <option value="Normal">{L('සාමාන්‍ය (දින 3 - 5)', 'Normal Priority (3 - 5 Working Days)', 'வழக்கமான')}</option>
-                    <option value="High">{L('ඉහළ ප්‍රමුඛතාව (දින 1 - 2)', 'High Priority (1 - 2 Working Days)', 'உயர் முன்னுரிமை')}</option>
-                    <option value="Urgent">{L('හදිසි / කඩිනම්', 'Urgent / Immediate Attention', 'அவசரம்')}</option>
+                    <option value="Normal">{L('සාමාන්‍ය (දින 3 - 5)', 'Normal Priority (3 - 5 Working Days)', 'சாதாரண முன்னுரிமை (3–5 வேலை நாட்கள்)')}</option>
+                    <option value="High">{L('ඉහළ ප්‍රමුඛතාව (දින 1 - 2)', 'High Priority (1 - 2 Working Days)', 'உயர் முன்னுரிமை (1–2 வேலை நாட்கள்)')}</option>
+                    <option value="Urgent">{L('හදිසි / කඩිනම්', 'Urgent / Immediate Attention', 'அவசரம் / உடனடி கவனம்')}</option>
                   </select>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
           {/* Section 3: Subject, Body, and Attachments */}
           <div className="bg-stone-50/70 border border-gray-200 rounded-xl p-5 space-y-4">
             <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-              <span>📄</span> {L('ලිපියේ අන්තර්ගතය සහ ලේඛන', 'Letter Content & Documentation', 'கடித உள்ளடக்கம்')}
+              <span>📄</span> {L('ලිපියේ අන්තර්ගතය සහ ලේඛන', 'Letter Content & Documentation', 'கடிதத்தின் உள்ளடக்கம் மற்றும் ஆவணங்கள்')}
             </h3>
 
             <div className="space-y-3 text-xs">
@@ -214,7 +214,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
                   value={formData.subject}
                   onChange={handleChange}
                   className="w-full bg-white border border-gray-200 rounded-lg p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#8C1538]"
-                  placeholder={L('උදා: ගොඩනැගිලි සැලසුම් අනුමැතිය ඉල්ලා සිටීම', 'e.g. Request for Building Plan Approval & Site Inspection', 'உ-ம்: கட்டட அனுமதி கோரிக்கை')}
+                  placeholder={L('උදා: ගොඩනැගිලි සැලසුම් අනුමැතිය ඉල්ලා සිටීම', 'e.g. Request for Building Plan Approval & Site Inspection', 'உ-ம்: கட்டட அனுமதி கோரிக்கை மற்றும் இடப் பரிசோதனைக்கான கோரிக்கை')}
                   required
                 />
               </div>
@@ -234,7 +234,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
                     placeholder={L(
                       'ගරු සභාපතිතුමනි / ලේකම්තුමනි,\n\nමෙම ලිපිය මගින් මා ඉල්ලා සිටින්නේ...',
                       'Dear Sir / Madam,\n\nI am writing to formally request / inquire regarding...',
-                      'அன்பார்ந்த ஐயா / அம்மையீர்,\n\nநான் இத்தால் கோருவது யாதெனில்...'
+                      'அன்பார்ந்த ஐயா / அம்மையீர்,\n\nநான் முறைப்படி கோருவது / விசாரிப்பது தொடர்பாக...'
                     )}
                     required
                   />
@@ -262,7 +262,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
               {/* Upload Dropzone */}
               <div className="pt-2">
                 <label className="block font-semibold text-gray-700 mb-1">
-                  {L('සහායක ලිපි ලේඛන (PDF / පින්තූර)', 'Supporting Documents & Attachments (Optional)', 'ஆதரவு ஆவணங்கள்')}
+                  {L('සහායක ලිපි ලේඛන (PDF / පින්තූර)', 'Supporting Documents & Attachments (Optional)', 'ஆதார ஆவணங்கள் மற்றும் இணைப்புகள் (விருப்பத்திற்குரியது)')}
                 </label>
                 <div
                   onClick={() => docInputRef.current?.click()}
@@ -270,7 +270,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
                 >
                   <span className="text-2xl block mb-1">📎</span>
                   <p className="text-xs font-bold text-gray-800">
-                    {document ? document.name : L('ගොනුව තෝරන්න හෝ මෙතැනට ඇද දමන්න', 'Click to upload or drag & drop files', 'கோப்பை பதிவேற்ற கிளிக் செய்க')}
+                    {document ? document.name : L('ගොනුව තෝරන්න හෝ මෙතැනට ඇද දමන්න', 'Click to upload or drag & drop files', 'கோப்புகளைப் பதிவேற்ற கிளிக் செய்யவும்')}
                   </p>
                   <p className="text-[10px] text-gray-400 mt-0.5">
                     {document ? `${(document.size / 1024 / 1024).toFixed(2)} MB • Ready to attach` : 'PDF, DOCX, PNG, JPG (Max 10MB)'}
@@ -294,7 +294,7 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
               onClick={onBackToDashboard}
               className="border border-gray-300 hover:bg-gray-100 text-gray-700 px-5 py-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer"
             >
-              {L('අවලංගු කරන්න', 'Cancel', 'ரத்து')}
+              {L('අවලංගු කරන්න', 'Cancel', 'ரத்து செய்யவும்')}
             </button>
 
             <button
@@ -305,12 +305,12 @@ export default function LetterForm({ onSubmit, onBackToDashboard, loading = fals
               {loading ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>{L('යොමු කරමින්...', 'Submitting...', 'சமர்ப்பிக்கிறது...')}</span>
+                  <span>{L('යොමු කරමින්...', 'Submitting...', 'சமர்ப்பிக்கப்படுகிறது...')}</span>
                 </>
               ) : (
                 <>
                   <span>✉️</span>
-                  <span>{L('නිල ලිපිය යොමු කරන්න', 'Submit Official Letter Request', 'கடிதத்தை சமர்ப்பிக்கவும்')}</span>
+                  <span>{L('නිල ලිපිය යොමු කරන්න', 'Submit Official Letter Request', 'அதிகாரப்பூர்வ கடிதக் கோரிக்கையைச் சமர்ப்பிக்கவும்')}</span>
                 </>
               )}
             </button>

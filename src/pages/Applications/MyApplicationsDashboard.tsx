@@ -121,15 +121,15 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
         label: L('තාක්ෂණික ක්ෂේත්‍ර පරීක්ෂණය', 'Technical Inspection & Review', 'தொழில்நுட்ப கள ஆய்வு'),
         description: currentIndex >= 1 || app.status === 'REJECTED'
           ? L(
-              'අදාළ අංශයේ තාක්ෂණික නිලධාරී වෙත ක්ෂේත්‍ර පරීක්ෂාව සහ ලේඛන සත්‍යාපනය සඳහා යොමු කර ඇත.',
-              'Assigned to the relevant department technical officer for field inspection and statutory verification.',
-              'கள ஆய்வு மற்றும் சட்டப்பூர்வ சரிபார்ப்புக்காக உரிய துறை தொழில்நுட்ப உத்தியோகத்தருக்கு ஒதுக்கப்பட்டுள்ளது.'
-            )
+            'අදාළ අංශයේ තාක්ෂණික නිලධාරී වෙත ක්ෂේත්‍ර පරීක්ෂාව සහ ලේඛන සත්‍යාපනය සඳහා යොමු කර ඇත.',
+            'Assigned to the relevant department technical officer for field inspection and statutory verification.',
+            'கள ஆய்வு மற்றும் சட்டப்பூர்வ சரிபார்ப்புக்காக உரிய துறை தொழில்நுட்ப உத்தியோகத்தருக்கு ஒதுக்கப்பட்டுள்ளது.'
+          )
           : L(
-              'තාක්ෂණික නිලධාරියෙකු වෙත යොමු වන තෙක් පවතී.',
-              'Awaiting assignment to a department technical officer for field assessment.',
-              'கள மதிப்பீட்டிற்காக ஒரு துறை தொழில்நுட்ப உத்தியோகத்தரின் ஒதுக்கீட்டிற்காக காத்திருக்கிறது.'
-            ),
+            'තාක්ෂණික නිලධාරියෙකු වෙත යොමු වන තෙක් පවතී.',
+            'Awaiting assignment to a department technical officer for field assessment.',
+            'கள மதிப்பீட்டிற்காக ஒரு துறை தொழில்நுட்ப உத்தியோகத்தரின் ஒதுக்கீட்டிற்காக காத்திருக்கிறது.'
+          ),
         date: currentIndex >= 1 || app.status === 'REJECTED' ? (app.inspectionDate || app.date) : null,
         completed: currentIndex >= 1 || app.status === 'REJECTED'
       },
@@ -139,17 +139,17 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
           : L('අවසන් අනුමැතිය සහ බලපත්‍ර නිකුතුව', 'Final Approval & Permit Issued', 'இறுதி ஒப்புதல் மற்றும் அனுமதிப்பத்திரம்'),
         description: app.status === 'APPROVED'
           ? L(
-              'සභාපති/ලේකම්තුමාගේ අවසන් අනුමැතිය ලැබී ඇති අතර නිල ඩිජිටල් අවසර පත්‍රය නිකුත් කර ඇත.',
-              'Application approved by Pradeshiya Sabha Secretary/Chairman and digital statutory permit issued.',
-              'பிரதேச சபை செயலாளர்/தலைவரால் விண்ணப்பம் அங்கீகரிக்கப்பட்டு டிஜிட்டல் அனுமதிப்பத்திரம் வழங்கப்பட்டது.'
-            )
+            'සභාපති/ලේකම්තුමාගේ අවසන් අනුමැතිය ලැබී ඇති අතර නිල ඩිජිටල් අවසර පත්‍රය නිකුත් කර ඇත.',
+            'Application approved by Pradeshiya Sabha Secretary/Chairman and digital statutory permit issued.',
+            'பிரதேச சபை செயலாளர்/தலைவரால் விண்ணப்பம் அங்கீகரிக்கப்பட்டு டிஜிட்டல் அனுமதிப்பத்திரம் வழங்கப்பட்டது.'
+          )
           : app.status === 'REJECTED'
-          ? L(
+            ? L(
               'තාක්ෂණික පරීක්ෂාවෙන් පසු විස්තර අසම්පූර්ණ බැවින් අයදුම්පත්‍රය නැවත යොමු කර හෝ ප්‍රතික්ෂේප කර ඇත.',
               'Application reviewed and returned/rejected with remarks during technical assessment.',
               'தொழில்நுட்ப மதிப்பீட்டின் போது கருத்துகளுடன் விண்ணப்பம் நிராகரிக்கப்பட்டது/திருப்பி அனுப்பப்பட்டது.'
             )
-          : L(
+            : L(
               'අවසන් විධායක අනුමැතිය සහ සහතික නිකුතුව සඳහා බලාපොරොත්තු වේ.',
               'Pending final executive approval from the Secretary/Chairman and official certificate generation.',
               'செயலாளர்/தலைவரிடமிருந்து இறுதி நிர்வாக ஒப்புதல் மற்றும் சான்றிதழ் உருவாக்கத்திற்காக காத்திருக்கிறது.'
@@ -195,7 +195,7 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
       {/* Banner Section */}
       <div className="relative rounded-xl overflow-hidden mb-6 h-48 bg-gradient-to-r from-slate-800 to-slate-900 flex items-center px-8 text-white">
         <div className="z-10">
-          <h1 className="text-3xl font-bold">{L('පුරවැසි අයදුම්පත් පැනලය', 'Citizen Application Portal', 'குடிமக்கள் விண்ணப்பப் பலகை')}</h1>
+          <h1 className="text-3xl font-bold">{L('පුරවැසි අයදුම්පත් පැනලය', 'Citizen Application Portal', 'குடிமக்கள் விண்ணப்பத் தளம்')}</h1>
           <p className="text-gray-300 mt-2 text-sm">{L('ඔබ විසින් ඉදිරිපත් කරන ලද අයදුම්පත් කළමනාකරණය කර ඒවායේ ප්‍රගතිය තත්‍ය කාලීනව නිරීක්ෂණය කරන්න.', 'Manage your submitted municipal permit reports and track institutional progress in real-time.', 'உங்கள் சமர்ப்பிக்கப்பட்ட விண்ணப்பங்களை நிர்வகிக்கவும் மற்றும் நிகழ்நேர முன்னேற்றத்தைக் கண்காணிக்கவும்.')}</p>
         </div>
         <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80')` }}></div>
@@ -231,7 +231,7 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
         <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <span className="font-semibold text-gray-800">{L('මගේ අයදුම්පත්', 'My Applications', 'எனது விண்ணப்பங்கள்')}</span>
-            
+
             <select
               value={statusFilter}
               onChange={(e) => {
@@ -240,7 +240,7 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
               }}
               className="border border-gray-200 rounded-lg px-3 py-1.5 bg-gray-50 text-xs font-medium focus:outline-none focus:border-red-800"
             >
-              <option value="All Statuses">{L('සියලුම තත්වයන්', 'All Statuses', 'அனைத்தும்')}</option>
+              <option value="All Statuses">{L('සියලුම තත්වයන්', 'All Statuses', 'அனைத்து நிலைகளும்')}</option>
               <option value="PENDING">PENDING</option>
               <option value="IN PROGRESS">IN PROGRESS</option>
               <option value="APPROVED">APPROVED</option>
@@ -336,11 +336,10 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
                 <button
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
-                  className={`w-7 h-7 font-semibold rounded-md transition-all ${
-                    currentPage === pageNum
+                  className={`w-7 h-7 font-semibold rounded-md transition-all ${currentPage === pageNum
                       ? 'bg-[#800020] text-white'
                       : 'text-gray-600 hover:bg-gray-200 bg-white border border-gray-200 cursor-pointer'
-                  }`}
+                    }`}
                 >
                   {pageNum}
                 </button>
@@ -398,7 +397,7 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
               {/* Entered Application Details */}
               <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                 <div>
-                  <span className="text-xs text-gray-400 block mb-1">{L('අයදුම්කරුගේ නම', 'Applicant Name', 'பெயர்')}</span>
+                  <span className="text-xs text-gray-400 block mb-1">{L('අයදුම්කරුගේ නම', 'Applicant Name', 'விண்ணப்பதாரரின் பெயர்')}</span>
                   <p className="font-medium text-gray-900">{selectedApp.applicantName}</p>
                 </div>
                 <div>
@@ -419,7 +418,7 @@ const MyApplicationsDashboard: React.FC<MyApplicationsDashboardProps> = ({
                 </div>
                 {selectedApp.locationAddress && selectedApp.locationAddress !== selectedApp.address && (
                   <div className="col-span-2">
-                    <span className="text-xs text-gray-400 block mb-1">{L('සේවා/ප්‍රදර්ශන ස්ථානය', 'Service / Display Location', 'இடம்')}</span>
+                    <span className="text-xs text-gray-400 block mb-1">{L('සේවා/ප්‍රදර්ශන ස්ථානය', 'Service / Display Location', 'சேவை / காட்சிப்படுத்தப்படும் இடம்')}</span>
                     <p className="font-medium text-gray-900">{selectedApp.locationAddress}</p>
                   </div>
                 )}

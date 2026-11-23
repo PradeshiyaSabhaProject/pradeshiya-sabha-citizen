@@ -81,7 +81,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       category: L(
         'ප්‍රචාරක දැන්වීම් සහ ප්‍රදර්ශන පුවරු අවසර පත්‍රය',
         'Promotional Advertisement Display Permit',
-        'விளம்பர பலகை காட்சி அனுமதிப்பத்திரம்'
+        'விளம்பர மற்றும் காட்சிப் பலகை அனுமதிப்பத்திரம்'
       ),
       categoryCode: 'promotional-ad-permit',
       status: 'IN PROGRESS',
@@ -101,7 +101,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       category: L(
         'වාණිජ හා හදිසි කසළ ඉවත් කිරීමේ අවසර පත්‍රය',
         'Commercial & Emergency Waste Removal Permit',
-        'வர்த்தக மற்றும் அவசர கழிவு அகற்றுதல் அனுமதிப்பத்திரம்'
+        'வர்த்தக மற்றும் அவசரக் கழிவகற்றல் அனுமதிப்பத்திரம்'
       ),
       categoryCode: 'waste-removal-permit',
       status: 'APPROVED',
@@ -161,7 +161,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       category: L(
         'වීදි රේඛා, නොපවරා ගැනීමේ සහ නාගරික සහතික',
         'Street Line, Non-Vesting & Municipal Certificates',
-        'வீதி கோடு மற்றும் பிரதேச சபை சான்றிதழ்கள்'
+        'வீதி எல்லைக்கோடு, சுவீகரிப்பு இன்மை மற்றும் பிரதேச சபைச் சான்றிதழ்கள்'
       ),
       categoryCode: 'street-line-certificate',
       status: 'REJECTED',
@@ -187,7 +187,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       title: L(
         'ප්‍රචාරක දැන්වීම් සහ ප්‍රදර්ශන පුවරු අවසර පත්‍රය',
         'Promotional Advertisement Display Permit',
-        'விளம்பர பலகை காட்சி அனுமதிப்பத்திரம்'
+        'விளம்பர மற்றும் காட்சிப் பலகை அனுமதிப்பத்திரம்'
       ),
       desc: L(
         'හෝමාගම ප්‍රාදේශීය සභා බලප්‍රදේශය තුළ ප්‍රචාරක බැනර්, නාමපුවරු සහ වාණිජ දැන්වීම් ප්‍රදර්ශනය කිරීම සඳහා නිල අවසර පත්‍රය ලබා ගැනීම.',
@@ -240,7 +240,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       desc: L(
         'නේවාසික, ව්‍යාපාරික, කර්මාන්ත හෝ රාජ්‍ය ආයතනවල අපජලය හා ගලි ටැංකි හිස් කිරීම සඳහා ප්‍රාදේශීය සභා ගලි බවුසර රථය වෙන්කර ගැනීම.',
         'Apply for municipal gully bowser trucks to empty septic tanks and wastewater pits for residential, commercial, industrial, or government premises.',
-        'செப்டிக் டேங்குகளை சுத்தம் செய்வதற்கான பிரதேச சபை கல்லி பௌசர் சேவை.'
+        'கழிவுநீர்த் தொட்டிகள் மற்றும் மலக்கழிவுத் தொட்டிகளை வெறுமையாக்குவதற்கான பிரதேச சபை கல்லி பௌசர் சேவை.'
       ),
       icon: <GullyBowserIcon />,
       formCode: 'ගලි බවුසර ඉල්ලුම',
@@ -260,7 +260,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
       ),
       icon: <BusinessTaxIcon />,
       formCode: 'ව්‍යාපාර බදු - "ඒ" කොටස',
-      badgeText: L('වාර්ෂික • නිල ෆෝරමය', 'Annual • Official Form', 'வருடாந்தம் • அதிகாரப்பூர்வ படிவம்')
+      badgeText: L('වාර්ෂික • නිල ෆෝරමය', 'Annual • Official Form', 'வருடாந்த • உத்தியோகபூர்வ படிவம்')
     },
     {
       id: 'street-line-certificate',
@@ -303,14 +303,14 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
               {L(
                 'ඩිජිටල් පුරවැසි අයදුම්පත් හා බලපත්‍ර පැනලය',
                 'Digital Citizen Applications & Permits',
-                'டிஜிட்டல் குடிமக்கள் விண்ணப்பங்கள்'
+                'டிஜிட்டல் குடிமக்கள் விண்ணப்பங்கள் மற்றும் அனுமதிப்பத்திரங்கள்'
               )}
             </h1>
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
               {L(
                 'හෝමාගම ප්‍රාදේශීය සභාවේ නිල අයදුම්පත් හා අවසර පත්‍ර මාර්ගගතව ඉදිරිපත් කරන්න හෝ ඉදිරිපත් කළ අයදුම්පත් වල ප්‍රගතිය නිරීක්ෂණය කරන්න.',
                 'Submit formal applications online or switch to My Applications to view entered details and track live progress stages.',
-                'ஹோமகம பிரதேச சபைக்கு உத்தியோகபூர்வ விண்ணப்பங்கள் மற்றும் அனுமதிப்பத்திரங்களை சமர்ப்பிக்கவும்.'
+                'ஹோமாகம பிரதேச சபைக்கு உத்தியோகபூர்வ விண்ணப்பங்களை சமர்ப்பிக்கவும் அல்லது சமர்ப்பிக்கப்பட்ட விண்ணப்பங்களின் முன்னேற்றத்தை கண்காணிக்கவும்.'
               )}
             </p>
           </div>
@@ -321,28 +321,28 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
               type="button"
               onClick={() => setCurrentTab('forms')}
               className={`px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-xs ${currentTab === 'forms'
-                  ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
-                  : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
+                ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
+                : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
                 }`}
             >
 
-              <span>{L('නව අයදුම්පත් (Permit Catalog)', 'Apply for Permits', 'விண்ணப்பங்கள்')}</span>
+              <span>{L('නව අයදුම්පත් (Permit Catalog)', 'Apply for Permits', 'புதிய விண்ணப்பங்கள்')}</span>
             </button>
 
             <button
               type="button"
               onClick={() => setCurrentTab('my-applications')}
               className={`px-5 py-2.5 rounded-md font-semibold text-sm transition-all duration-200 flex items-center gap-2.5 cursor-pointer shadow-xs ${currentTab === 'my-applications'
-                  ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
-                  : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
+                ? 'bg-[#8C1538] hover:bg-[#73102d] text-white shadow-xs'
+                : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 hover:bg-gray-50 shadow-2xs'
                 }`}
             >
 
               <span>{L('මගේ අයදුම්පත්', 'My Applications', 'எனது விண்ணப்பங்கள்')}</span>
               <span
                 className={`text-[11px] font-mono px-2 py-0.5 rounded-full font-bold ${currentTab === 'my-applications'
-                    ? 'bg-white/20 text-white border border-white/20'
-                    : 'bg-[#8C1538]/10 text-[#8C1538]'
+                  ? 'bg-white/20 text-white border border-white/20'
+                  : 'bg-[#8C1538]/10 text-[#8C1538]'
                   }`}
               >
                 {myApplications.length}
@@ -402,7 +402,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
                   onClick={() => setSearchTerm('')}
                   className="mt-4 inline-block text-xs font-bold text-[#8C1538] hover:underline cursor-pointer"
                 >
-                  {L('පෙරහන ඉවත් කරන්න', 'Clear filter', 'வடிகட்டலை அகற்று')}
+                  {L('පෙරහන ඉවත් කරන්න', 'Clear filter', 'வடிகட்டியை நீக்குக')}
                 </button>
               </div>
             ) : (
@@ -440,7 +440,7 @@ const Applications: React.FC<ApplicationsProps> = ({ initialTab }) => {
                     </div>
 
                     <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#8C1538] group-hover:translate-x-1 transition-transform">
-                      <span>{L('මාර්ගගතව අයදුම් කරන්න', 'Apply Online', 'ஆன்லைனில் விண்ணப்பிக்கவும்')}</span>
+                      <span>{L('මාර්ගගතව අයදුම් කරන්න', 'Apply Online', 'இணையவழியில் விண்ணப்பிக்கவும்')}</span>
                       <span>→</span>
                     </div>
                   </div>

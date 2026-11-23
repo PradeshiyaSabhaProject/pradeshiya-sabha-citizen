@@ -18,10 +18,10 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
           <div className="flex items-center gap-3">
             <div>
               <h2 className="text-base sm:text-xl font-extrabold tracking-tight leading-tight">
-                {L('නිල ලිපි ආකෘතිය', 'Official Letter Format', 'அதிகாரபூர்வ கடிதம்')}
+                {L('නිල ලිපි ආකෘතිය', 'Official Letter Format', 'உத்தியோகபூர்வ கடித வடிவம்')}
               </h2>
               <p className="text-[11px] sm:text-xs text-white/85 font-medium">
-                {L('හෝමාගම ප්‍රාදේශීය සභාවේ නිල ලේඛන පිටපත', 'Homagama Pradeshiya Sabha Official Record Copy', 'ஹோமகம பிரதேச சபை உத்தியோகபூர்வ ஆவணம்')}
+                {L('හෝමාගම ප්‍රාදේශීය සභාවේ නිල ලේඛන පිටපත', 'Homagama Pradeshiya Sabha Official Record Copy', 'ஹோமாகம பிரதேச சபையின் உத்தியோகபூர்வ ஆவணப் பிரதி')}
               </p>
             </div>
             <span className="bg-white/15 text-white border border-white/20 px-2.5 py-0.5 rounded-md text-xs font-bold">
@@ -39,7 +39,7 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              <span>{L('මුද්‍රණය කරන්න', 'Print', 'அச்சிட')}</span>
+              <span>{L('මුද්‍රණය කරන්න', 'Print', 'அச்சிடுக')}</span>
             </button>
             <button
               onClick={onClose}
@@ -98,7 +98,7 @@ const OfficialLetterModal = ({ isOpen, onClose, letter }) => {
               <p className="text-gray-700 whitespace-pre-wrap">{letter.description}</p>
             </div>
             <p>
-              <strong>Current Status:</strong> <span className="font-bold text-[#8C1538]">{letter.status}</span><br/>
+              <strong>Current Status:</strong> <span className="font-bold text-[#8C1538]">{letter.status}</span><br />
               {letter.remarks && <span><strong>Additional Notes:</strong> {letter.remarks}</span>}
             </p>
             <p className="text-xs text-gray-500 italic pt-2">

@@ -136,7 +136,7 @@ const GullyBowserFormModal: React.FC<GullyBowserFormModalProps> = ({ isOpen, onC
               {L(
                 'අපජලය හා ගලි ටැංකි හිස් කිරීමේ නිල ඉල්ලුම්පත්‍රය',
                 'Wastewater & Septic Tank Emptying Official Request',
-                'கழிவுநீர் மற்றும் செப்டிக் டேங்க் அகற்றுவதற்கான விண்ணப்பம்'
+                'கழிவுநீர் மற்றும் மலக்கழிவுத் தொட்டிகளை வெறுமையாக்குவதற்கான உத்தியோகபூர்வ விண்ணப்பம்'
               )}
             </p>
           </div>
@@ -235,7 +235,7 @@ const GullyBowserFormModal: React.FC<GullyBowserFormModalProps> = ({ isOpen, onC
                   {L(
                     'කරුණාකර ගලි ටැංකිය පිහිටි ස්ථානය, අවශ්‍ය ලෝඩ් ගණන සහ ප්‍රවේශ මාර්ග විස්තරය පැහැදිලිව සඳහන් කරන්න. (Office use section excluded).',
                     'Please fill out all applicant details, required bowser load quantity, and access road instructions clearly.',
-                    'கல்லி டேங்க் அமைவிடம், தேவையான சுமை எண்ணிக்கை மற்றும் வீதி விவரங்களை தெளிவாக குறிப்பிடவும்.'
+                    'கழிவுத் தொட்டி அமைந்துள்ள இடம், தேவையான பௌசர் எண்ணிக்கை மற்றும் வீதி விவரங்களை தெளிவாக குறிப்பிடவும்.'
                   )}
                 </div>
               </div>
@@ -341,7 +341,7 @@ const GullyBowserFormModal: React.FC<GullyBowserFormModalProps> = ({ isOpen, onC
                   <div>
                     <label className="block mb-2">
                       <span className="block text-sm sm:text-base font-bold text-gray-900">
-                        {L('5. ගලි ටැංකිය / අපජලය වල පිහිටි ස්ථානයේ ලිපිනය', '5. Address of Septic Tank / Wastewater Pit Location', '5. செப்டிக் டேங்க் அமைவிட முகவரி')} <span className="text-red-500">*</span>
+                        {L('5. ගලි ටැංකිය / අපජලය වල පිහිටි ස්ථානයේ ලිපිනය', '5. Address of Septic Tank / Wastewater Pit Location', '5. கழிவுத் தொட்டி / கழிவுநீர் குழி அமைந்துள்ள இடத்தின் முகவரி')} <span className="text-red-500">*</span>
                       </span>
                     </label>
                     <input
@@ -366,8 +366,8 @@ const GullyBowserFormModal: React.FC<GullyBowserFormModalProps> = ({ isOpen, onC
                           type="button"
                           onClick={() => setFormData((p) => ({ ...p, premisesCategory: opt.id }))}
                           className={`p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${formData.premisesCategory === opt.id
-                              ? 'border-[#8C1538] bg-red-50/60 font-bold text-[#8C1538] shadow-xs'
-                              : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
+                            ? 'border-[#8C1538] bg-red-50/60 font-bold text-[#8C1538] shadow-xs'
+                            : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
                             }`}
                         >
                           <div className="text-sm sm:text-base">

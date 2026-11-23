@@ -146,14 +146,14 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
               {L(
                 'කසල ඉවත්කිරීම සඳහා ස්ථාන පිළිබඳ අයදුම්පත / වාර්තාව',
                 'Application & Service Report for Commercial & Emergency Waste Removal',
-                'கழிவுகளை அகற்றுவதற்கான விண்ணப்பம் / அறிக்கை'
+                'வர்த்தக மற்றும் அவசரக் கழிவகற்றல் சேவைக்கான விண்ணப்பம் / அறிக்கை'
               )}
             </h2>
             <p className="text-[11px] sm:text-sm text-white/90 font-medium">
               {L(
                 'වාණිජ හා හදිසි කසල ඉවත්කිරීමේ සේවා අයදුම්පත',
                 'Commercial & Emergency Waste Collection Service Application',
-                'வணிக மற்றும் அவசர கழிவு சேகரிப்பு விண்ணப்பம்'
+                'வர்த்தக மற்றும் அவசரக் கழிவகற்றல் சேவைக்கான விண்ணப்பம்'
               )}
             </p>
           </div>
@@ -411,7 +411,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                       {L(
                         '5. කසල ඉවත්කිරීම මාසික පදනම / හදිසි ඉවත්කිරීම',
                         '5. Select Service Category (Monthly or Emergency)',
-                        '5. சேவை வகையைத் தேர்ந்தெடுக்கவும் (மாதாந்திர அல்லது அவசர)'
+                        '5. சேவை வகையைத் தேர்ந்தெடுக்கவும் (மாதாந்த அல்லது அவசர)'
                       )} <span className="text-red-500">*</span>
                     </span>
                   </label>
@@ -420,15 +420,15 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, serviceBasis: 'monthly' }))}
                       className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4 text-left transition-all ${formData.serviceBasis === 'monthly'
-                          ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
+                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
                         }`}
                     >
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.serviceBasis === 'monthly' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
                         {formData.serviceBasis === 'monthly' && <div className="w-2.5 h-2.5 rounded-full bg-[#8C1538]" />}
                       </div>
                       <div>
-                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('I. මාසික පදනම', 'I. Monthly Basis', 'I. மாதாந்திர முறை')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('I. මාසික පදනම', 'I. Monthly Basis', 'I. மாதாந்த முறை')}</div>
                         <div className="text-xs sm:text-sm font-medium text-gray-600 mt-0.5">{L('නිතිපතා කාලසටහන්ගත කසල ඉවත් කිරීම', 'Regular scheduled collection', 'வழக்கமான திட்டமிடப்பட்ட சேகரிப்பு')}</div>
                       </div>
                     </button>
@@ -437,8 +437,8 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                       type="button"
                       onClick={() => setFormData((p) => ({ ...p, serviceBasis: 'emergency' }))}
                       className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4 text-left transition-all ${formData.serviceBasis === 'emergency'
-                          ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                          : 'border-gray-200 bg-white hover:border-gray-300'
+                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
                         }`}
                     >
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${formData.serviceBasis === 'emergency' ? 'border-[#8C1538]' : 'border-gray-300'}`}>
@@ -456,13 +456,13 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                 {formData.serviceBasis === 'monthly' ? (
                   <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-6">
                     <h4 className="text-sm font-bold text-[#8C1538] uppercase tracking-wide">
-                      {L('I. මාසික පදනම වන විට (Kg)', 'I. Monthly Quantities (in Kg)', 'I. மாதாந்திர அளவுகள் (Kg)')}
+                      {L('I. මාසික පදනම වන විට (Kg)', 'I. Monthly Quantities (in Kg)', 'I. மாதாந்த அளவுகள் (Kg)')}
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
                         <label className="block mb-2">
                           <span className="block text-sm sm:text-base font-bold text-gray-900">
-                            {L('• මසකට ඉවත්කරන දිරන කසල ප්‍රමාණය (Kg)', '• Monthly Biodegradable Waste (Kg)', '• மாதாந்திர மக்கும் கழிவுகள் (Kg)')}
+                            {L('• මසකට ඉවත්කරන දිරන කසල ප්‍රමාණය (Kg)', '• Monthly Biodegradable Waste (Kg)', '• மாதாந்த மக்கும் கழிவுகள் (Kg)')}
                           </span>
                         </label>
                         <input
@@ -478,7 +478,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                       <div>
                         <label className="block mb-2">
                           <span className="block text-sm sm:text-base font-bold text-gray-900">
-                            {L('• මසකට ඉවත්කරන නොදිරන කසල ප්‍රමාණය (Kg)', '• Monthly Non-Biodegradable Waste (Kg)', '• மாதாந்திர மக்காத கழிவுகள் (Kg)')}
+                            {L('• මසකට ඉවත්කරන නොදිරන කසල ප්‍රමාණය (Kg)', '• Monthly Non-Biodegradable Waste (Kg)', '• மாதாந்த மக்காத கழிவுகள் (Kg)')}
                           </span>
                         </label>
                         <input
@@ -601,7 +601,7 @@ const WasteRemovalFormModal = ({ isOpen, onClose, onAddApplication }: any) => {
                   onClick={resetAndClose}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm sm:text-base font-bold transition-all cursor-pointer"
                 >
-                  {L('අවලංගු කරන්න', 'Cancel', 'ரத்து செய்')}
+                  {L('අවලංගු කරන්න', 'Cancel', 'இரத்து செய்க')}
                 </button>
                 <button
                   type="submit"

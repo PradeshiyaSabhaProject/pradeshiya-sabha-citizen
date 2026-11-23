@@ -37,7 +37,7 @@ const NewLetterModal = ({
               {L(
                 'හෝමාගම ප්‍රාදේශීය සභාවේ අදාළ අංශ වෙත ඔබගේ ලිපිය හෝ ඉල්ලීම යොමු කරන්න',
                 'Submit formal correspondence directly to municipal departments',
-                'ஹோமகம பிரதேச சபையின் உரிய பிரிவுக்கு உங்கள் கடிதத்தை சமர்ப்பிக்கவும்'
+                'ஹோமாகம பிரதேச சபையின் உரிய பிரிவுக்கு உங்கள் கடிதத்தை சமர்ப்பிக்கவும்'
               )}
             </p>
           </div>
@@ -174,7 +174,7 @@ const NewLetterModal = ({
               disabled={loading}
               className="rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
             >
-              {L('අවලංගු කරන්න', 'Cancel', 'ரத்து')}
+              {L('අවලංගු කරන්න', 'Cancel', '	ரத்து செய்யவும்')}
             </button>
             <button
               type="submit"
