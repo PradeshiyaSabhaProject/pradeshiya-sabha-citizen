@@ -115,11 +115,11 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-1.5 sm:p-6"
       onClick={resetAndClose}
     >
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
         className="bg-[#F8FAFC] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[96vh] sm:max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col my-auto text-left"
       >
@@ -148,27 +148,24 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               <button
                 type="button"
                 onClick={() => changeLanguage('si')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'si' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'si' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 සිංහල
               </button>
               <button
                 type="button"
                 onClick={() => changeLanguage('en')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'en' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'en' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 English
               </button>
               <button
                 type="button"
                 onClick={() => changeLanguage('ta')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  lang === 'ta' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${lang === 'ta' ? 'bg-white text-[#8C1538] shadow-xs' : 'text-white/85 hover:text-white'
+                  }`}
               >
                 தமிழ்
               </button>
@@ -236,7 +233,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
               <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                 <div className="text-xs sm:text-sm text-amber-950 leading-relaxed">
                   <span className="font-bold text-amber-900">
-                    {L('අයදුම්කරු විසින් පිරවිය යුතු "ඒ" කොටස:', 'Part A (Applicant Declaration):', 'பகுதி A (விண்ணப்பதாரர் பகுதி):')}
+                    {L('අයදුම්කරු විසින් පිරවිය යුතු "ඒ" කොටස:', 'Part A (Applicant Declaration):', 'பகுதி A (விண்ணப்பதாரரால் பூர்த்தி செய்யப்பட வேண்டிய பகுதி):')}
                   </span>{' '}
                   {L(
                     'මෙම ෆෝරමයේ "ඒ" කොටස පුරවා හෝමාගම ප්‍රාදේශීය සභාවේ ප්‍රධාන කාර්යාලයට ඉදිරිපත් කළ යුතුය. (Office use Part B excluded).',
@@ -450,7 +447,7 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
                         {L(
                           '8. ව්‍යාපාරය පවත්වාගෙන යන ගොඩනැගිල්ලේ අයිතිකරුගේ නම හා ලිපිනය',
                           '8. Building Owner Name & Address (Landlord)',
-                          '8. கட்டிடம் உரிமையாளரின் பெயர் மற்றும் முகவரி'
+                          '8. கட்டட உரிமையாளரின் பெயர் மற்றும் முகவரி'
                         )} <span className="text-red-500">*</span>
                       </span>
                     </label>
@@ -573,13 +570,13 @@ const BusinessTaxFormModal: React.FC<BusinessTaxFormModalProps> = ({ isOpen, onC
                   onClick={resetAndClose}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm sm:text-base font-bold transition-all cursor-pointer"
                 >
-                  {L('අවලංගු කරන්න', 'Cancel', 'ரத்து செய்')}
+                  {L('අවලංගු කරන්න', 'Cancel', 'இரத்து செய்க')}
                 </button>
                 <button
                   type="submit"
                   className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#8C1538] to-[#73102d] hover:from-[#73102d] hover:to-[#5a0c23] text-white text-sm sm:text-base font-bold shadow-md hover:shadow-lg transition-all cursor-pointer"
                 >
-                  {L('බදු අයදුම්පත ඉදිරිපත් කරන්න', 'Submit Business Tax Application Part A', 'வரி விண்ணப்பம் பகுதி A சமர்ப்பிக்கவும்')}
+                  {L('බදු අයදුම්පත ඉදිරිපත් කරන්න', 'Submit Business Tax Application Part A', 'பகுதி A வரி விண்ணப்பத்தை சமர்ப்பிக்கவும்')}
                 </button>
               </div>
             </form>

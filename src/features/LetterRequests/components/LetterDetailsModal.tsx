@@ -30,8 +30,8 @@ const getTimelineSteps = (letter: any): Step[] => {
       description: isReturned
         ? 'Review halted: Returned for additional citizen documentation.'
         : isInTransit || isResolved
-        ? `Routed to ${letter.category || 'Competent Division'} for review.`
-        : 'Awaiting desk review.',
+          ? `Routed to ${letter.category || 'Competent Division'} for review.`
+          : 'Awaiting desk review.',
       status: isReturned ? 'cancelled' : isInTransit || isResolved ? 'completed' : 'active',
     },
     {
@@ -39,10 +39,10 @@ const getTimelineSteps = (letter: any): Step[] => {
       description: isReturned
         ? (letter.remarks || 'Returned by council secretariat.')
         : isResolved
-        ? 'Evaluation finalized and official response letter authored.'
-        : isInTransit
-        ? 'Departmental reviewer is assessing the request against municipal bylaws.'
-        : 'Pending review.',
+          ? 'Evaluation finalized and official response letter authored.'
+          : isInTransit
+            ? 'Departmental reviewer is assessing the request against municipal bylaws.'
+            : 'Pending review.',
       status: isReturned ? 'cancelled' : isResolved ? 'completed' : isInTransit ? 'active' : 'upcoming',
     },
     {
@@ -159,7 +159,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
                 {L(
                   'අදාළ දෙපාර්තමේන්තු ප්‍රධානී විසින් ඔබගේ ලිපිය පරීක්ෂා කරමින් පවතී.',
                   'Assigned officer is currently reviewing your correspondence against municipal protocols.',
-                  'அதிகாரபூர்வ ஆய்வில் உள்ளது.'
+                  'ஒதுக்கப்பட்ட அதிகாரி, உங்கள் கடிதத்தை பிரதேச சபையின் நடைமுறைகளுக்கு ஏற்ப தற்போது பரிசீலித்து வருகிறார்.'
                 )}
               </p>
             </div>
@@ -168,7 +168,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
           {isReturned && (
             <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-xs text-red-950 space-y-1">
               <div className="font-extrabold flex items-center gap-1.5 text-red-900">
-                <span>⚠️</span> {L('ආපසු හරවන ලදී', 'Returned with Remarks', 'திரும்ப அனுப்பப்பட்டது')}
+                <span>⚠️</span> {L('ආපසු හරවන ලදී', 'Returned with Remarks', 'குறிப்புகளுடன் திருப்பி அனுப்பப்பட்டது')}
               </div>
               <p className="font-medium text-red-800">
                 {letter.remarks || 'Additional verification or official attachments required.'}
@@ -179,7 +179,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
           {isResolved && (
             <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4 text-xs text-emerald-950 space-y-1">
               <div className="font-extrabold flex items-center gap-1.5 text-emerald-900">
-                <span>✓</span> {L('නිල ප්‍රතිචාරය නිකුත් කරන ලදී', 'Official Response Issued', 'அதிகாரபூர்வ பதில் வழங்கப்பட்டது')}
+                <span>✓</span> {L('නිල ප්‍රතිචාරය නිකුත් කරන ලදී', 'Official Response Issued', 'அதிகாரப்பூர்வ பதில் வழங்கப்பட்டது')}
               </div>
               <p className="font-medium text-emerald-800">
                 {letter.resolutionNotes || 'Official decision signed by council secretary. You can download the response below.'}
@@ -194,11 +194,11 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
               <span className="font-bold text-gray-900">{letter.dateSubmitted || letter.date}</span>
             </div>
             <div>
-              <span className="text-gray-500 font-medium block">{L('වේලාව', 'Submission Time', 'நேரம்')}:</span>
+              <span className="text-gray-500 font-medium block">{L('වේලාව', 'Submission Time', 'சமர்ப்பித்த நேரம்')}:</span>
               <span className="font-bold text-[#8C1538]">{letter.timeSubmitted || '10:00 AM'}</span>
             </div>
             <div>
-              <span className="text-gray-500 font-medium block">{L('කාණ්ඩය', 'Service Domain', 'வகை')}:</span>
+              <span className="text-gray-500 font-medium block">{L('කාණ්ඩය', 'Service Domain', 'சேவை வகை')}:</span>
               <span className="font-bold text-gray-900">{letter.category}</span>
             </div>
             <div className="col-span-2 sm:col-span-3">
@@ -206,7 +206,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
               <span className="font-bold text-gray-900">{letter.subject}</span>
             </div>
             <div className="col-span-2 sm:col-span-3">
-              <span className="text-gray-500 font-medium block">{L('සම්පූර්ණ විස්තරය', 'Full Body Content', 'விவரம்')}:</span>
+              <span className="text-gray-500 font-medium block">{L('සම්පූර්ණ විස්තරය', 'Full Body Content', 'முழு விவரம்')}:</span>
               <p className="text-gray-800 font-medium mt-0.5 leading-relaxed bg-white p-3 rounded-lg border border-gray-150">
                 {letter.description}
               </p>
@@ -216,7 +216,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
           {/* Processing Timeline */}
           <div className="space-y-2">
             <h4 className="text-xs font-extrabold text-gray-700 uppercase tracking-wide mb-3">
-              {L('ලිපි ගමන්මග හා කාලරේඛාව', 'Secretariat Routing & Review Lifecycle', 'காலவரிசை')}
+              {L('ලිපි ගමන්මග හා කාලරේඛාව', 'Secretariat Routing & Review Lifecycle', 'செயலக வழிமுறை மற்றும் பரிசீலனை காலவரிசை')}
             </h4>
             <div className="space-y-3 pl-1">
               {steps.map((step, index) => (
@@ -233,7 +233,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
             onClick={onClose}
             className="border border-gray-300 hover:border-gray-400 bg-white text-gray-700 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer"
           >
-            {L('වසා දමන්න', 'Close Dossier', 'மூடு')}
+            {L('වසා දමන්න', 'Close Dossier', 'மூடவும்')}
           </button>
 
           <button
@@ -244,7 +244,7 @@ const LetterDetailsModal: React.FC<LetterDetailsModalProps> = ({ isOpen, onClose
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
-            <span>{L('නිල ලියවිල්ල බාගන්න', 'Download Official Pass Slip', 'பதிவிறக்கு')}</span>
+            <span>{L('නිල ලියවිල්ල බාගන්න', 'Download Official Pass Slip', 'அதிகாரப்பூர்வ அனுமதிச் சீட்டை பதிவிறக்கவும்')}</span>
           </button>
         </div>
       </div>

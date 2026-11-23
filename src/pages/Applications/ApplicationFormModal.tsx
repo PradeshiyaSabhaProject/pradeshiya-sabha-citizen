@@ -157,7 +157,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
               {L(
                 'වීථි රේඛා හා නොපවරා ගැනීමේ සහතික ඉල්ලුම් කිරීම',
                 'Application for Street Line, Non-Vesting & Municipal Road Certificates',
-                'வீதி எல்லை மற்றும் சுவீகரிப்பு அல்லாத சான்றிதழ்களுக்கான விண்ணப்பம்'
+                'வீதி எல்லைக்கோடு மற்றும் சுவீகரிக்கப்படாமைச் சான்றிதழ்களுக்கான விண்ணப்பம்'
               )}
             </h2>
             <p className="text-[11px] sm:text-sm text-white/90 font-medium">
@@ -305,7 +305,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                   )}
                 </div>
                 <div className="text-xs font-mono font-bold text-[#8C1538] bg-white px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 shadow-2xs">
-                  {L('ගාස්තුව: සහතිකයකට රු. 800/=', 'Fee: LKR 800/= per Certificate', 'கட்டணம்: சான்றிதழுக்கு ரூ. 800/=')}
+                  {L('ගාස්තුව: සහතිකයකට රු. 800/=', 'Fee: LKR 800/= per Certificate', 'சான்றிதழொன்றுக்கான கட்டணம்: ரூ. 800/=')}
                 </div>
               </div>
 
@@ -410,7 +410,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                   <div>
                     <label className="block mb-2">
                       <span className="block text-sm sm:text-base font-bold text-gray-900">
-                        {L('04. ii. වරිපනම් අංකය', '04. ii. Assessment Number', '04. ii. வரிப்பண இலக்கம்')} <span className="text-red-500">*</span>
+                        {L('04. ii. වරිපනම් අංකය', '04. ii. Assessment Number', '04. ii. மதிப்பீட்டு இலக்கம்')} <span className="text-red-500">*</span>
                       </span>
                     </label>
                     <input
@@ -461,7 +461,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                   <div>
                     <label className="block mb-2">
                       <span className="block text-sm sm:text-base font-bold text-gray-900">
-                        {L('04. v. කැබලි අංකය', '04. v. Lot Number', '04. v. துண்டு இலக்கம்')} <span className="text-red-500">*</span>
+                        {L('04. v. කැබලි අංකය', '04. v. Lot Number', '04. v. காணித் துண்டு இலக்கம்')} <span className="text-red-500">*</span>
                       </span>
                     </label>
                     <input
@@ -545,8 +545,8 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certVaripanamPayment: !p.certVaripanamPayment }))}
                     className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certVaripanamPayment
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
@@ -558,7 +558,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වරිපනම් ගෙවන / නොගෙවන බවට', 'Assessment Tax payment / non-payment verification certificate', 'வரிப்பண செலுத்துதல் / செலுத்தாதது சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වරිපනම් ගෙවන / නොගෙවන බවට', 'Assessment Tax payment / non-payment verification certificate', 'மதிப்பீட்டு வரி செலுத்தப்பட்டமை / செலுத்தப்படாமைக்கான சான்றிதழ்')}</div>
                       </div>
                     </div>
                     <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
@@ -568,8 +568,8 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certStreetLineBuilding: !p.certStreetLineBuilding }))}
                     className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certStreetLineBuilding
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
@@ -581,7 +581,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වීථි රේඛා නොපැවරීම / ගොඩනැගිලි සීමාව', 'Street Line, Non-Vesting & Building Limit official certificate', 'வீதி எல்லை மற்றும் சுவீகரிப்பு அல்லாத சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('වීථි රේඛා නොපැවරීම / ගොඩනැගිලි සීමාව', 'Street Line, Non-Vesting & Building Limit official certificate', 'வீதி எல்லைக்கோடு, சுவீகரிப்பு இன்மை மற்றும் கட்டட எல்லைச் சான்றிதழ்')}</div>
                       </div>
                     </div>
                     <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
@@ -591,8 +591,8 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                     type="button"
                     onClick={() => setFormData((p) => ({ ...p, certPublicRoadMaint: !p.certPublicRoadMaint }))}
                     className={`cursor-pointer border-2 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left transition-all ${formData.certPublicRoadMaint
-                        ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-[#8C1538] bg-red-50/50 shadow-sm'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                       }`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
@@ -604,7 +604,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                         )}
                       </div>
                       <div>
-                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('ප්‍රාදේශීය සභාව නඩත්තු කරන / නොකරන පොදු පාරක් බව', 'Pradeshiya Sabha Public Road Maintenance status certificate', 'பிரதேச சபை பராமரிக்கும் பொது வீதி சான்றிதழ்')}</div>
+                        <div className="font-bold text-sm sm:text-base text-gray-900">{L('ප්‍රාදේශීය සභාව නඩත්තු කරන / නොකරන පොදු පාරක් බව', 'Pradeshiya Sabha Public Road Maintenance status certificate', 'பிரதேச சபையினால் பராமரிக்கப்படும் / பராமரிக்கப்படாத பொது வீதி என்பதற்கான சான்றிதழ்')}</div>
                       </div>
                     </div>
                     <span className="text-xs sm:text-sm font-bold text-[#8C1538] bg-white px-3 py-1 rounded-lg border border-gray-200 shrink-0 self-end sm:self-center">LKR 800/=</span>
@@ -638,7 +638,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                     </li>
                     <li>
                       <span className="font-bold text-gray-900">
-                        {L('ඉල්ලුම්කරුගේ/ අයිතිකරුගේ ජාතික හැඳුනුම්පතෙහි පිටපතක්', 'Copy of National Identity Card of applicant/owner', 'விண்ணப்பதாரரின் தேசிய அடையாள அட்டை நகல்')}
+                        {L('ඉල්ලුම්කරුගේ/ අයිතිකරුගේ ජාතික හැඳුනුම්පතෙහි පිටපතක්', 'Copy of National Identity Card of applicant/owner', 'விண்ணப்பதாரர் / காணி உரிமையாளரின் தேசிய அடையாள அட்டை நகல்')}
                       </span>
                     </li>
                     <li>
@@ -720,7 +720,7 @@ const ApplicationFormModal = ({ isOpen, onClose, applicationTitle, onAddApplicat
                   onClick={resetAndClose}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm sm:text-base font-bold transition-all cursor-pointer"
                 >
-                  {L('අවලංගු කරන්න', 'Cancel', 'ரத்து செய்')}
+                  {L('අවලංගු කරන්න', 'Cancel', 'இரத்து செய்க')}
                 </button>
                 <button
                   type="submit"

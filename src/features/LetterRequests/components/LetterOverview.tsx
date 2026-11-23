@@ -36,7 +36,7 @@ const LetterOverview: React.FC<LetterOverviewProps> = ({
             {L(
               'පුරවැසි ලිපි හා නිල ලිපි හුවමාරු පැනලය',
               'Citizen Letters & Correspondence Portal',
-              'குடிமக்கள் கடிதங்கள் போர்டல்'
+              'குடிமக்கள் கடிதங்கள் மற்றும் உத்தியோகபூர்வ கடிதப் பரிமாற்றத் தளம்'
             )}
           </h2>
         </div>

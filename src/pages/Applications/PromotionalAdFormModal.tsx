@@ -181,7 +181,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle, onAddApplic
               {L(
                 'වාණිජ බැනර් සහ පුවරු ප්‍රදර්ශන බලපත්‍රය',
                 'Commercial Banner & Signboard Display Permit Application',
-                'வணிக பதாகை மற்றும் காட்சி அனுமதி விண்ணப்பம்'
+                'வணிக பதாகை மற்றும் விளம்பரப் பலகை காட்சிப்படுத்தல் அனுமதி விண்ணப்பம்'
               )}
             </p>
           </div>
@@ -654,7 +654,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle, onAddApplic
                   {L(
                     '* සෑම ප්‍රචාරක දැන්වීම් බලපත්‍රයකම වලංගු කාලය එම වර්ෂයේ දෙසැම්බර් මස 31 දිනෙන් අවසන් වේ.',
                     '* All annual promotional advertisement permits expire on December 31st of the calendar year.',
-                    '* அனைத்து விளம்பர அனுமதிகளும் டிசம்பர் 31 அன்று முடிவடையும்.'
+                    '* அனைத்து விளம்பர அனுமதிப்பத்திரங்களும் குறித்த ஆண்டின் டிசம்பர் 31 ஆம் திகதியுடன் காலாவதியாகும்.'
                   )}
                 </div>
               </div>
@@ -670,7 +670,7 @@ const PromotionalAdFormModal = ({ isOpen, onClose, applicationTitle, onAddApplic
                       {L(
                         'නඩත්තු සහ හානි පිළිසකර කිරීමේ එකඟතාව (10)',
                         'Rectification & Maintenance Agreement (Field 10)',
-                        'பராமரிப்பு மற்றும் சீரமைப்பு ஒப்பந்தம் (10)'
+                        'பராமரிப்பு மற்றும் சேதங்களை சீர்செய்வதற்கான உடன்படிக்கை (10)'
                       )}
                     </h3>
                   </div>

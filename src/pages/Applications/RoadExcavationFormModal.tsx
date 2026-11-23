@@ -108,7 +108,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
     { id: 'TAR', si: 'තාර මාර්ගයේ', en: 'Tar Road', ta: 'தார் வீதி' },
     { id: 'CARPET', si: 'කාපට් මාර්ගයේ', en: 'Carpet Road', ta: 'காபட் வீதி' },
     { id: 'CONCRETE', si: 'කොන්ක්‍රීට් මාර්ගයේ', en: 'Concrete Road', ta: 'கொங்கிரீட் வீதி' },
-    { id: 'INTERLOCK', si: 'කොන්ක්‍රීට් ගල් අතුරන ලද මාර්ගයේ', en: 'Interlocking Paving Block Road', ta: 'கற்கள் பதிக்கப்பட்ட வீதி' },
+    { id: 'INTERLOCK', si: 'කොන්ක්‍රීට් ගල් අතුරන ලද මාර්ගයේ', en: 'Interlocking Paving Block Road', ta: 'கொங்கிரீட் கற்கள் / இன்டர்லாக் கற்கள் பதிக்கப்பட்ட வீதி' },
     { id: 'GRAVEL', si: 'බොරළු මාර්ගයේ', en: 'Gravel Road', ta: 'கிரவல் வீதி' },
   ];
 
@@ -289,7 +289,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
                   <div className="md:col-span-2">
                     <label className="block mb-2">
                       <span className="block text-sm sm:text-base font-bold text-gray-900">
-                        {L('හෝමාගම ප්‍රාදේශීය සභා බල ප්‍රදේශයට අයත් අංක / ස්ථානය', 'Assessment Number / Premises Location', 'மதிப்பீட்டு இலக்கம் / இடம்')} <span className="text-red-500">*</span>
+                        {L('හෝමාගම ප්‍රාදේශීය සභා බල ප්‍රදේශයට අයත් අංක / ස්ථානය', 'Assessment Number / Premises Location', 'ஹோமாகம பிரதேச சபை எல்லைக்குட்பட்ட மதிப்பீட்டு இலக்கம் / இடம்')} <span className="text-red-500">*</span>
                       </span>
                     </label>
                     <input
@@ -329,8 +329,8 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
                         type="button"
                         onClick={() => setFormData((p) => ({ ...p, roadType: opt.id }))}
                         className={`p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all cursor-pointer ${formData.roadType === opt.id
-                            ? 'border-[#8C1538] bg-red-50/60 font-bold text-[#8C1538] shadow-xs'
-                            : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
+                          ? 'border-[#8C1538] bg-red-50/60 font-bold text-[#8C1538] shadow-xs'
+                          : 'border-gray-200 bg-white hover:border-gray-300 text-gray-800'
                           }`}
                       >
                         <div className="text-sm sm:text-base">
@@ -445,7 +445,7 @@ const RoadExcavationFormModal: React.FC<RoadExcavationFormModalProps> = ({ isOpe
                         {L(
                           'කාපට් හා තාර මාර්ග සඳහා ගෙවනු ලබන මුදල් ආපසු ගෙවීම් කරනු නොලැබේ. (බොරළු පාරවල් සඳහා මාර්ග හානි අය කිරීම සිදු නොකෙරේ).',
                           'Fees paid for carpet and tar roads are non-refundable. (No damage fee charged for gravel roads).',
-                          'காபட் மற்றும் தார் வீதிகளுக்காக செலுத்தப்படும் கட்டணம் திரும்ப வழங்கப்படமாட்டாது.'
+                          'காபட் மற்றும் தார் வீதிகளுக்காக செலுத்தப்படும் கட்டணம் திரும்ப வழங்கப்படமாட்டாது.(கிரவல் வீதிகளுக்கு சேதக் கட்டணம் அறவிடப்படமாட்டாது)'
                         )}
                       </span>
                     </li>
